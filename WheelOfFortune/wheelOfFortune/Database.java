@@ -14,7 +14,7 @@ public class Database {
 			Properties prop = new Properties();
 
 			// Use a FileInputStream as input to the Properties object for reading the db.properties file
-			fis = new FileInputStream("lab7out/db.properties");
+			fis = new FileInputStream("wheelOfFortune/db.properties");
 			prop.load(fis);
 
 			// Get the username, password, and url
