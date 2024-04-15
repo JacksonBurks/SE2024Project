@@ -12,7 +12,7 @@ public class ClientGUI extends JFrame
   public ClientGUI()
   {
     // Set up the chat client.
-   ChatClient client = new ChatClient();
+   GameClient client = new GameClient();
     client.setHost("localhost");
     client.setPort(8300);
     try
@@ -49,7 +49,7 @@ public class ClientGUI extends JFrame
     JPanel view1 = new InitialPanel(ic);
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
-    JPanel view4 = new ContactsPanel();
+    JPanel view4 = new NewGamePanel();
     
     // Add the views to the card layout container.
     container.add(view1, "1");
