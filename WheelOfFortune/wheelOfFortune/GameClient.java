@@ -7,6 +7,9 @@ public class GameClient extends AbstractClient
   // Private data fields for storing the GUI controllers.
   private LoginControl loginControl;
   private CreateAccountControl createAccountControl;
+  private NewGameControl newGameControl;
+  private SpinControl spinControl;
+  private JoinGameControl joinGameControl;
 
   // Setters for the GUI controllers.
   public void setLoginControl(LoginControl loginControl)
@@ -16,6 +19,21 @@ public class GameClient extends AbstractClient
   public void setCreateAccountControl(CreateAccountControl createAccountControl)
   {
     this.createAccountControl = createAccountControl;
+  }
+  
+  public void setNewGameControl(NewGameControl newGameControl)
+  {
+    this.newGameControl = newGameControl;
+  }
+  
+  public void setSpinControl(SpinControl spinControl)
+  {
+    this.spinControl = spinControl;
+  }
+  
+  public void setJoinGameControl(JoinGameControl joinGameControl)
+  {
+    this.joinGameControl = joinGameControl;
   }
 
   // Constructor for initializing the client with default settings.

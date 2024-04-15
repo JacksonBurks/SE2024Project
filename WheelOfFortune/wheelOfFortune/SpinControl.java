@@ -4,13 +4,13 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class NewGameControl implements ActionListener
+public class SpinControl implements ActionListener
 {
 	// Private data field for storing the container.
 	private JPanel container;
 	private GameClient client;
 	// Constructor for the new game controller.
-	public NewGameControl(JPanel container, GameClient client)
+	public SpinControl(JPanel container, GameClient client)
 	{
 		this.container = container;
 		this.client = client;
@@ -25,23 +25,27 @@ public class NewGameControl implements ActionListener
 		// The New Game button takes the user to the Spin panel.
 		if (command.equals("Start New Game"))
 		{
+			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
+			loginPanel.setError("");
 			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "5");
+			cardLayout.show(container, "2");
 
 		}
 
 		// The join button takes the user to the Join Game panel.
 		else if (command.equals("Join Game"))
 		{
-			//JoinGamePanel joinGamePanel = (JoinGamePanel)container.getComponent(5);
-			//joinGamePanel.setError("");
+			CreateAccountPanel createAccountPanel = (CreateAccountPanel)container.getComponent(2);
+			createAccountPanel.setError("");
 			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "6");
+			cardLayout.show(container, "3");
 		}
 
 		// The logout button takes the user to the login panel.
 		else if (command.equals("Log Out"))
 		{
+			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
+			loginPanel.setError("");
 			CardLayout cardLayout = (CardLayout)container.getLayout();
 			cardLayout.show(container, "2");
 		}
