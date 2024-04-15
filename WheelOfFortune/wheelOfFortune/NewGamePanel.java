@@ -6,7 +6,7 @@ import javax.swing.*;
 public class NewGamePanel extends JPanel
 {
   // Constructor for the contacts panel.
-  public NewGamePanel()
+  public NewGamePanel(NewGameControl ngc)
   {
 
     // Use BorderLayout to lay out the components in this panel.
@@ -20,12 +20,15 @@ public class NewGamePanel extends JPanel
     // Create the buttons in the south.
     JPanel buttonsPanel = new JPanel(new BorderLayout());
     JPanel newGameButtons = new JPanel();
-    JButton deleteButton = new JButton("Start New Game");
-    JButton addButton = new JButton("Join Game");
-    newGameButtons.add(deleteButton);
-    newGameButtons.add(addButton);
+    JButton startButton = new JButton("Start New Game");
+    JButton joinButton = new JButton("Join Game");
+    startButton.addActionListener(ngc);
+    joinButton.addActionListener(ngc);
+    newGameButtons.add(joinButton);
+    newGameButtons.add(startButton);
     buttonsPanel.add(newGameButtons, BorderLayout.NORTH);
     JButton logoutButton = new JButton("Log Out");
+    logoutButton.addActionListener(ngc);
     JPanel logoutButtonBuffer = new JPanel();
     logoutButtonBuffer.add(logoutButton);
     buttonsPanel.add(logoutButtonBuffer, BorderLayout.SOUTH);
