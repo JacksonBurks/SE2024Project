@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-public class ChatServer extends AbstractServer
+public class GameServer extends AbstractServer
 {
 	// Data fields for this chat server.
 	private JTextArea log;
@@ -18,9 +18,11 @@ public class ChatServer extends AbstractServer
 	private Database db;
 	private Object newResult;
 	private Object createResult;
+	private final int MAX_PLAYERS = 4;
+	private int playersConnected = 0;
 
 	// Constructor for initializing the server with default settings.
-	public ChatServer()
+	public GameServer()
 	{
 		super(12345);
 		this.setTimeout(500);
@@ -76,13 +78,13 @@ public class ChatServer extends AbstractServer
 	// When a client connects or disconnects, display a message in the log.
 	public void clientConnected(ConnectionToClient client)
 	{
-		log.append("Client " + client.getId() + " connected\n");
+		log.append("Player " + client.getId() + " connected\n");
+		playersConnected++;
 	}
 
 	// When a message is received from a client, handle it.
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1)
 	{
-		//db = new Database();
 		// If we received LoginData, verify the account information.
 		if (arg0 instanceof LoginData)
 		{

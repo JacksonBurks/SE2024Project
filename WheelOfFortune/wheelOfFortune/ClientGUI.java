@@ -12,7 +12,7 @@ public class ClientGUI extends JFrame
   public ClientGUI()
   {
     // Set up the chat client.
-   GameClient client = new GameClient();
+    GameClient client = new GameClient();
     client.setHost("localhost");
     client.setPort(8300);
     try
