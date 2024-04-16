@@ -3,17 +3,25 @@ package wheelOfFortune;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class NewGameControl implements ActionListener
 {
 	// Private data field for storing the container.
 	private JPanel container;
 	private GameClient client;
+	private NewGameData newGame;
+
+	public void setNewGameData(NewGameData newGame)
+	{
+		this.newGame = newGame;
+	}
 	// Constructor for the new game controller.
 	public NewGameControl(JPanel container, GameClient client)
 	{
 		this.container = container;
 		this.client = client;
+		this.newGame = new NewGameData(false);
 	}
 
 	// Handle button clicks.
@@ -23,20 +31,18 @@ public class NewGameControl implements ActionListener
 		String command = ae.getActionCommand();
 
 		// The New Game button takes the user to the Spin panel.
-		if (command.equals("Start New Game"))
+		if (command.equals("Ready"))
 		{
-			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "5");
+			newGame.setReady(true);
 
-		}
-
-		// The join button takes the user to the Join Game panel.
-		else if (command.equals("Join Game"))
-		{
-			//JoinGamePanel joinGamePanel = (JoinGamePanel)container.getComponent(5);
-			//joinGamePanel.setError("");
-			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "6");
+			try
+			{
+				client.sendToServer(newGame);
+			}
+			catch (IOException e)
+			{
+				displayError("Error connecting to the server.");
+			}
 		}
 
 		// The logout button takes the user to the login panel.
@@ -47,5 +53,23 @@ public class NewGameControl implements ActionListener
 		}
 
 	}
+
+	public void readySuccess()
+	{
+		NewGamePanel newGamePanel = (NewGamePanel)container.getComponent(3);
+		newGamePanel.setReadyLabel("Ready", Color.GREEN);
+		//ClientGUI clientGUI = (ClientGUI)SwingUtilities.getWindowAncestor(newGamePanel);
+		//clientGUI.setUser(new User(createAccountPanel.getUsername(), createAccountPanel.getPassword()));
+		CardLayout cardLayout = (CardLayout)container.getLayout();
+		cardLayout.show(container, "5");
+	}
+
+	// Method that displays a message in the error label.
+	public void displayError(String error)
+	{
+		NewGamePanel newGamePanel = (NewGamePanel)container.getComponent(3);
+		newGamePanel.setError(error);
+	}
+
 }
 

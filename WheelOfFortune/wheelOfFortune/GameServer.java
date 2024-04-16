@@ -18,6 +18,7 @@ public class GameServer extends AbstractServer
 	private Database db;
 	private Object newResult;
 	private Object createResult;
+	private Object readyResult;
 	private final int MAX_PLAYERS = 4;
 	private int playersConnected = 0;
 
@@ -127,12 +128,12 @@ public class GameServer extends AbstractServer
 				if (!db.accountExists(data.getUsername(), data.getPassword()))
 				{
 					createResult = "CreateAccountSuccessful";
-					log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
+					log.append("Player " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
 				}
 				else
 				{
 					createResult = new Error("The username is already in use.", "CreateAccount");
-					log.append("Client " + arg1.getId() + " failed to create a new account\n");
+					log.append("Player " + arg1.getId() + " failed to create a new account\n");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -143,6 +144,32 @@ public class GameServer extends AbstractServer
 			try
 			{
 				arg1.sendToClient(createResult);
+			}
+			catch (IOException e)
+			{
+				return;
+			}
+		}
+		else if (arg0 instanceof NewGameData)
+		{
+			// Try to create the account.
+			NewGameData data = (NewGameData)arg0;
+
+			if (data.isReady())
+			{
+				readyResult = "PlayerReady";
+				log.append("Player " + arg1.getId() + " is ready\n");
+			}
+			else
+			{
+				readyResult = new Error("Failed.", "NotReady");
+				log.append("Player " + arg1.getId() + " failed to ready up\n");
+			}
+
+			// Send the result to the client.
+			try
+			{
+				arg1.sendToClient(readyResult);
 			}
 			catch (IOException e)
 			{

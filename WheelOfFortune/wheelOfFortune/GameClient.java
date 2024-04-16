@@ -57,6 +57,11 @@ public class GameClient extends AbstractClient
       {
         createAccountControl.createAccountSuccess();
       }
+      
+      else if (message.equals("PlayerReady"))
+      {
+        newGameControl.readySuccess();
+      }
     }
     
     // If we received an Error, figure out where to display it.
@@ -75,6 +80,11 @@ public class GameClient extends AbstractClient
       else if (error.getType().equals("CreateAccount"))
       {
         createAccountControl.displayError(error.getMessage());
+      }
+      
+      else if (error.getType().equals("NotReady"))
+      {
+        newGameControl.displayError(error.getMessage());
       }
     }
   }  
