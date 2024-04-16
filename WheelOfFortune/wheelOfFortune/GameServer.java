@@ -95,12 +95,12 @@ public class GameServer extends AbstractServer
 				if (db.verifyAccount(data.getUsername(), data.getPassword()))
 				{
 					newResult = "LoginSuccessful";
-					log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
+					log.append("Player " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
 				}
 				else
 				{
 					newResult = new Error("The username and password are incorrect.", "Login");
-					log.append("Client " + arg1.getId() + " failed to log in\n");
+					log.append("Player " + arg1.getId() + " failed to log in\n");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
