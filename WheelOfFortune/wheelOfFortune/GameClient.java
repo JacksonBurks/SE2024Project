@@ -9,7 +9,7 @@ public class GameClient extends AbstractClient
   private CreateAccountControl createAccountControl;
   private NewGameControl newGameControl;
   private SpinControl spinControl;
-  private JoinGameControl joinGameControl;
+ 
 
   // Setters for the GUI controllers.
   public void setLoginControl(LoginControl loginControl)
@@ -31,11 +31,6 @@ public class GameClient extends AbstractClient
     this.spinControl = spinControl;
   }
   
-  public void setJoinGameControl(JoinGameControl joinGameControl)
-  {
-    this.joinGameControl = joinGameControl;
-  }
-
   // Constructor for initializing the client with default settings.
   public GameClient()
   {
