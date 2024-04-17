@@ -26,3 +26,6 @@
 /SpinControl.class
 /GameServer.class
 /NewGameData.class
+/Wheel.class
+/Wheel$Slice.class
+/SpinPanel$Slice.class

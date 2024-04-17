@@ -9,6 +9,12 @@ public class SpinControl implements ActionListener
 	// Private data field for storing the container.
 	private JPanel container;
 	private GameClient client;
+	private SpinPanel spinPanel;
+	
+	public void setSpinPanel(SpinPanel spinPanel) {
+		this.spinPanel = spinPanel;
+	}
+
 	// Constructor for the new game controller.
 	public SpinControl(JPanel container, GameClient client)
 	{
@@ -21,24 +27,10 @@ public class SpinControl implements ActionListener
 	{
 		// Get the name of the button clicked.
 		String command = ae.getActionCommand();
-
 		// The New Game button takes the user to the Spin panel.
-		if (command.equals("Start New Game"))
+		if (command.equals("Spin"))
 		{
-			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
-			loginPanel.setError("");
-			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "2");
-
-		}
-
-		// The join button takes the user to the Join Game panel.
-		else if (command.equals("Join Game"))
-		{
-			CreateAccountPanel createAccountPanel = (CreateAccountPanel)container.getComponent(2);
-			createAccountPanel.setError("");
-			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "3");
+			spinPanel.spin();
 		}
 
 		// The logout button takes the user to the login panel.
