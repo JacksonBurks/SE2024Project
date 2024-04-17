@@ -24,7 +24,6 @@ public class ClientGUI extends JFrame
       e.printStackTrace();
     }
     
-    
     // Set the title and default close operation.
     this.setTitle("Game Client");
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,6 +31,7 @@ public class ClientGUI extends JFrame
     // Create the card layout container.
     CardLayout cardLayout = new CardLayout();
     JPanel container = new JPanel(cardLayout);
+    
     
     //Create the Controllers next
     //Next, create the Controllers
