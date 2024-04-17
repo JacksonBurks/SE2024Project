@@ -6,11 +6,13 @@ public class Board {
 	private String puzzle;
 	private Set<Character> guessedLetters;
 	private ArrayList<Character> board;
+	private ArrayList<Player> players;
 
 	public Board(String puzzle) {
 		this.puzzle = puzzle;
 		this.guessedLetters = new HashSet<>();
 		this.board = new ArrayList<>();
+		this.players = players;
 		initializeBoard();
 	}
 

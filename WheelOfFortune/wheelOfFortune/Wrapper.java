@@ -16,8 +16,7 @@ public class Wrapper {
 	}
 
 	public void startGame() {
-		createPlayers();
-		startRound();
+		WofClientGUI.showNewGamePanel();
 	}
 
 	private void createPlayers() {
