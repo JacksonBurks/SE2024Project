@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Random;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -20,6 +21,9 @@ public class GameServer extends AbstractServer
 	private Object readyResult;
 	private final int MIN_PLAYERS = 2;
 	private final int MAX_PLAYERS = 4;
+	private final int MIN_POINTS = 300;
+	private final int MAX_POINTS = 1000;
+	private final int INCREMENT = 50;
 	private int playersConnected = 0;
 
 	// Constructor for initializing the server with default settings.
@@ -167,7 +171,6 @@ public class GameServer extends AbstractServer
 					log.append("Need more players to start the game\n");
 				}
 			}
-
 			// Send the result to the client.
 			try
 			{
@@ -179,6 +182,40 @@ public class GameServer extends AbstractServer
 			}
 		}
 	}
+	
+    public int pointsPossible() {
+        Random random = new Random();
+        int points = MIN_POINTS + random.nextInt((MAX_POINTS - MIN_POINTS) / INCREMENT) * INCREMENT;
+        return points;
+    }
+    
+    public String specialSpun() {
+        Random random = new Random();
+        // Generate a random number between 0 and 1
+        int randomNumber = random.nextInt(2);
+        // If the random number is 0, return "Lose Turn"
+        if (randomNumber == 0) {
+            return "Lose Turn";
+        } else { // Otherwise, return "Bankrupt"
+            return "Bankrupt";
+        }
+    }
+    
+    public void callMethodBasedOnProbability() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(100); // Generate a random number between 0 and 99
+        
+        if (randomNumber < 75) { // 75% probability for pointsPossible() method
+            int points = pointsPossible();
+            System.out.println("Points possible: " + points);
+        } else if (randomNumber < 90) { // 15% probability for specialSpun() method
+            String special = specialSpun();
+            System.out.println("Special spun: " + special);
+        } else {
+            // Do nothing for the remaining 10% probability
+        }
+    }
+
 
 	// Method that handles listening exceptions by displaying exception information.
 	public void listeningException(Throwable exception) 

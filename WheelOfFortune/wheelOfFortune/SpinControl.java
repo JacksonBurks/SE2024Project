@@ -10,7 +10,12 @@ public class SpinControl implements ActionListener
 	private JPanel container;
 	private GameClient client;
 	private SpinPanel spinPanel;
+	private Player player;
 	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	public void setSpinPanel(SpinPanel spinPanel) {
 		this.spinPanel = spinPanel;
 	}

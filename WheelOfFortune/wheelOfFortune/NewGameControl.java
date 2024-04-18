@@ -12,10 +12,6 @@ public class NewGameControl implements ActionListener
 	private GameClient client;
 	private NewGameData newGame;
 	private Player player;
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
 	
 	public void setNewGameData(NewGameData newGame)
 	{
@@ -31,7 +27,7 @@ public class NewGameControl implements ActionListener
 
 	// Handle button clicks.
 	public void actionPerformed(ActionEvent ae)
-	{
+	{		
 		// Get the name of the button clicked.
 		String command = ae.getActionCommand();
 
@@ -58,13 +54,13 @@ public class NewGameControl implements ActionListener
 
 	}
 
-	
+
 	public void colorReadyLabel() {
 		NewGamePanel newGamePanel = (NewGamePanel)container.getComponent(3);
 		newGamePanel.setReadyLabel("Ready", Color.GREEN);
-		
+
 	}
-	
+
 	public void readySuccess()
 	{
 		//ClientGUI clientGUI = (ClientGUI)SwingUtilities.getWindowAncestor(newGamePanel);
