@@ -36,6 +36,12 @@ public class NewGamePanel extends JPanel {
         gbc.gridy++;
         this.add(errorLabel, gbc);
         
+        // Add an image
+        ImageIcon imageIcon = new ImageIcon("wheelOfFortune/Wheel_of_Fortune_logo.png"); // Modify path as needed
+        JLabel imageLabel = new JLabel(imageIcon);
+        gbc.gridy++;
+        this.add(imageLabel, gbc);
+        
         // Create the ready label in the center.
         readyLabel = new JLabel("Not ready", JLabel.CENTER);
         readyLabel.setForeground(Color.RED);
@@ -54,3 +60,4 @@ public class NewGamePanel extends JPanel {
         this.add(buttonsPanel, gbc);
     }
 }
+
