@@ -6,7 +6,7 @@ public class SpinData implements Serializable {
 	
 	private boolean spun;
 
-	public boolean clickedSpun() {
+	public boolean clickedSpin() {
 		return spun;
 	}
 

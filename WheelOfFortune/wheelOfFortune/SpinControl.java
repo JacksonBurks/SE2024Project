@@ -13,6 +13,7 @@ public class SpinControl implements ActionListener
 	private SpinPanel spinPanel;
 	private Player player;
 	private SpinData spin;
+	private int numberOfSpins;
 	
 	public void setPlayer(Player player) {
 		this.player = player;
@@ -41,6 +42,7 @@ public class SpinControl implements ActionListener
 			spin.setSpun(true);
 			try
 			{
+				spinPanel.spin();
 				client.sendToServer(spin);
 			}
 			catch (IOException e)
@@ -63,6 +65,15 @@ public class SpinControl implements ActionListener
 	{
 		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
 		spinPanel.setError(error);
+	}
+	public void specialResults(String result)
+	{
+		System.out.println("Result: " + result + "\n");
+	}
+	
+	public void pointResults(int result)
+	{
+		System.out.println("Result: " + result + "\n");
 	}
 }
 

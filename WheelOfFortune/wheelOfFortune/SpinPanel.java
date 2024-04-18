@@ -88,12 +88,12 @@ public class SpinPanel extends JPanel implements ActionListener {
 			spinning = false;
 			// Determine which slice is selected
 			selectSlice();
-			if (specialSelected) {
+			/*if (specialSelected) {
 				System.out.println("Uh-oh!: " + specialSlice);
 			}
 			else {
 				System.out.println("Points won: " + selectedPoints);
-			}
+			}*/
 		}
 		specialSelected = false;
 		repaint();
