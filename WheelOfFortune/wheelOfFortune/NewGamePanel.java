@@ -29,7 +29,7 @@ public class NewGamePanel extends JPanel {
         // Create the contacts label in the north.
         JLabel label = new JLabel("New Game", JLabel.CENTER);
         this.add(label, gbc);
-        
+                
         // Create the error label in the center.
         errorLabel = new JLabel("", JLabel.CENTER);
         errorLabel.setForeground(Color.RED);

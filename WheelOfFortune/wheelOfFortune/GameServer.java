@@ -14,7 +14,6 @@ public class GameServer extends AbstractServer
 	private JTextArea log;
 	private JLabel status;
 	private boolean running = false;
-	//private DatabaseFile database;
 	private Database db;
 	private Object newResult;
 	private Object createResult;
@@ -164,7 +163,7 @@ public class GameServer extends AbstractServer
 				}
 				else
 				{
-					readyResult = new Error("Not everyone is ready.", "NotReady");
+					readyResult = new Error("Need more players to connect.", "NotReady");
 					log.append("Need more players to ready to start the game\n");
 				}
 			}

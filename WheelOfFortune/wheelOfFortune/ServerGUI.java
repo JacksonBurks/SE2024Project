@@ -27,7 +27,7 @@ public class ServerGUI extends JFrame
     JPanel south = new JPanel();
     EventHandler handler = new EventHandler();
     int i = 0;
-    
+    this.setBackground(Color.BLUE);
     // Set the title and default close operation.
     this.setTitle("Game Server");
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

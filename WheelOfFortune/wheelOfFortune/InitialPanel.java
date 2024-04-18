@@ -32,5 +32,6 @@ public class InitialPanel extends JPanel
     grid.add(loginButtonBuffer);
     grid.add(createButtonBuffer);
     this.add(grid);
+
   }
 }
