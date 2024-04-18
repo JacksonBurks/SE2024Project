@@ -37,7 +37,7 @@ public class NewGamePanel extends JPanel {
         this.add(errorLabel, gbc);
         
         // Add an image
-        ImageIcon imageIcon = new ImageIcon("wheelOfFortune/Wheel_of_Fortune_logo.png"); // Modify path as needed
+        ImageIcon imageIcon = new ImageIcon("wheelOfFortune/Wheel_of_Fortune_logo.png");
         JLabel imageLabel = new JLabel(imageIcon);
         gbc.gridy++;
         this.add(imageLabel, gbc);

@@ -164,7 +164,7 @@ public class GameServer extends AbstractServer
 				else
 				{
 					readyResult = new Error("Need more players to connect.", "NotReady");
-					log.append("Need more players to ready to start the game\n");
+					log.append("Need more players to start the game\n");
 				}
 			}
 
