@@ -19,6 +19,7 @@ public class GameServer extends AbstractServer
 	private Object newResult;
 	private Object createResult;
 	private Object readyResult;
+	private final int MIN_PLAYERS = 2;
 	private final int MAX_PLAYERS = 4;
 	private int playersConnected = 0;
 
@@ -152,18 +153,20 @@ public class GameServer extends AbstractServer
 		}
 		else if (arg0 instanceof NewGameData)
 		{
-			// Try to create the account.
+			// Try to create the new Game.
 			NewGameData data = (NewGameData)arg0;
 
 			if (data.isReady())
 			{
-				readyResult = "PlayerReady";
-				log.append("Player " + arg1.getId() + " is ready\n");
-			}
-			else
-			{
-				readyResult = new Error("Failed.", "NotReady");
-				log.append("Player " + arg1.getId() + " failed to ready up\n");
+				if (playersConnected >= MIN_PLAYERS && playersConnected <= MAX_PLAYERS) {
+					readyResult = "PlayerReady";
+					log.append("Player " + arg1.getId() + " is ready\n");
+				}
+				else
+				{
+					readyResult = new Error("Not everyone is ready.", "NotReady");
+					log.append("Need more players to ready to start the game\n");
+				}
 			}
 
 			// Send the result to the client.

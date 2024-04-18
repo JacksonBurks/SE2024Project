@@ -10,6 +10,10 @@ public class LoginControl implements ActionListener
   // Private data fields for the container and chat client.
   private JPanel container;
   private GameClient client;
+  private Player player;
+  private String username;
+  private String pw;
+  private NewGameControl ngc;
   
   // Constructor for the login controller.
   public LoginControl(JPanel container, GameClient client)
@@ -44,7 +48,9 @@ public class LoginControl implements ActionListener
         displayError("You must enter a username and password.");
         return;
       }
-
+      
+      username = data.getUsername();
+      pw = data.getPassword();
       // Submit the login information to the server.
       try
       {
@@ -57,9 +63,12 @@ public class LoginControl implements ActionListener
     }
   }
 
-  // After the login is successful, set the User object and display the new Game screen.
+  // After the login is successful, set the Player object and display the new Game screen.
   public void loginSuccess()
   {
+	player = new Player(username, pw, 0);
+	ngc = new NewGameControl(container, client);
+	ngc.setPlayer(player);
     //LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
     CardLayout cardLayout = (CardLayout)container.getLayout();
     cardLayout.show(container, "4");

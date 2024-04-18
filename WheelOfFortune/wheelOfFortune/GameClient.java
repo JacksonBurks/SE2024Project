@@ -84,6 +84,7 @@ public class GameClient extends AbstractClient
       
       else if (error.getType().equals("NotReady"))
       {
+    	newGameControl.colorReadyLabel();
         newGameControl.displayError(error.getMessage());
       }
     }
