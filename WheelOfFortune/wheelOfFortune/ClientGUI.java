@@ -7,7 +7,6 @@ import java.io.IOException;
 public class ClientGUI extends JFrame
 {
   
-  
   // Constructor that creates the client GUI.
   public ClientGUI()
   {

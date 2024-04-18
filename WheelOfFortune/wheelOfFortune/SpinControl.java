@@ -3,6 +3,7 @@ package wheelOfFortune;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class SpinControl implements ActionListener
 {
@@ -11,6 +12,7 @@ public class SpinControl implements ActionListener
 	private GameClient client;
 	private SpinPanel spinPanel;
 	private Player player;
+	private SpinData spin;
 	
 	public void setPlayer(Player player) {
 		this.player = player;
@@ -25,6 +27,7 @@ public class SpinControl implements ActionListener
 	{
 		this.container = container;
 		this.client = client;
+		spin = new SpinData();
 	}
 
 	// Handle button clicks.
@@ -35,7 +38,15 @@ public class SpinControl implements ActionListener
 		// The New Game button takes the user to the Spin panel.
 		if (command.equals("Spin"))
 		{
-			spinPanel.spin();
+			spin.setSpun(true);
+			try
+			{
+				client.sendToServer(spin);
+			}
+			catch (IOException e)
+			{
+				displayError("Error connecting to the server.");
+			}
 		}
 
 		// The logout button takes the user to the login panel.
@@ -47,6 +58,11 @@ public class SpinControl implements ActionListener
 			cardLayout.show(container, "2");
 		}
 
+	}
+	public void displayError(String error)
+	{
+		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
+		spinPanel.setError(error);
 	}
 }
 

@@ -26,6 +26,11 @@ public class SpinPanel extends JPanel implements ActionListener {
 
 	private JButton spinButton;
 	private JButton logoutButton;
+    private JLabel errorLabel;
+    
+    public void setError(String error) {
+        errorLabel.setText(error);
+    }
 
 	public SpinPanel(SpinControl sc) {
 		slices = new ArrayList<>();
@@ -37,9 +42,11 @@ public class SpinPanel extends JPanel implements ActionListener {
 		spinButton.addActionListener(sc);
         logoutButton = new JButton("Log Out");
         logoutButton.addActionListener(sc);
+        errorLabel = new JLabel("");
         
         add(spinButton);
         add(logoutButton);
+        add(errorLabel);
 
         sc.setSpinPanel(this);
 	}

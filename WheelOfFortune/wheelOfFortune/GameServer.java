@@ -22,6 +22,7 @@ public class GameServer extends AbstractServer {
     private static final int MIN_POINTS = 300;
     private static final int MAX_POINTS = 1000;
     private static final int INCREMENT = 50;
+    private int playersReady = 0;
 
     public GameServer() {
         super(12345);
@@ -57,6 +58,8 @@ public class GameServer extends AbstractServer {
             handleCreateAccount((CreateAccountData) msg, client);
         } else if (msg instanceof NewGameData) {
             handleNewGame((NewGameData) msg, client);
+        } else if (msg instanceof SpinData) {
+        	handleSpinData((SpinData) msg, client);
         }
     }
 
@@ -92,7 +95,8 @@ public class GameServer extends AbstractServer {
 
     private void handleNewGame(NewGameData data, ConnectionToClient client) {
         if (data.isReady()) {
-            if (playersConnected >= MIN_PLAYERS && playersConnected <= MAX_PLAYERS) {
+        	playersReady++;
+            if (playersConnected >= MIN_PLAYERS && playersConnected <= MAX_PLAYERS && playersReady == playersConnected) {
                 try {
                     client.sendToClient("PlayerReady");
                     log.append("Player " + client.getId() + " is ready\n");
@@ -109,6 +113,10 @@ public class GameServer extends AbstractServer {
             }
         }
     }
+    
+    private void handleSpinData(SpinData data, ConnectionToClient client) {
+    	
+    }
 
     @Override
     protected synchronized void clientConnected(ConnectionToClient client) {
@@ -119,7 +127,6 @@ public class GameServer extends AbstractServer {
     @Override
     protected synchronized void clientDisconnected(ConnectionToClient client) {
         playersConnected--;
-        log.append("Player " + client.getId() + " disconnected\n");
     }
 
     public void serverStarted() {
