@@ -9,6 +9,7 @@ public class GameClient extends AbstractClient
   private CreateAccountControl createAccountControl;
   private NewGameControl newGameControl;
   private SpinControl spinControl;
+  private GuessControl guessControl;
  
 
   // Setters for the GUI controllers.
@@ -29,6 +30,9 @@ public class GameClient extends AbstractClient
   public void setSpinControl(SpinControl spinControl)
   {
     this.spinControl = spinControl;
+  }
+  public void setGuessControl(GuessControl guessControl) {
+	  this.guessControl = guessControl;
   }
   
   // Constructor for initializing the client with default settings.

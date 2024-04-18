@@ -1,8 +1,10 @@
 package wheelOfFortune;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JPanel;
 
 public class SpinControl implements ActionListener
 {
@@ -31,6 +33,10 @@ public class SpinControl implements ActionListener
 		if (command.equals("Spin"))
 		{
 			spinPanel.spin();
+		}
+		else if (command.equals("Guess")) {
+		    CardLayout cardLayout = (CardLayout) container.getLayout();
+		    cardLayout.show(container, "6"); // Show the GuessPanel
 		}
 
 		// The logout button takes the user to the login panel.

@@ -1,8 +1,11 @@
 package wheelOfFortune;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.GridBagLayout;
 import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class ClientGUI extends JFrame
 {
@@ -40,12 +43,14 @@ public class ClientGUI extends JFrame
     CreateAccountControl cac = new CreateAccountControl(container,client);
     NewGameControl ngc = new NewGameControl(container,client);
     SpinControl sc = new SpinControl(container,client);
+    GuessControl gc = new GuessControl(container,client);
 
     //Set the client info
     client.setLoginControl(lc);
     client.setCreateAccountControl(cac);
     client.setNewGameControl(ngc);
     client.setSpinControl(sc);
+    client.setGuessControl(gc);
 
     
     // Create the four views. (need the controller to register with the Panels
@@ -54,6 +59,7 @@ public class ClientGUI extends JFrame
     JPanel view3 = new CreateAccountPanel(cac);
     JPanel view4 = new NewGamePanel(ngc);
     JPanel view5 = new SpinPanel(sc);
+    JPanel view6 = new GuessPanel(gc);
 
     // Add the views to the card layout container.
     container.add(view1, "1");
@@ -61,6 +67,7 @@ public class ClientGUI extends JFrame
     container.add(view3, "3");
     container.add(view4, "4");
     container.add(view5, "5");
+    container.add(view6, "6");
 
     
     // Show the initial view in the card layout.

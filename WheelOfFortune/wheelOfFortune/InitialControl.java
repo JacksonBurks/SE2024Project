@@ -1,8 +1,10 @@
 package wheelOfFortune;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JPanel;
 
 public class InitialControl implements ActionListener
 {
