@@ -23,6 +23,7 @@ public class GameServer extends AbstractServer {
 	private static final int MIN_POINTS = 300;
 	private static final int MAX_POINTS = 1000;
 	private static final int INCREMENT = 50;
+	private boolean firstSpin;
 	private int playersReady = 0;
 	private int turnNumber = 0;
 
@@ -63,8 +64,8 @@ public class GameServer extends AbstractServer {
 			handleCreateAccount((CreateAccountData) msg, client);
 		} else if (msg instanceof NewGameData) {
 			handleNewGame((NewGameData) msg, client);
-		} else if (msg instanceof SpinData) {
-			handleSpinData((SpinData) msg, client);
+		} else if (msg instanceof FirstSpinData) {
+			handleFirstSpinData((FirstSpinData) msg, client);
 		}
 	}
 
@@ -73,7 +74,7 @@ public class GameServer extends AbstractServer {
 			if (db.verifyAccount(data.getUsername(), data.getPassword())) {
 				client.sendToClient("LoginSuccessful");
 				log.append("Player " + client.getId() + " successfully logged in as " + data.getUsername() + "\n");
-				players.add(new Player(data.getUsername(), data.getPassword(), 0));
+				players.add(new Player((int) client.getId(), data.getUsername(), data.getPassword(), 0));
 			} else {
 				client.sendToClient(new Error("The username and password are incorrect.", "Login"));
 				log.append("Player " + client.getId() + " failed to log in\n");
@@ -88,7 +89,7 @@ public class GameServer extends AbstractServer {
 			if (!db.accountExists(data.getUsername(), data.getPassword())) {
 				client.sendToClient("CreateAccountSuccessful");
 				log.append("Player " + client.getId() + " created a new account called " + data.getUsername() + "\n");
-				players.add(new Player(data.getUsername(), data.getPassword(), 0));
+				players.add(new Player((int) client.getId(), data.getUsername(), data.getPassword(), 0));
 			} else {
 				client.sendToClient(new Error("The username is already in use.", "CreateAccount"));
 				log.append("Player " + client.getId() + " failed to create a new account\n");
@@ -118,19 +119,31 @@ public class GameServer extends AbstractServer {
 		}
 	}
 
-	private void handleSpinData(SpinData data, ConnectionToClient client) {
+	private void handleFirstSpinData(FirstSpinData data, ConnectionToClient client) {
 		if (data.clickedSpin()) {
 			//turnNumber++;
 			wheel.spin();
-			
+
+			for (Player player : players) {
+				if (player.getId() == (int)client.getId()) {
+					player.setHasSpun(true);
+					try {
+						client.sendToClient("PlayerSpun");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
 			if (wheel.getSelectedPoints() == 0) {
 				wheel.selectSlice();
 			}
-			
+
 			if (wheel.isSpecialSelected()) {
 				try {
+					updatePlayerPoints((int)client.getId(), 0);
 					client.sendToClient(wheel.getSpecialSliceText());
-					log.append("Player " + client.getId() + " landed on " + wheel.getSpecialSliceText() + "!\n");
+					log.append("Player " + client.getId() + " landed on " + wheel.getSpecialSliceText() + ", 0 points!\n");
 					wheel.setSpecialSliceText(""); // Reset the special slice text to empty string
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -138,6 +151,7 @@ public class GameServer extends AbstractServer {
 			} 
 			else { // for points
 				try {
+					updatePlayerPoints((int)client.getId(), wheel.getSelectedPoints());
 					client.sendToClient(wheel.getSelectedPoints());
 					log.append("Player " + client.getId() + " landed on " + wheel.getSelectedPoints() + " points!\n");
 					wheel.setSpecialSliceText(""); // Reset the special slice text to empty string
@@ -145,7 +159,7 @@ public class GameServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
 	}
 
@@ -188,13 +202,13 @@ public class GameServer extends AbstractServer {
 		log.append("Press Listen to restart server\n");
 	}
 
-	public int pointsPossible() {
-		Random random = new Random();
-		return MIN_POINTS + random.nextInt((MAX_POINTS - MIN_POINTS) / INCREMENT) * INCREMENT;
+	public void updatePlayerPoints(int playerId, int pointsToAdd) {
+		for (Player player : players) {
+			if (player.getId() == playerId) {
+				player.setScore(player.getScore() + pointsToAdd);
+				break;
+			}
+		}
 	}
 
-	public String specialSpun() {
-		Random random = new Random();
-		return random.nextInt(2) == 0 ? "Lose Turn" : "Bankrupt";
-	}
 }

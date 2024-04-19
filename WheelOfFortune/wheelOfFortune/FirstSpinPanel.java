@@ -3,7 +3,7 @@ package wheelOfFortune;
 import java.awt.*;
 import javax.swing.*;
 
-public class SpinPanel extends JPanel {
+public class FirstSpinPanel extends JPanel {
     
     private JLabel errorLabel;
     private JLabel spinLabel;
@@ -14,7 +14,7 @@ public class SpinPanel extends JPanel {
     
     
     // Constructor for the contacts panel.
-    public SpinPanel(SpinControl sc) {
+    public FirstSpinPanel(FirstSpinControl sc) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;

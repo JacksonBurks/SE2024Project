@@ -2,7 +2,7 @@ package wheelOfFortune;
 
 import java.io.Serializable;
 
-public class SpinData implements Serializable {
+public class FirstSpinData implements Serializable {
 	
 	private boolean spun;
 

@@ -38,7 +38,7 @@ public class ClientGUI extends JFrame
     LoginControl lc = new LoginControl(container,client);
     CreateAccountControl cac = new CreateAccountControl(container,client);
     NewGameControl ngc = new NewGameControl(container,client);
-    SpinControl sc = new SpinControl(container,client);
+    FirstSpinControl sc = new FirstSpinControl(container,client);
 
     //Set the client info
     client.setLoginControl(lc);
@@ -52,7 +52,7 @@ public class ClientGUI extends JFrame
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
     JPanel view4 = new NewGamePanel(ngc);
-    JPanel view5 = new SpinPanel(sc);
+    JPanel view5 = new FirstSpinPanel(sc);
 
     // Add the views to the card layout container.
     container.add(view1, "1");

@@ -5,9 +5,32 @@ import java.io.Serializable;
 public class Player implements Serializable 
 {
 	// Private data fields for the username and password.
+	private int id;
 	private String username;
 	private String password;
 	private int score;
+	private boolean myTurn;
+	private boolean hasSpun;
+	
+	public boolean hasSpun() {
+		return hasSpun;
+	}
+	public void setHasSpun(boolean hasSpun) {
+		this.hasSpun = hasSpun;
+	}
+	public boolean isItMyTurn() {
+		return myTurn;
+	}
+	public void setMyTurn(boolean myTurn) {
+		this.myTurn = myTurn;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public int getScore() {
 		return score;
@@ -37,8 +60,9 @@ public class Player implements Serializable
 	
 
 	// Constructor that initializes the username and password, and score
-	public Player(String username, String password, int score)
+	public Player(int id, String username, String password, int score)
 	{
+		setId(id);
 		setUsername(username);
 		setPassword(password);
 		setScore(score);

@@ -8,7 +8,8 @@ public class GameClient extends AbstractClient
 	private LoginControl loginControl;
 	private CreateAccountControl createAccountControl;
 	private NewGameControl newGameControl;
-	private SpinControl spinControl;
+	private FirstSpinControl firstSpinControl;
+	private int turn;
 
 	// Setters for the GUI controllers.
 	public void setLoginControl(LoginControl loginControl)
@@ -25,9 +26,9 @@ public class GameClient extends AbstractClient
 		this.newGameControl = newGameControl;
 	}
 
-	public void setSpinControl(SpinControl spinControl)
+	public void setSpinControl(FirstSpinControl firstSpinControl)
 	{
-		this.spinControl = spinControl;
+		this.firstSpinControl = firstSpinControl;
 	}
 
 	// Constructor for initializing the client with default settings.
@@ -63,10 +64,19 @@ public class GameClient extends AbstractClient
 			}
 			else if (message.equals("Bankrupt") || message.equals("Lose Turn"))
 			{
-				spinControl.specialResults(message);
+				turn++;
+				if (turn == 1) {
+					firstSpinControl.specialResults(message);
+				}
+				else {
+					
+				}
 			}
 			else {
-				spinControl.pointResults(Integer.parseInt(message));
+				turn++;
+				if (turn == 1) {
+					firstSpinControl.pointResults(Integer.parseInt(message));
+				}
 			}
 		}
 

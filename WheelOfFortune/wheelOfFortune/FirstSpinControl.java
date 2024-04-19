@@ -5,30 +5,30 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class SpinControl implements ActionListener
+public class FirstSpinControl implements ActionListener
 {
 	// Private data field for storing the container.
 	private JPanel container;
 	private GameClient client;
-	private SpinPanel spinPanel;
+	private FirstSpinPanel spinPanel;
 	private Player player;
-	private SpinData spin;
+	private FirstSpinData spin;
 	private int numberOfSpins;
 	
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
-	public void setSpinPanel(SpinPanel spinPanel) {
+	public void setSpinPanel(FirstSpinPanel spinPanel) {
 		this.spinPanel = spinPanel;
 	}
 
 	// Constructor for the new game controller.
-	public SpinControl(JPanel container, GameClient client)
+	public FirstSpinControl(JPanel container, GameClient client)
 	{
 		this.container = container;
 		this.client = client;
-		spin = new SpinData();
+		spin = new FirstSpinData();
 	}
 
 	// Handle button clicks.
@@ -63,7 +63,7 @@ public class SpinControl implements ActionListener
 	}
 	public void displayError(String error)
 	{
-		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
+		FirstSpinPanel spinPanel = (FirstSpinPanel)container.getComponent(4);
 		spinPanel.setError(error);
 	}
 	public void specialResults(String result)

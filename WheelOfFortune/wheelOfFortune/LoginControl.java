@@ -75,8 +75,8 @@ public class LoginControl implements ActionListener
 	// After the login is successful, set the Player object and display the new Game screen.
 	public void loginSuccess()
 	{
-		player = new Player(username, pw, 0);
-		this.setPlayer(player);
+		//player = new Player(username, pw, 0);
+		//this.setPlayer(player);
 		//LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
 		CardLayout cardLayout = (CardLayout)container.getLayout();
 		cardLayout.show(container, "4");
