@@ -122,25 +122,25 @@ public class GameServer extends AbstractServer {
 		if (data.clickedSpin()) {
 			//turnNumber++;
 			wheel.spin();
-			/*Random random = new Random();
-			int randomNumber = random.nextInt(100);
-			if (randomNumber < 75) {
-				int points = pointsPossible();
+			if (wheel.isSpecialSelected()) {
 				try {
-					client.sendToClient(String.valueOf(points));
-					log.append("Player " + client.getId() + " landed on " + points + " points!\n");
+					client.sendToClient(wheel.getSpecialSliceText());
+					log.append("Player " + client.getId() + " landed on " + wheel.getSpecialSliceText() + "!\n");
+					wheel.setSpecialSliceText(""); // Reset the special slice text to empty string
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			} else if (randomNumber < 90) {
-				String special = specialSpun();
+			} 
+			else { // for points
 				try {
-					client.sendToClient(special);
-					log.append("Player " + client.getId() + " landed on " + special + "!\n");
+					client.sendToClient(wheel.getSelectedPoints());
+					log.append("Player " + client.getId() + " landed on " + wheel.getSelectedPoints() + " points!\n");
+					wheel.setSpecialSliceText(""); // Reset the special slice text to empty string
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}*/
+			}
+			
 		}
 	}
 

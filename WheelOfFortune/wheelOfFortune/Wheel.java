@@ -22,16 +22,16 @@ public class Wheel extends JPanel implements ActionListener {
 
 	private boolean spinning;
 	private int selectedPoints;
-	private String specialSlice;
+	private String specialSliceText;
 
-	private boolean specialSelected = false;
+	private boolean specialSelected;
 
-	public Wheel() {
-		slices = new ArrayList<>();
-		initializeSlices();
-		timer = new Timer(100, this);
-		timer.setRepeats(true);
+	public boolean isSpecialSelected() {
+		return specialSelected;
+	}
 
+	public void setSpecialSelected(boolean specialSelected) {
+		this.specialSelected = specialSelected;
 	}
 
 	public int getSelectedPoints() {
@@ -42,14 +42,21 @@ public class Wheel extends JPanel implements ActionListener {
 		this.selectedPoints = selectedPoints;
 	}
 
-	public String getSpecialSlice() {
-		return specialSlice;
+	public String getSpecialSliceText() {
+		return specialSliceText;
 	}
 
-	public void setSpecialSlice(String specialSlice) {
-		this.specialSlice = specialSlice;
+	public void setSpecialSliceText(String specialSliceText) {
+		this.specialSliceText = specialSliceText;
 	}
 
+	public Wheel() {
+		slices = new ArrayList<>();
+		initializeSlices();
+		timer = new Timer(100, this);
+		timer.setRepeats(true);
+
+	}
 
 	private void initializeSlices() {
 		Random random = new Random();
@@ -81,7 +88,7 @@ public class Wheel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		angle += 35; // Adjust speed of spinning here
+		angle += 50; // Adjust speed of spinning here
 		if (angle >= 1080) {
 			angle = 0;
 			timer.stop();
@@ -89,13 +96,13 @@ public class Wheel extends JPanel implements ActionListener {
 			// Determine which slice is selected
 			selectSlice();
 			/*if (specialSelected) {
-				System.out.println("Uh-oh!: " + this.getSpecialSlice());
+				//System.out.println("Uh-oh!: " + this.getSpecialSlice());
 			}
 			else {
-				System.out.println("Points won: " + this.getSelectedPoints());
+				//System.out.println("Points won: " + this.getSelectedPoints());
 			}*/
 		}
-		specialSelected = false;
+		//specialSelected = false;
 		repaint();
 	}
 
@@ -104,15 +111,9 @@ public class Wheel extends JPanel implements ActionListener {
 		int randomIndex = random.nextInt(NUM_SLICES);
 		Slice selectedSlice = slices.get(randomIndex);
 		if (selectedSlice.isSpecial()) {
+			this.setSpecialSelected(true);
 			String specialText = selectedSlice.getSpecialText();
-			//System.out.println(specialText);
-			if (specialText.equals("Bankrupt")) {
-				specialSelected = true;
-				this.setSpecialSlice("Bankrupt");
-			} else if (specialText.equals("Lose Turn")) {
-				specialSelected = true;
-				this.setSpecialSlice("Lose Turn");
-			}
+			this.setSpecialSliceText(specialText);
 		} else {
 			this.setSelectedPoints(selectedSlice.getPoints());
 		}
@@ -212,7 +213,6 @@ public class Wheel extends JPanel implements ActionListener {
 			return color; // Return pre-generated color
 		}
 	}
-
 }
 
 
