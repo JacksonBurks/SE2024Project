@@ -122,6 +122,11 @@ public class GameServer extends AbstractServer {
 		if (data.clickedSpin()) {
 			//turnNumber++;
 			wheel.spin();
+			
+			if (wheel.getSelectedPoints() == 0) {
+				wheel.selectSlice();
+			}
+			
 			if (wheel.isSpecialSelected()) {
 				try {
 					client.sendToClient(wheel.getSpecialSliceText());

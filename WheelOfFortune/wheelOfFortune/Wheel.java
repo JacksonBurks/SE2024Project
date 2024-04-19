@@ -23,7 +23,6 @@ public class Wheel extends JPanel implements ActionListener {
 	private boolean spinning;
 	private int selectedPoints;
 	private String specialSliceText;
-
 	private boolean specialSelected;
 
 	public boolean isSpecialSelected() {
@@ -87,7 +86,6 @@ public class Wheel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		angle += 50; // Adjust speed of spinning here
 		if (angle >= 1080) {
 			angle = 0;
@@ -95,18 +93,12 @@ public class Wheel extends JPanel implements ActionListener {
 			spinning = false;
 			// Determine which slice is selected
 			selectSlice();
-			/*if (specialSelected) {
-				//System.out.println("Uh-oh!: " + this.getSpecialSlice());
-			}
-			else {
-				//System.out.println("Points won: " + this.getSelectedPoints());
-			}*/
 		}
-		//specialSelected = false;
 		repaint();
 	}
 
-	private void selectSlice() {
+
+	public void selectSlice() {
 		Random random = new Random();
 		int randomIndex = random.nextInt(NUM_SLICES);
 		Slice selectedSlice = slices.get(randomIndex);
@@ -175,6 +167,7 @@ public class Wheel extends JPanel implements ActionListener {
 			g2d.drawString(specialText, (int) sliceCenterX - (stringWidth / 2), (int) sliceCenterY);
 		}
 	}
+
 
 	private class Slice {
 		private int points;
