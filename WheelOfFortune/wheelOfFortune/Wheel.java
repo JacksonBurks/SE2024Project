@@ -24,6 +24,14 @@ public class Wheel extends JPanel implements ActionListener {
 	private int selectedPoints;
 	private String specialSliceText;
 	private boolean specialSelected;
+	
+	public boolean isSpinning() {
+		return spinning;
+	}
+
+	public void setSpinning(boolean spinning) {
+		this.spinning = spinning;
+	}
 
 	public boolean isSpecialSelected() {
 		return specialSelected;
@@ -78,9 +86,9 @@ public class Wheel extends JPanel implements ActionListener {
 	}
 
 	public void spin() {
-		if (!spinning) {
+		if (!this.isSpinning()) {
 			timer.start();
-			spinning = true;
+			this.setSpinning(true);
 		}
 	}
 
@@ -90,7 +98,7 @@ public class Wheel extends JPanel implements ActionListener {
 		if (angle >= 1080) {
 			angle = 0;
 			timer.stop();
-			spinning = false;
+			this.setSpinning(false);
 			// Determine which slice is selected
 			selectSlice();
 		}
