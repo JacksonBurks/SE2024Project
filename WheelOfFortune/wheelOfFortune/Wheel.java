@@ -25,7 +25,15 @@ public class Wheel extends JPanel implements ActionListener {
 	private String specialSlice;
 
 	private boolean specialSelected = false;
-	
+
+	public Wheel() {
+		slices = new ArrayList<>();
+		initializeSlices();
+		timer = new Timer(100, this);
+		timer.setRepeats(true);
+
+	}
+
 	public int getSelectedPoints() {
 		return selectedPoints;
 	}
@@ -42,13 +50,6 @@ public class Wheel extends JPanel implements ActionListener {
 		this.specialSlice = specialSlice;
 	}
 
-	public Wheel() {
-		slices = new ArrayList<>();
-		initializeSlices();
-		timer = new Timer(100, this);
-		timer.setRepeats(true);
-
-	}
 
 	private void initializeSlices() {
 		Random random = new Random();

@@ -231,9 +231,17 @@ public class ServerGUI extends JFrame
 
 			private boolean spinning;
 			private int selectedPoints;
-			private String specialSlice;
+			private String specialSliceText;
 
-			private boolean specialSelected = false;
+			private boolean specialSelected;
+
+			public boolean isSpecialSelected() {
+				return specialSelected;
+			}
+
+			public void setSpecialSelected(boolean specialSelected) {
+				this.specialSelected = specialSelected;
+			}
 
 			public int getSelectedPoints() {
 				return selectedPoints;
@@ -243,12 +251,12 @@ public class ServerGUI extends JFrame
 				this.selectedPoints = selectedPoints;
 			}
 
-			public String getSpecialSlice() {
-				return specialSlice;
+			public String getSpecialSliceText() {
+				return specialSliceText;
 			}
 
-			public void setSpecialSlice(String specialSlice) {
-				this.specialSlice = specialSlice;
+			public void setSpecialSliceText(String specialSliceText) {
+				this.specialSliceText = specialSliceText;
 			}
 
 			public Wheel() {
@@ -289,7 +297,7 @@ public class ServerGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				angle += 45; // Adjust speed of spinning here
+				angle += 50; // Adjust speed of spinning here
 				if (angle >= 1080) {
 					angle = 0;
 					timer.stop();
@@ -303,7 +311,7 @@ public class ServerGUI extends JFrame
 					System.out.println("Points won: " + this.getSelectedPoints());
 				}*/
 				}
-				specialSelected = false;
+				//specialSelected = false;
 				repaint();
 			}
 
@@ -312,15 +320,9 @@ public class ServerGUI extends JFrame
 				int randomIndex = random.nextInt(NUM_SLICES);
 				Slice selectedSlice = slices.get(randomIndex);
 				if (selectedSlice.isSpecial()) {
+					this.setSpecialSelected(true);
 					String specialText = selectedSlice.getSpecialText();
-					//System.out.println(specialText);
-					if (specialText.equals("Bankrupt")) {
-						specialSelected = true;
-						this.setSpecialSlice("Bankrupt");
-					} else if (specialText.equals("Lose Turn")) {
-						specialSelected = true;
-						this.setSpecialSlice("Lose Turn");
-					}
+					this.setSpecialSliceText(specialText);
 				} else {
 					this.setSelectedPoints(selectedSlice.getPoints());
 				}
@@ -349,8 +351,8 @@ public class ServerGUI extends JFrame
 
 			}
 
-			private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
-				/*FontMetrics fm = g2d.getFontMetrics();
+			/*private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
+				FontMetrics fm = g2d.getFontMetrics();
 				int sliceCenterAngle = angle + sliceIndex * (360 / NUM_SLICES) + (360 / NUM_SLICES) / 2;
 				double sliceCenterX = centerX + (radius / 2.0) * Math.cos(Math.toRadians(sliceCenterAngle));
 				double sliceCenterY = centerY + (radius / 2.0) * Math.sin(Math.toRadians(sliceCenterAngle));
@@ -380,8 +382,8 @@ public class ServerGUI extends JFrame
 					String specialText = slice.getSpecialText();
 					int stringWidth = fm.stringWidth(specialText);
 					g2d.drawString(specialText, (int) sliceCenterX - (stringWidth / 2), (int) sliceCenterY);
-				}*/
-			}
+				}
+			}*/
 
 			private class Slice {
 				private int points;

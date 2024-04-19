@@ -1,217 +1,58 @@
 package wheelOfFortune;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-import java.util.Random;
+import javax.swing.*;
 
-public class SpinPanel extends JPanel {// implements ActionListener {
-	private static final int NUM_SLICES = 17;
-	private static final int MIN_POINTS = 300;
-	private static final int MAX_POINTS = 1000;
-	private static final int POINTS_INCREMENT = 50;
-	private static final String[] SPECIAL_SLICES = {"Bankrupt", "Lose Turn"};
-
-	//private ArrayList<Slice> slices;
-	private Timer timer;
-	private int angle = 0;
-
-	private boolean spinning;
-	private int selectedPoints;
-	private String specialSlice;
-	private boolean specialSelected = false;
-
-	private JButton spinButton;
-	private JButton logoutButton;
-    private JLabel errorLabel;
+public class SpinPanel extends JPanel {
     
+    private JLabel errorLabel;
+    private JLabel spinLabel;
+
     public void setError(String error) {
         errorLabel.setText(error);
     }
-
-	public SpinPanel(SpinControl sc) {
-		//slices = new ArrayList<>();
-		//initializeSlices();
-		//timer = new Timer(100, this);
-		//timer.setRepeats(true);
-		
-		spinButton = new JButton("Spin");
-		spinButton.addActionListener(sc);
-        logoutButton = new JButton("Log Out");
-        logoutButton.addActionListener(sc);
-        errorLabel = new JLabel("");
+    
+    
+    // Constructor for the contacts panel.
+    public SpinPanel(SpinControl sc) {
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
         
-        add(spinButton);
-        add(logoutButton);
-        add(errorLabel);
+        // Create the contacts label in the north.
+        spinLabel = new JLabel("Spin The Wheel!", JLabel.CENTER);
+        spinLabel.setForeground(Color.GREEN);
+        this.add(spinLabel, gbc);
+                
+        // Create the error label in the center.
+        errorLabel = new JLabel("", JLabel.CENTER);
+        errorLabel.setForeground(Color.RED);
+        gbc.gridy++;
+        this.add(errorLabel, gbc);
+        
+        // Add an image
+        ImageIcon imageIcon = new ImageIcon("wheelOfFortune/Wheel_of_Fortune_logo.png");
+        JLabel imageLabel = new JLabel(imageIcon);
+        gbc.gridy++;
+        this.add(imageLabel, gbc);
+        
+        // Create the ready label in the center.
+        gbc.gridy++;
+        this.add(spinLabel, gbc);
 
-        sc.setSpinPanel(this);
-	}
-
-	/*private void initializeSlices() {
-		Random random = new Random();
-		ArrayList<Integer> specialSliceIndices = new ArrayList<>();
-		specialSliceIndices.add(random.nextInt(NUM_SLICES)); // First special slice index
-		int secondSpecialIndex;
-		do {
-			secondSpecialIndex = random.nextInt(NUM_SLICES); // Second special slice index
-		} while (Math.abs(specialSliceIndices.get(0) - secondSpecialIndex) < 4); // Ensure they are not adjacent
-
-		for (int i = 0; i < NUM_SLICES; i++) {
-			if (i == specialSliceIndices.get(0)) {
-				slices.add(new Slice(SPECIAL_SLICES[0]));
-			} else if (i == secondSpecialIndex) {
-				slices.add(new Slice(SPECIAL_SLICES[1]));
-			} else {
-				slices.add(new Slice());
-			}
-		}
-	}
-
-	public void spin() {
-		if (!spinning) {
-			timer.start();
-			spinning = true;
-		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-		angle += 35; // Adjust speed of spinning here
-		if (angle >= 1080) {
-			angle = 0;
-			timer.stop();
-			spinning = false;
-			// Determine which slice is selected
-			selectSlice();
-			/*if (specialSelected) {
-				System.out.println("Uh-oh!: " + specialSlice);
-			}
-			else {
-				System.out.println("Points won: " + selectedPoints);
-			}
-		}
-		specialSelected = false;
-		repaint();
-	}
-
-	private void selectSlice() {
-		Random random = new Random();
-		int randomIndex = random.nextInt(NUM_SLICES);
-		Slice selectedSlice = slices.get(randomIndex);
-		if (selectedSlice.isSpecial()) {
-			String specialText = selectedSlice.getSpecialText();
-			//System.out.println(specialText);
-			if (specialText.equals("Bankrupt")) {
-				specialSelected = true;
-				specialSlice = "Bankrupt";
-			} else if (specialText.equals("Lose Turn")) {
-				specialSelected = true;
-				specialSlice = "Lose Turn";
-			}
-		} else {
-			selectedPoints = selectedSlice.getPoints();
-		}
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		int centerX = getWidth() / 2;
-		int centerY = getHeight() / 2;
-		int radius = Math.min(centerX, centerY);
-
-		for (int i = 0; i < NUM_SLICES; i++) {
-			Slice slice = slices.get(i);
-			int adjustedIndex = (i + NUM_SLICES / 2) % NUM_SLICES; // Adjust index to cover the entire wheel
-			g2d.setColor(slice.getColor());
-			g2d.fillArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angle + adjustedIndex * (360 / NUM_SLICES), 360 / NUM_SLICES);
-			g2d.setColor(Color.BLACK);
-			g2d.drawArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angle + adjustedIndex * (360 / NUM_SLICES), 360 / NUM_SLICES);
-			// Draw point value on the slice
-			drawPointValue(g2d, slice, centerX, centerY, radius, adjustedIndex);
-		}
-
-		g2d.dispose();
-
-	}
-
-	private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
-		FontMetrics fm = g2d.getFontMetrics();
-		int sliceCenterAngle = angle + sliceIndex * (360 / NUM_SLICES) + (360 / NUM_SLICES) / 2;
-		double sliceCenterX = centerX + (radius / 2.0) * Math.cos(Math.toRadians(sliceCenterAngle));
-		double sliceCenterY = centerY + (radius / 2.0) * Math.sin(Math.toRadians(sliceCenterAngle));
-
-		if (!slice.isSpecial()) {
-			String pointValue = String.valueOf(slice.getPoints());
-
-			// Rotate the graphics context to draw the text vertically
-			AffineTransform originalTransform = g2d.getTransform();
-			AffineTransform rotatedTransform = AffineTransform.getRotateInstance(Math.toRadians(sliceCenterAngle), sliceCenterX, sliceCenterY);
-			g2d.setTransform(rotatedTransform);
-
-			// Set font to bold
-			Font originalFont = g2d.getFont();
-			Font boldFont = new Font(originalFont.getName(), Font.BOLD, originalFont.getSize());
-			g2d.setFont(boldFont);
-
-			// Draw the point value
-			int stringWidth = fm.stringWidth(pointValue);
-			g2d.drawString(pointValue, (int) sliceCenterX - (stringWidth / 2), (int) sliceCenterY);
-
-			// Reset the graphics context transform to its original state
-			g2d.setTransform(originalTransform);
-			// Reset the font
-			g2d.setFont(originalFont);
-		} else {
-			String specialText = slice.getSpecialText();
-			int stringWidth = fm.stringWidth(specialText);
-			g2d.drawString(specialText, (int) sliceCenterX - (stringWidth / 2), (int) sliceCenterY);
-		}
-	}
-
-	private class Slice {
-		private int points;
-		private String specialText;
-		private Color color; // Store the color for each slice
-
-		public Slice() {
-			Random random = new Random();
-			points = MIN_POINTS + random.nextInt((MAX_POINTS - MIN_POINTS) / POINTS_INCREMENT) * POINTS_INCREMENT;
-			color = generateRandomRainbowColor(random); // Generate and store color
-		}
-
-		public Slice(String specialText) {
-			this.specialText = specialText;
-			color = Color.LIGHT_GRAY; // Special slices are light gray
-		}
-
-		private Color generateRandomRainbowColor(Random random) {
-			float hue = random.nextFloat();
-			return Color.getHSBColor(hue, 1, 1);
-		}
-
-		public int getPoints() {
-			return points;
-		}
-
-		public boolean isSpecial() {
-			return specialText != null;
-		}
-
-		public String getSpecialText() {
-			return specialText;
-		}
-
-		public Color getColor() {
-			return color; // Return pre-generated color
-		}
-	}*/
-
+        // Create the buttons in the south.
+        gbc.gridy++;
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton startButton = new JButton("Spin");
+        startButton.addActionListener(sc);
+        buttonsPanel.add(startButton);
+        JButton logoutButton = new JButton("Log Out");
+        logoutButton.addActionListener(sc);
+        buttonsPanel.add(logoutButton);
+        this.add(buttonsPanel, gbc);
+    }
 }
 

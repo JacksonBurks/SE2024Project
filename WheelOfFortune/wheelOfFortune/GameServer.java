@@ -122,7 +122,7 @@ public class GameServer extends AbstractServer {
 		if (data.clickedSpin()) {
 			//turnNumber++;
 			wheel.spin();
-			Random random = new Random();
+			/*Random random = new Random();
 			int randomNumber = random.nextInt(100);
 			if (randomNumber < 75) {
 				int points = pointsPossible();
@@ -136,11 +136,11 @@ public class GameServer extends AbstractServer {
 				String special = specialSpun();
 				try {
 					client.sendToClient(special);
-					log.append("Player " + client.getId() + " landed on " + special + "!");
+					log.append("Player " + client.getId() + " landed on " + special + "!\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 		}
 	}
 
