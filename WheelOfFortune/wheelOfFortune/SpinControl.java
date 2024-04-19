@@ -42,7 +42,7 @@ public class SpinControl implements ActionListener
 			spin.setSpun(true);
 			try
 			{
-				spinPanel.spin();
+				//spinPanel.spin();
 				client.sendToServer(spin);
 			}
 			catch (IOException e)

@@ -30,3 +30,7 @@
 /Wheel$Slice.class
 /SpinPanel$Slice.class
 /SpinData.class
+/ServerGUI$Wheel$Slice.class
+/ServerGUI$Wheel.class
+/ServerGUI$EventHandler$Wheel$Slice.class
+/ServerGUI$EventHandler$Wheel.class

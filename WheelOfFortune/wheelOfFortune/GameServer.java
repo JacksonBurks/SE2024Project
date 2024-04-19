@@ -16,6 +16,7 @@ public class GameServer extends AbstractServer {
 	private boolean running = false;
 	private Database db;
 	private int playersConnected = 0;
+	private Wheel wheel;
 	private ArrayList<Player> players = new ArrayList<>();
 	private static final int MIN_PLAYERS = 2;
 	private static final int MAX_PLAYERS = 4;
@@ -49,6 +50,9 @@ public class GameServer extends AbstractServer {
 	public void setStatus(JLabel status)
 	{
 		this.status = status;
+	}
+	public void setWheel(Wheel wheel) {
+		this.wheel = wheel;
 	}
 
 	@Override
@@ -117,6 +121,7 @@ public class GameServer extends AbstractServer {
 	private void handleSpinData(SpinData data, ConnectionToClient client) {
 		if (data.clickedSpin()) {
 			//turnNumber++;
+			wheel.spin();
 			Random random = new Random();
 			int randomNumber = random.nextInt(100);
 			if (randomNumber < 75) {

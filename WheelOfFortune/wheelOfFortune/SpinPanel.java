@@ -8,14 +8,14 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SpinPanel extends JPanel implements ActionListener {
+public class SpinPanel extends JPanel {// implements ActionListener {
 	private static final int NUM_SLICES = 17;
 	private static final int MIN_POINTS = 300;
 	private static final int MAX_POINTS = 1000;
 	private static final int POINTS_INCREMENT = 50;
 	private static final String[] SPECIAL_SLICES = {"Bankrupt", "Lose Turn"};
 
-	private ArrayList<Slice> slices;
+	//private ArrayList<Slice> slices;
 	private Timer timer;
 	private int angle = 0;
 
@@ -33,10 +33,10 @@ public class SpinPanel extends JPanel implements ActionListener {
     }
 
 	public SpinPanel(SpinControl sc) {
-		slices = new ArrayList<>();
-		initializeSlices();
-		timer = new Timer(100, this);
-		timer.setRepeats(true);
+		//slices = new ArrayList<>();
+		//initializeSlices();
+		//timer = new Timer(100, this);
+		//timer.setRepeats(true);
 		
 		spinButton = new JButton("Spin");
 		spinButton.addActionListener(sc);
@@ -51,7 +51,7 @@ public class SpinPanel extends JPanel implements ActionListener {
         sc.setSpinPanel(this);
 	}
 
-	private void initializeSlices() {
+	/*private void initializeSlices() {
 		Random random = new Random();
 		ArrayList<Integer> specialSliceIndices = new ArrayList<>();
 		specialSliceIndices.add(random.nextInt(NUM_SLICES)); // First special slice index
@@ -93,7 +93,7 @@ public class SpinPanel extends JPanel implements ActionListener {
 			}
 			else {
 				System.out.println("Points won: " + selectedPoints);
-			}*/
+			}
 		}
 		specialSelected = false;
 		repaint();
@@ -211,7 +211,7 @@ public class SpinPanel extends JPanel implements ActionListener {
 		public Color getColor() {
 			return color; // Return pre-generated color
 		}
-	}
+	}*/
 
 }
 
