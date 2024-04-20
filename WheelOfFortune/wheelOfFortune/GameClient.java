@@ -9,11 +9,15 @@ public class GameClient extends AbstractClient
 	private CreateAccountControl createAccountControl;
 	private NewGameControl newGameControl;
 	private SpinControl spinControl;
+	private GameControl gameControl;
 	private final int MAX_POINTS = 1000;
 	private final int MIN_POINTS = 300;
 	//private BoardControl boardControl;
 	//private int firstTurn = 1;
 
+	public void setGameControl(GameControl gameControl) {
+		this.gameControl = gameControl;
+	}
 	// Setters for the GUI controllers.
 	public void setLoginControl(LoginControl loginControl)
 	{

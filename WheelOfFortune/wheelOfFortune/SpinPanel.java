@@ -40,7 +40,7 @@ public class SpinPanel extends JPanel {
     }
     
     public void addTakeTurnButton() {
-    	buttonsPanel.add(takeTurn);
+    	takeTurn.setVisible(true);
     }
     
     // Constructor for the contacts panel.
@@ -102,6 +102,8 @@ public class SpinPanel extends JPanel {
         buttonsPanel.add(logoutButton);
         takeTurn = new JButton("Take Turn");
         takeTurn.addActionListener(sc);
+        takeTurn.setVisible(false);
+        buttonsPanel.add(takeTurn);
         this.add(buttonsPanel, gbc);
     }
 }

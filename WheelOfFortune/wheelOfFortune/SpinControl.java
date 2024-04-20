@@ -10,19 +10,12 @@ public class SpinControl implements ActionListener
 	// Private data field for storing the container.
 	private JPanel container;
 	private GameClient client;
-	private SpinPanel spinPanel;
-	private Player player;
+	//private SpinPanel spinPanel;
+	//private Player player;
 	private SpinData spin;
-	private int numberOfSpins;
+	//private int numberOfSpins;
 	private int spinNumber = 0;
 	
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	public void setSpinPanel(SpinPanel spinPanel) {
-		this.spinPanel = spinPanel;
-	}
 
 	// Constructor for the new game controller.
 	public SpinControl(JPanel container, GameClient client)
@@ -79,6 +72,10 @@ public class SpinControl implements ActionListener
 				{
 					displayError("Error connecting to the server.");
 				}
+			}
+			else if (command.equals("Take Turn")) {
+				CardLayout cardLayout = (CardLayout)container.getLayout();
+				cardLayout.show(container, "6");
 			}
 
 			// The logout button takes the user to the login panel.
