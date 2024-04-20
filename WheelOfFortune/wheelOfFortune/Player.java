@@ -9,9 +9,16 @@ public class Player implements Serializable
 	private String username;
 	private String password;
 	private int score;
-	private boolean myTurn;
+	private int pointsSpun;
 	private boolean hasSpun;
 	private boolean firstSpin;
+	
+	public int getPointsSpun() {
+		return pointsSpun;
+	}
+	public void setPointsSpun(int pointsSpun) {
+		this.pointsSpun = pointsSpun;
+	}
 	
 	public boolean didFirstSpin() {
 		return firstSpin;
@@ -24,12 +31,6 @@ public class Player implements Serializable
 	}
 	public void setHasSpun(boolean hasSpun) {
 		this.hasSpun = hasSpun;
-	}
-	public boolean isItMyTurn() {
-		return myTurn;
-	}
-	public void setMyTurn(boolean myTurn) {
-		this.myTurn = myTurn;
 	}
 	
 	public int getId() {
