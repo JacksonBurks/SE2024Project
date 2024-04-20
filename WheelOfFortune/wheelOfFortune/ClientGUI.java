@@ -38,28 +38,33 @@ public class ClientGUI extends JFrame
     LoginControl lc = new LoginControl(container,client);
     CreateAccountControl cac = new CreateAccountControl(container,client);
     NewGameControl ngc = new NewGameControl(container,client);
-    FirstSpinControl sc = new FirstSpinControl(container,client);
+    SpinControl sc = new SpinControl(container,client);
+    //BoardControl bc = new BoardControl(container,client);
+    
 
     //Set the client info
     client.setLoginControl(lc);
     client.setCreateAccountControl(cac);
     client.setNewGameControl(ngc);
     client.setSpinControl(sc);
+    //client.setBoardControl(bc);
 
     
     // Create the four views. (need the controller to register with the Panels
     JPanel view1 = new InitialPanel(ic);
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
-    JPanel view4 = new NewGamePanel(ngc);
-    JPanel view5 = new FirstSpinPanel(sc);
+    JPanel view4 = new NewGamePanel(ngc); // Ready button screen
+    JPanel view5 = new SpinPanel(sc);
+    //JPanel view6 = new BoardPanel(bc)
 
     // Add the views to the card layout container.
     container.add(view1, "1");
     container.add(view2, "2");
     container.add(view3, "3");
-    container.add(view4, "4");
+    container.add(view4, "4"); // ready button screen
     container.add(view5, "5");
+    //containter.add(view6, "6");
 
     
     // Show the initial view in the card layout.

@@ -11,7 +11,14 @@ public class Player implements Serializable
 	private int score;
 	private boolean myTurn;
 	private boolean hasSpun;
+	private boolean firstSpin;
 	
+	public boolean didFirstSpin() {
+		return firstSpin;
+	}
+	public void setFirstSpin(boolean firstSpin) {
+		this.firstSpin = firstSpin;
+	}
 	public boolean hasSpun() {
 		return hasSpun;
 	}

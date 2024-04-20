@@ -8,8 +8,11 @@ public class GameClient extends AbstractClient
 	private LoginControl loginControl;
 	private CreateAccountControl createAccountControl;
 	private NewGameControl newGameControl;
-	private FirstSpinControl firstSpinControl;
-	private int turn;
+	private SpinControl spinControl;
+	private final int MAX_POINTS = 1000;
+	private final int MIN_POINTS = 300;
+	//private BoardControl boardControl;
+	//private int firstTurn = 1;
 
 	// Setters for the GUI controllers.
 	public void setLoginControl(LoginControl loginControl)
@@ -26,9 +29,9 @@ public class GameClient extends AbstractClient
 		this.newGameControl = newGameControl;
 	}
 
-	public void setSpinControl(FirstSpinControl firstSpinControl)
+	public void setSpinControl(SpinControl spinControl)
 	{
-		this.firstSpinControl = firstSpinControl;
+		this.spinControl = spinControl;
 	}
 
 	// Constructor for initializing the client with default settings.
@@ -62,22 +65,7 @@ public class GameClient extends AbstractClient
 			{
 				newGameControl.readySuccess();
 			}
-			else if (message.equals("Bankrupt") || message.equals("Lose Turn"))
-			{
-				turn++;
-				if (turn == 1) {
-					firstSpinControl.specialResults(message);
-				}
-				else {
-					
-				}
-			}
-			else {
-				turn++;
-				if (turn == 1) {
-					firstSpinControl.pointResults(Integer.parseInt(message));
-				}
-			}
+			
 		}
 
 		// If we received an Error, figure out where to display it.
@@ -102,6 +90,30 @@ public class GameClient extends AbstractClient
 			{
 				newGameControl.colorReadyLabel();
 				newGameControl.displayError(error.getMessage());
+			}
+		}
+		else if (arg0 instanceof SpinResult) {
+			SpinResult res = (SpinResult)arg0;
+			spinControl.removeSpinButton();
+			if (res.getType().equals("First")) {
+				// first spin specials equal 0 points
+				if(res.getResult().equals("Bankrupt") || res.getResult().equals("Lose Turn")) {
+					spinControl.pointResults(0);
+				}
+				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
+					spinControl.pointResults(Integer.parseInt(res.getResult()));
+				}
+			}
+			else if (res.getType().equals("Round")) {
+				if(res.getResult().equals("Bankrupt")) {
+					
+				}
+				else if(res.getResult().equals("Lose Turn")) {
+					
+				}
+				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
+					
+				}
 			}
 		}
 	}  
