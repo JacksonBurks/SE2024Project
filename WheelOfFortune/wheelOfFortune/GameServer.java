@@ -177,8 +177,28 @@ public class GameServer extends AbstractServer {
 							}
 						}
 					}
+					// Count players who spun for the first time
+					int firstSpins = 0;
+					for (Player player : players) {
+						if (player.didFirstSpin()) {
+							firstSpins++;
+						}
+					}
+					// Find the player who spun the highest value
+					int maxSpinValue = 0;
+					Player playerWithMaxSpin = null;
+					for (Player player : players) {
+						if (player.didFirstSpin() && player.getScore() > maxSpinValue) {
+							maxSpinValue = player.getScore();
+							playerWithMaxSpin = player;
+						}
+					}
+					// Now playerWithMaxSpin holds the player object who spun the highest value
+					if (playerWithMaxSpin != null) {
+						log.append("Player " + playerWithMaxSpin.getUsername() + " spun the highest value: " + maxSpinValue + " points!\n");
+					}
 				}
-				
+
 				else if (data.getSpinType().equals("Round")) {
 					// if the wheel spun a special slice
 					if (wheel.isSpecialSelected()) {
@@ -216,31 +236,9 @@ public class GameServer extends AbstractServer {
 					}
 
 				}
-
-                // Count players who spun for the first time
-                int firstSpins = 0;
-                for (Player player : players) {
-                    if (player.didFirstSpin()) {
-                        firstSpins++;
-                    }
-                }
-                // Find the player who spun the highest value
-                int maxSpinValue = 0;
-                Player playerWithMaxSpin = null;
-                for (Player player : players) {
-                    if (player.didFirstSpin() && player.getScore() > maxSpinValue) {
-                        maxSpinValue = player.getScore();
-                        playerWithMaxSpin = player;
-                    }
-                }
-                // Now playerWithMaxSpin holds the player object who spun the highest value
-                if (playerWithMaxSpin != null) {
-                    log.append("Player " + playerWithMaxSpin.getUsername() + " spun the highest value: " + maxSpinValue + " points!\n");
-                }
-
 			}			
 		}
-		
+
 	}
 
 
