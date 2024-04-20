@@ -1,25 +1,15 @@
 package wheelOfFortune;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 
 public class GuessPanel extends JPanel {
 
     private JLabel[] letterLabels;
-    private JButton buyVowelButton;
     private GuessControl guessControl;
     private JTextField textField;
     private JButton guessButton;
-    private JButton buyVowelButton1;
+    private JButton buyVowelButton;
 
     public GuessPanel(GuessControl guessControl) {
         this.guessControl = guessControl;
@@ -30,6 +20,12 @@ public class GuessPanel extends JPanel {
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(400, 200)); // Adjust dimensions as needed
         topPanel.setBackground(Color.WHITE); // Set background color for the blank section
+
+        // Initialize letterLabels array to hold labels for each letter in the word
+        letterLabels = new JLabel[0]; // Start with an empty array
+
+        // Add the topPanel to the main panel (center)
+        add(topPanel, BorderLayout.CENTER);
 
         // Create a panel for the bottom section with text field and buttons
         JPanel bottomPanel = new JPanel();
@@ -63,6 +59,28 @@ public class GuessPanel extends JPanel {
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
+    }
+
+    // Method to set the word and update the displayed letters
+    public void setWord(String word) {
+        letterLabels = new JLabel[word.length()];
+
+        // Populate topPanel with labels representing each letter in the word
+        JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
+        topPanel.removeAll(); // Clear existing labels
+
+        for (int i = 0; i < word.length(); i++) {
+            char letter = word.charAt(i);
+            String labelText = (letter == ' ') ? " " : "_"; // Display spaces as empty
+            JLabel label = new JLabel(labelText, SwingConstants.CENTER);
+            label.setFont(new Font("Arial", Font.BOLD, 24)); // Set font and size
+            letterLabels[i] = label;
+            topPanel.add(label);
+        }
+
+        // Refresh the panel to reflect the new labels
+        topPanel.revalidate();
+        topPanel.repaint();
     }
 
     // Optional: Add getter methods for the text field and buttons if needed

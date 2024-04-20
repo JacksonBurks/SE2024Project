@@ -2,8 +2,13 @@ package wheelOfFortune;
 
 import java.awt.*;
 import javax.swing.*;
+
+import com.mysql.jdbc.PreparedStatement;
+
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -21,6 +26,10 @@ public class GameServer extends AbstractServer
 	private final int MIN_PLAYERS = 2;
 	private final int MAX_PLAYERS = 4;
 	private int playersConnected = 0;
+	private String category = "";
+	private String word = "";
+	
+	
 
 	// Constructor for initializing the server with default settings.
 	public GameServer()
@@ -28,6 +37,7 @@ public class GameServer extends AbstractServer
 		super(12345);
 		this.setTimeout(500);
 		db = new Database();
+		pullCatandWord();
 	}
 
 	// Getter that returns whether the server is currently running.
@@ -50,6 +60,14 @@ public class GameServer extends AbstractServer
 		this.status = status;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+	public String getWord() {
+		return word;
+	}
+	
+	 
 	// When the server starts, update the GUI.
 	public void serverStarted()
 	{
@@ -82,6 +100,14 @@ public class GameServer extends AbstractServer
 		log.append("Player " + client.getId() + " connected\n");
 		playersConnected++;
 	}
+	public void pullCatandWord() {
+        // Get a random category and word
+		
+			category = db.getRandomCategory();
+			word = db.getRandomWord(category);
+			
+		
+    }
 
 	// When a message is received from a client, handle it.
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1)
