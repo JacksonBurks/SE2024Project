@@ -168,7 +168,6 @@ public class GameServer extends AbstractServer {
 							e.printStackTrace();
 						}
 					}
-
 				}
 				else if (data.getSpinType().equals("Round")) {
 					// if the wheel spun a special slice
@@ -206,7 +205,8 @@ public class GameServer extends AbstractServer {
 						}
 					}
 				}
-			wheel.setSelectedPoints(0);
+				// reset the wheel's selected points
+				wheel.setSelectedPoints(0);
 			}
 		}
 	}
@@ -276,7 +276,7 @@ public class GameServer extends AbstractServer {
 			}
 		}
 	}
-	
+
 	public void pullCatandWord() {
 		// Get a random category and word
 		category = db.getRandomCategory();
