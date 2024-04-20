@@ -100,7 +100,8 @@ public class SpinControl implements ActionListener
 	}
 	public void specialResults(String result)
 	{
-		System.out.println("Result: " + result + "\n");
+		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
+		spinPanel.setSpecialSpun(result);
 	}
 	
 	public void pointResults(int result)

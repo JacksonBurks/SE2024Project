@@ -21,7 +21,7 @@ public class GameServer extends AbstractServer {
 	private static final int MAX_PLAYERS = 4;
 	private String category = "";
 	private String word = "";
-	private boolean firstSpin;
+	private int firstSpins = 0;
 	private int playersReady = 0;
 	private int turnNumber = 0;
 
@@ -119,6 +119,7 @@ public class GameServer extends AbstractServer {
 
 	private void handleSpinData(SpinData data, ConnectionToClient client) {
 		if (data.clickedSpin()) {
+			wheel.setSelectedPoints(0);
 			wheel.spin();
 			// if the wheel spins null
 			if (wheel.getSelectedPoints() == 0) {
@@ -168,7 +169,16 @@ public class GameServer extends AbstractServer {
 							e.printStackTrace();
 						}
 					}
+					for (Player player : players) {
+						// find the one with the same id as the client connected
+						if (player.getId() == (int) client.getId()) {
+							if (player.didFirstSpin()) {
+								firstSpins++;
+							}
+						}
+					}
 				}
+				
 				else if (data.getSpinType().equals("Round")) {
 					// if the wheel spun a special slice
 					if (wheel.isSpecialSelected()) {
@@ -204,11 +214,33 @@ public class GameServer extends AbstractServer {
 							e.printStackTrace();
 						}
 					}
+
 				}
-				// reset the wheel's selected points
-				wheel.setSelectedPoints(0);
-			}
+
+                // Count players who spun for the first time
+                int firstSpins = 0;
+                for (Player player : players) {
+                    if (player.didFirstSpin()) {
+                        firstSpins++;
+                    }
+                }
+                // Find the player who spun the highest value
+                int maxSpinValue = 0;
+                Player playerWithMaxSpin = null;
+                for (Player player : players) {
+                    if (player.didFirstSpin() && player.getScore() > maxSpinValue) {
+                        maxSpinValue = player.getScore();
+                        playerWithMaxSpin = player;
+                    }
+                }
+                // Now playerWithMaxSpin holds the player object who spun the highest value
+                if (playerWithMaxSpin != null) {
+                    log.append("Player " + playerWithMaxSpin.getUsername() + " spun the highest value: " + maxSpinValue + " points!\n");
+                }
+
+			}			
 		}
+		
 	}
 
 

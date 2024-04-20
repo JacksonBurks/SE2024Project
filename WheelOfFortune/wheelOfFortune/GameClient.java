@@ -98,7 +98,7 @@ public class GameClient extends AbstractClient
 			if (res.getType().equals("First")) {
 				// first spin specials equal 0 points
 				if(res.getResult().equals("Bankrupt") || res.getResult().equals("Lose Turn")) {
-					spinControl.pointResults(0);
+					spinControl.specialResults(res.getResult());
 				}
 				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
 					spinControl.pointResults(Integer.parseInt(res.getResult()));

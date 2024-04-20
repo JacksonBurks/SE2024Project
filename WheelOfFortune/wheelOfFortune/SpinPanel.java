@@ -9,12 +9,17 @@ public class SpinPanel extends JPanel {
     private JLabel spinLabel;
     private JLabel currentScore;
     private JLabel pointsSpun;
-    //buttons
+    private JLabel specialSpun;
+	//buttons
     private JPanel buttonsPanel;
     private JButton spinButton;
     private JButton takeTurn;
 
     
+	public void setSpecialSpun(String special) {
+		specialSpun.setText(special);
+	}
+
     public void setPointsSpun(int points) {
     	pointsSpun.setText("Points Spun: " + points);
     }
@@ -64,6 +69,10 @@ public class SpinPanel extends JPanel {
         currentScore = new JLabel("", JLabel.CENTER);
         setCurrentScore(0);
         this.add(currentScore, gbc);
+        
+        gbc.gridy++;
+        pointsSpun = new JLabel("", JLabel.CENTER);
+        this.add(pointsSpun, gbc);
         
         gbc.gridy++;
         pointsSpun = new JLabel("", JLabel.CENTER);
