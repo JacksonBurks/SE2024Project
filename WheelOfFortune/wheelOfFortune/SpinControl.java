@@ -109,6 +109,12 @@ public class SpinControl implements ActionListener
 		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
 		spinPanel.setPointsSpun(result);
 	}
+	
+	public void showWaitingLabel(String msg)
+	{
+		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
+		spinPanel.setWaiting(msg);
+	}
 
 	public void removeSpinButton() {
 		// TODO Auto-generated method stub

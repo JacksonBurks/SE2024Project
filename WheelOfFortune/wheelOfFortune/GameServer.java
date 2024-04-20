@@ -177,13 +177,7 @@ public class GameServer extends AbstractServer {
 							}
 						}
 					}
-					// Count players who spun for the first time
-					int firstSpins = 0;
-					for (Player player : players) {
-						if (player.didFirstSpin()) {
-							firstSpins++;
-						}
-					}
+					
 					// Find the player who spun the highest value
 					int maxSpinValue = 0;
 					Player playerWithMaxSpin = null;
@@ -196,6 +190,22 @@ public class GameServer extends AbstractServer {
 					// Now playerWithMaxSpin holds the player object who spun the highest value
 					if (playerWithMaxSpin != null) {
 						log.append("Player " + playerWithMaxSpin.getUsername() + " spun the highest value: " + maxSpinValue + " points!\n");
+						if (client.getId() == playerWithMaxSpin.getId()) {
+							try {
+								client.sendToClient("TakeTurn");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						else {
+							try {
+								client.sendToClient("Wait");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 					}
 				}
 

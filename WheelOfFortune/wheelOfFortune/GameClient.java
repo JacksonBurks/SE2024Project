@@ -65,6 +65,12 @@ public class GameClient extends AbstractClient
 			{
 				newGameControl.readySuccess();
 			}
+			else if(message.equals("TakeTurn")) {
+				spinControl.addTakeTurnButton();
+			}
+			else if(message.equals("Wait")) {
+				spinControl.showWaitingLabel("Waiting");
+			}
 			
 		}
 
