@@ -28,13 +28,6 @@ public class GuessPanel extends JPanel {
         topPanel.setPreferredSize(new Dimension(400, 200));
         topPanel.setBackground(Color.WHITE);
         
-        // Create a label to display the category
-        JLabel categoryLabel = new JLabel("Category: " + category);
-        topPanel.add(categoryLabel); // Add category label to the top panel
-        
-        // Create a label to display the category text (update dynamically)
-        JLabel categoryText = new JLabel();
-        topPanel.add(categoryText); // Add category text label to the top panel
         
         // Initialize letterLabels array to hold labels for each letter in the word
         letterLabels = new JLabel[0]; // Start with an empty array
@@ -82,7 +75,21 @@ public class GuessPanel extends JPanel {
         for (String vowel : vowels) {
             JButton vowelButton = new JButton(vowel);
             vowelPanel.add(vowelButton);
+            vowelButton.addActionListener(guessControl);
         }
+        
+        JPanel categoryPanel = new JPanel(new BorderLayout());
+        categoryPanel.setPreferredSize(new Dimension(200, 200));
+        categoryPanel.setBackground(Color.WHITE);
+        JLabel categoryTextLabel = new JLabel("Category:" + category);
+        categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
+
+        JLabel categoryLabel = new JLabel(category);
+        categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        categoryPanel.add(categoryLabel, BorderLayout.CENTER);
+
+        // Add the category panel to the main panel on the east (right side)
+        add(categoryPanel, BorderLayout.EAST);
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
@@ -94,15 +101,17 @@ public class GuessPanel extends JPanel {
 
  
     public void initWord() {
-        letterLabels = new JLabel[word.length()];
+        if (word == null) {
+            return; // Handle null word gracefully
+        }
 
-        // Populate topPanel with labels representing each letter in the word
+        letterLabels = new JLabel[word.length()];
         JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
         topPanel.removeAll(); // Clear existing labels
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
-            String labelText = (letter == ' ') ? " " : "_"; // Display spaces as empty
+            String labelText = (letter == ' ') ? " " : "_"; // Display spaces as empty initially
             JLabel label = new JLabel(labelText, SwingConstants.CENTER);
             label.setFont(new Font("Arial", Font.BOLD, 24)); // Set font and size
             letterLabels[i] = label;
@@ -113,6 +122,38 @@ public class GuessPanel extends JPanel {
         topPanel.revalidate();
         topPanel.repaint();
     }
+    public void updateWordDisplay(char guessedChar) {
+        if (letterLabels == null || letterLabels.length == 0) {
+            return; // Handle uninitialized or empty letterLabels array
+        }
+
+        for (int i = 0; i < word.length(); i++) {
+            char letter = word.charAt(i);
+            if (Character.toUpperCase(letter) == Character.toUpperCase(guessedChar)) {
+                // Update the corresponding label to display the guessed letter
+                letterLabels[i].setText(String.valueOf(letter));
+            }
+        }
+    }
+    
+    public void revealWord() {
+        JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
+        topPanel.removeAll(); // Clear existing labels
+
+        for (int i = 0; i < word.length(); i++) {
+            char letter = word.charAt(i);
+            JLabel label = new JLabel(String.valueOf(letter), SwingConstants.CENTER);
+            label.setFont(new Font("Arial", Font.BOLD, 24)); // Set font and size
+            topPanel.add(label);
+        }
+
+        // Refresh the panel to reflect the revealed word
+        topPanel.revalidate();
+        topPanel.repaint();
+    }
+
+
+
 
     // Optional: Add getter methods for the text field and buttons if needed
     public JTextField getTextField() {
