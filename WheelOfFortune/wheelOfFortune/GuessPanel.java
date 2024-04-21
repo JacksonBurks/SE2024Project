@@ -30,7 +30,7 @@ public class GuessPanel extends JPanel {
         
         
         // Initialize letterLabels array to hold labels for each letter in the word
-        letterLabels = new JLabel[0]; // Start with an empty array
+        letterLabels = new JLabel[0]; 
 
         // Add the topPanel to the main panel (center)
         add(topPanel, BorderLayout.CENTER);
@@ -40,16 +40,16 @@ public class GuessPanel extends JPanel {
         bottomPanel.setLayout(new FlowLayout());
 
         // Create a text field above the buttons
-        textField = new JTextField(20); // Adjust width of text field
-        bottomPanel.add(textField); // Add text field to the bottom panel
+        textField = new JTextField(20);
+        bottomPanel.add(textField); 
 
         // Create the "Guess" button
         guessButton = new JButton("Guess");
-        bottomPanel.add(guessButton); // Add Guess button to the bottom panel
+        bottomPanel.add(guessButton); 
         
         // Create the "Guess Word" button
         solveButton = new JButton("Solve");
-        bottomPanel.add(solveButton); // Add Guess Word button to the bottom panel
+        bottomPanel.add(solveButton); 
         update = new JButton("Update");
         bottomPanel.add(update);
         
@@ -62,7 +62,7 @@ public class GuessPanel extends JPanel {
         // Add the bottom panel to the main panel (south)
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Create a panel for vowel buttons on the left side
+     
         JPanel vowelPanel = new JPanel();
         vowelPanel.setLayout(new GridLayout(6, 1)); // Layout for vowel buttons (6 rows, 1 column)
 
@@ -102,7 +102,7 @@ public class GuessPanel extends JPanel {
  
     public void initWord() {
         if (word == null) {
-            return; // Handle null word gracefully
+            return;
         }
 
         letterLabels = new JLabel[word.length()];
@@ -124,21 +124,21 @@ public class GuessPanel extends JPanel {
     }
     public void updateWordDisplay(char guessedChar) {
         if (letterLabels == null || letterLabels.length == 0) {
-            return; // Handle uninitialized or empty letterLabels array
+            return; 
         }
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
             if (Character.toUpperCase(letter) == Character.toUpperCase(guessedChar)) {
-                // Update the corresponding label to display the guessed letter
+                
                 letterLabels[i].setText(String.valueOf(letter));
             }
         }
     }
     
     public void revealWord() {
-        JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
-        topPanel.removeAll(); // Clear existing labels
+        JPanel topPanel = (JPanel) this.getComponent(0); 
+        topPanel.removeAll(); 
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -155,7 +155,7 @@ public class GuessPanel extends JPanel {
 
 
 
-    // Optional: Add getter methods for the text field and buttons if needed
+    
     public JTextField getTextField() {
         return textField;
     }

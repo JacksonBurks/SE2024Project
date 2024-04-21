@@ -2,6 +2,7 @@ package wheelOfFortune;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ public class GuessControl implements ActionListener{
 	private String word;
 	private String category;
 	private Boolean testGuess = false;
+	 private boolean lastGuessCorrect = false;
 	public void setGuessPanel(GuessPanel guessPanel) {
         this.guessPanel = guessPanel;
     }
@@ -41,48 +43,62 @@ public class GuessControl implements ActionListener{
         handleVowelButton(command);
     }
 	}
-	private void handleGuess() {
-        if (guessPanel != null) {
-            String guessText = guessPanel.getTextField().getText().trim().toUpperCase();
-
-            // Validate that the input is a consonant (A-Z) and not already guessed
-            if (isValidConsonant(guessText)) {
-                char guessedChar = guessText.charAt(0);
-
-                // Check if the guessed letter is in the word
-                if (word.toUpperCase().contains(String.valueOf(guessedChar))) {
-                    // Call updateWordDisplay method in GuessPanel
-                    guessPanel.updateWordDisplay(guessedChar);
-                    guessPanel.revalidate();
-                    guessPanel.repaint();
-                } else {
-                    // Inform the user that the guess is incorrect
-                    JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                // Inform the user that only consonants are allowed for guessing
-                JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
-            }
-
-            guessPanel.getTextField().setText(""); // Clear text field
-        }
-    }
-	 private void handleSolve() {
+	 private void handleGuess() {
 	        if (guessPanel != null) {
-	            String guessText = guessPanel.getTextField().getText().trim();
+	            String guessText = guessPanel.getTextField().getText().trim().toUpperCase();
 
-	            // Check if the guessed word matches the solution
-	            if (!guessText.isEmpty() && word.equalsIgnoreCase(guessText)) {
-	                // Display the full word
-	                guessPanel.revealWord();
-	                guessPanel.revalidate();
-	                guessPanel.repaint();
+	            // Validate that the input is a consonant (A-Z) and not already guessed
+	            if (isValidConsonant(guessText)) {
+	                char guessedChar = guessText.charAt(0);
+
+	                // Check if the guessed letter is in the word
+	                if (word.toUpperCase().contains(String.valueOf(guessedChar))) {
+	                    // Call updateWordDisplay method in GuessPanel
+	                    guessPanel.updateWordDisplay(guessedChar);
+	                    guessPanel.revalidate();
+	                    guessPanel.repaint();
+	                    lastGuessCorrect = true; 
+	                } else {
+	                    lastGuessCorrect = false; 
+	                    // Inform the user that the guess is incorrect
+	                    JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+	                }
 	            } else {
-	                // Inform the user that the guess is incorrect
-	                JOptionPane.showMessageDialog(container, "Sorry, wrong guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+	                lastGuessCorrect = false; // Mark the guess as incorrect (invalid input)
+	                // Inform the user that only consonants are allowed for guessing
+	                JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
 	            }
+
+	            guessPanel.getTextField().setText(""); // Clear text field
+
+	            // Send the guess result to the server
+	            sendGuessResultToServer(lastGuessCorrect);
 	        }
 	    }
+	 private void handleSolve() {
+		    if (guessPanel != null) {
+		        String guessText = guessPanel.getTextField().getText().trim();
+
+		        // Check if the guessed word matches the solution
+		        boolean isCorrect = !guessText.isEmpty() && word.equalsIgnoreCase(guessText);
+
+		        if (isCorrect) {
+		            // Display the full word
+		            guessPanel.revealWord();
+		        } else {
+		            // Inform the user that the guess is incorrect
+		            JOptionPane.showMessageDialog(container, "Sorry, wrong guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+		        }
+
+		        
+		        guessPanel.revalidate();
+		        guessPanel.repaint();
+
+		        
+		        sendSolveResultToServer(isCorrect);
+		    }
+		}
+
 	  private void handleUpdate() {
 	        // Handle Update button action (if needed)
 	        if (guessPanel != null) {
@@ -105,6 +121,9 @@ public class GuessControl implements ActionListener{
 		            }
 		        }
 
+		        // Determine if the guess was correct or incorrect
+		        boolean isCorrect = found;
+
 		        // Display a message if the guessed vowel is not in the word
 		        if (!found) {
 		            // Inform the user that the guess is incorrect
@@ -114,9 +133,12 @@ public class GuessControl implements ActionListener{
 		        // Always refresh the panel display
 		        guessPanel.revalidate();
 		        guessPanel.repaint();
+
+		        
+		        sendGuessResultToServer(isCorrect);
 		    }
 		}
-
+	  
 	  private boolean isVowelButton(String command) {
 	        return command.equals("A") || command.equals("E") || command.equals("I") || command.equals("O") || command.equals("U");
 	    }
@@ -138,6 +160,26 @@ public class GuessControl implements ActionListener{
 	    }
 	    public void setWord(String word) {
 	    	this.word = word;
+	    }
+	    private void sendGuessResultToServer(boolean isCorrect) {
+	        // Send the guess result to the server
+	        if (client != null) {
+	            try {
+	                client.sendToServer(new GuessData(isCorrect));
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    private void sendSolveResultToServer(boolean isCorrect) {
+	        // Send the solve result to the server
+	        if (client != null) {
+	            try {
+	                client.sendToServer(new SolveData(isCorrect));
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
 	    }
 }
 

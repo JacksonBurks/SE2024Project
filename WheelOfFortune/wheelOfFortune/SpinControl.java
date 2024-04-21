@@ -12,6 +12,8 @@ public class SpinControl implements ActionListener
 	private JPanel container;
 	private GameClient client;
 	private SpinPanel spinPanel;
+	private int currentPlayerIndex = 0; // Track the index of the current player
+	private boolean currentPlayerGuessed = false; // Track if the current player has guessed
 	
 	public void setSpinPanel(SpinPanel spinPanel) {
 		this.spinPanel = spinPanel;

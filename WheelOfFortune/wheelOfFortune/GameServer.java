@@ -199,7 +199,7 @@ public class GameServer extends AbstractServer
 				}
 			}
 
-			// Send the result to the client.
+		
 			try
 			{
 				arg1.sendToClient(readyResult);
@@ -209,6 +209,35 @@ public class GameServer extends AbstractServer
 				return;
 			}
 		}
+		else if (arg0 instanceof GuessData) {
+	        GuessData result = (GuessData) arg0;
+	        boolean isCorrect = result.isCorrect();
+
+	
+	        if (isCorrect) {
+	          
+	            System.out.println("Correct guess received from client: " + arg1.getId());
+	           
+	        } else {
+	          
+	            System.out.println("Incorrect guess received from client: " + arg1.getId());
+	          
+	        }
+	    }else if (arg0 instanceof SolveData) {
+	        SolveData result = (SolveData) arg0;
+	        boolean isCorrect = result.isCorrect();
+
+	        
+	        if (isCorrect) {
+	            
+	            System.out.println("Correct solve received from client: " + arg1.getId());
+	        
+	        } else {
+	           
+	            System.out.println("Incorrect solve received from client: " + arg1.getId());
+	           
+	        }
+	    }
 	}
 
 	// Method that handles listening exceptions by displaying exception information.
