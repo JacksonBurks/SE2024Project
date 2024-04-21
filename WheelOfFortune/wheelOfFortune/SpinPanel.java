@@ -1,12 +1,19 @@
 package wheelOfFortune;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class SpinPanel extends JPanel implements ActionListener {
 	private static final int NUM_SLICES = 17;
@@ -26,6 +33,7 @@ public class SpinPanel extends JPanel implements ActionListener {
 
 	private JButton spinButton;
 	private JButton logoutButton;
+	private JButton guessButton;
 
 	public SpinPanel(SpinControl sc) {
 		slices = new ArrayList<>();
@@ -37,9 +45,12 @@ public class SpinPanel extends JPanel implements ActionListener {
 		spinButton.addActionListener(sc);
         logoutButton = new JButton("Log Out");
         logoutButton.addActionListener(sc);
+        guessButton = new JButton("Guess");
+        guessButton.addActionListener(sc);
         
         add(spinButton);
         add(logoutButton);
+        add(guessButton);
 
         sc.setSpinPanel(this);
 	}

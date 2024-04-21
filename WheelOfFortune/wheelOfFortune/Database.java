@@ -1,8 +1,18 @@
 package wheelOfFortune;
 
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.Random;
 
 public class Database {
 	private Connection conn;
@@ -50,6 +60,48 @@ public class Database {
 			}
 		}
 	}
+	 public String getRandomCategory() {
+	        String[] categories = {
+	            "wofFamousLandmarks",
+	            "wofMovies",
+	            "wofHistoricalFigures",
+	            "wofLiteraryClassics",
+	            "wofHistoricalEvents",
+	            "wofFamousInventions",
+	            "wofFamousPaintings",
+	            "wofLiteraryCharacters",
+	            "wofFamousExplorers",
+	            "wofFamousDuos"
+	        };
+
+	        // Randomly select a category (table name) from the array
+	        Random random = new Random();
+	        String randomCategory = categories[random.nextInt(categories.length)];
+
+	        return randomCategory;
+	    }
+
+	    public String getRandomWord(String category) {
+	        String randomWord = null;
+
+	        try {
+	            // Prepare SQL statement to get a random word from the selected category
+	            String sql = "SELECT words FROM " + category + " ORDER BY RAND() LIMIT 1;";
+	            PreparedStatement stmt = conn.prepareStatement(sql);
+
+	            // Execute query to get the random word
+	            ResultSet rs = stmt.executeQuery();
+	            if (rs.next()) {
+	                randomWord = rs.getString("words");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return randomWord;
+	    }
+
+	
 
 	public ArrayList<String> query(String query)
 	{

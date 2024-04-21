@@ -29,3 +29,11 @@
 /Wheel.class
 /Wheel$Slice.class
 /SpinPanel$Slice.class
+/GuessPanel.class
+/GuessControl.class
+/GuessPanel$1.class
+/GuessPanel$2.class
+/GuessPanel$CharFilter.class
+/WordData.class
+/GuessData.class
+/SolveData.class

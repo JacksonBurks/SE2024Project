@@ -9,7 +9,8 @@ public class GameClient extends AbstractClient
   private CreateAccountControl createAccountControl;
   private NewGameControl newGameControl;
   private SpinControl spinControl;
- 
+  private GuessControl guessControl;
+  
 
   // Setters for the GUI controllers.
   public void setLoginControl(LoginControl loginControl)
@@ -30,13 +31,16 @@ public class GameClient extends AbstractClient
   {
     this.spinControl = spinControl;
   }
+  public void setGuessControl(GuessControl guessControl) {
+	  this.guessControl = guessControl;
+  }
   
   // Constructor for initializing the client with default settings.
   public GameClient()
   {
     super("localhost", 8300);
   }
-  
+ 
   // Method that handles messages from the server.
   public void handleMessageFromServer(Object arg0)
   {
@@ -62,8 +66,10 @@ public class GameClient extends AbstractClient
       {
         newGameControl.readySuccess();
       }
+ 
+      // Other message handling logic...
+  
     }
-    
     // If we received an Error, figure out where to display it.
     else if (arg0 instanceof Error)
     {
@@ -84,8 +90,20 @@ public class GameClient extends AbstractClient
       
       else if (error.getType().equals("NotReady"))
       {
+    	newGameControl.colorReadyLabel();
         newGameControl.displayError(error.getMessage());
       }
+    }
+    else if (arg0 instanceof WordData) {
+        // Received category and word message from server
+        WordData message = (WordData) arg0;
+        
+        // Extract category and word from the message
+        String category = message.getCategory();
+        String word = message.getWord();
+        
+        guessControl.updateCategoryAndWord(category, word); 
+        guessControl.setWord(word);
     }
   }  
 }

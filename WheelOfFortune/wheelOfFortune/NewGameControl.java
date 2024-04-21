@@ -11,7 +11,12 @@ public class NewGameControl implements ActionListener
 	private JPanel container;
 	private GameClient client;
 	private NewGameData newGame;
+	private Player player;
 
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
 	public void setNewGameData(NewGameData newGame)
 	{
 		this.newGame = newGame;
@@ -34,7 +39,6 @@ public class NewGameControl implements ActionListener
 		if (command.equals("Ready"))
 		{
 			newGame.setReady(true);
-
 			try
 			{
 				client.sendToServer(newGame);
@@ -54,10 +58,15 @@ public class NewGameControl implements ActionListener
 
 	}
 
-	public void readySuccess()
-	{
+	
+	public void colorReadyLabel() {
 		NewGamePanel newGamePanel = (NewGamePanel)container.getComponent(3);
 		newGamePanel.setReadyLabel("Ready", Color.GREEN);
+		
+	}
+	
+	public void readySuccess()
+	{
 		//ClientGUI clientGUI = (ClientGUI)SwingUtilities.getWindowAncestor(newGamePanel);
 		//clientGUI.setUser(new User(createAccountPanel.getUsername(), createAccountPanel.getPassword()));
 		CardLayout cardLayout = (CardLayout)container.getLayout();

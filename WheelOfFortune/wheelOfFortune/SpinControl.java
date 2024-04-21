@@ -1,8 +1,10 @@
 package wheelOfFortune;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JPanel;
 
 public class SpinControl implements ActionListener
 {
@@ -10,6 +12,8 @@ public class SpinControl implements ActionListener
 	private JPanel container;
 	private GameClient client;
 	private SpinPanel spinPanel;
+	private int currentPlayerIndex = 0; // Track the index of the current player
+	private boolean currentPlayerGuessed = false; // Track if the current player has guessed
 	
 	public void setSpinPanel(SpinPanel spinPanel) {
 		this.spinPanel = spinPanel;
@@ -31,6 +35,11 @@ public class SpinControl implements ActionListener
 		if (command.equals("Spin"))
 		{
 			spinPanel.spin();
+		}
+		else if (command.equals("Guess")) {
+		    CardLayout cardLayout = (CardLayout) container.getLayout();
+		    cardLayout.show(container, "6"); // Show the GuessPanel
+		    
 		}
 
 		// The logout button takes the user to the login panel.

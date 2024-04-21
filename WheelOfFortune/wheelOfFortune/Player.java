@@ -34,6 +34,7 @@ public class Player implements Serializable
 	{
 		this.password = password;
 	}
+	
 
 	// Constructor that initializes the username and password, and score
 	public Player(String username, String password, int score)
