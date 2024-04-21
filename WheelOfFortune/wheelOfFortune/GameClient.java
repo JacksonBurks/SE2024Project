@@ -37,6 +37,9 @@ public class GameClient extends AbstractClient
 	{
 		this.spinControl = spinControl;
 	}
+	public void setGuessControl(GameControl gameControl) {
+		this.gameControl = gameControl;
+	}
 
 	// Constructor for initializing the client with default settings.
 	public GameClient()
@@ -75,7 +78,7 @@ public class GameClient extends AbstractClient
 			else if(message.equals("Wait")) {
 				spinControl.showWaitingLabel("Waiting");
 			}
-			
+
 		}
 
 		// If we received an Error, figure out where to display it.
@@ -116,15 +119,26 @@ public class GameClient extends AbstractClient
 			}
 			else if (res.getType().equals("Round")) {
 				if(res.getResult().equals("Bankrupt")) {
-					
+
 				}
 				else if(res.getResult().equals("Lose Turn")) {
-					
+
 				}
 				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
-					
+
 				}
 			}
 		}
+		 else if (arg0 instanceof WordData) {
+		        // Received category and word message from server
+		        WordData message = (WordData) arg0;
+		        
+		        // Extract category and word from the message
+		        String category = message.getCategory();
+		        String word = message.getWord();
+		        
+		        gameControl.updateCategoryAndWord(category, word); 
+		        gameControl.setWord(word);
+		    }
 	}  
 }

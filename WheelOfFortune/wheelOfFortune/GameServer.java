@@ -67,6 +67,12 @@ public class GameServer extends AbstractServer {
 		} else if (msg instanceof SpinData) {
 			handleSpinData((SpinData) msg, client);
 		}
+		else if (msg instanceof GameData) {
+			handleGameData((GameData)msg, client);
+		}
+		else if (msg instanceof SolveData) {
+			handleSolveData((SolveData)msg, client);
+		}
 	}
 
 	private void handleLogin(LoginData data, ConnectionToClient client) {
@@ -195,6 +201,9 @@ public class GameServer extends AbstractServer {
 
 					try {
 						client.sendToClient("TakeTurn");
+						pullCatandWord();
+						WordData message = new WordData(category, word);
+						sendToAllClients(message);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -206,6 +215,8 @@ public class GameServer extends AbstractServer {
 						if (player.getId() == client.getId() && player.getPointsSpun() <= playerWithMaxSpin.getPointsSpun()) {
 							try {
 								client.sendToClient("Wait");
+								WordData message = new WordData(category, word);
+								sendToAllClients(message);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -255,6 +266,35 @@ public class GameServer extends AbstractServer {
 			}
 		}			
 	}
+
+	private void handleGameData(GameData data, ConnectionToClient client) {
+		boolean isCorrect = data.isCorrect();
+		if (isCorrect) {
+
+			System.out.println("Correct guess received from client: " + client.getId());
+
+		} else {
+
+			System.out.println("Incorrect guess received from client: " + client.getId());
+
+		}
+	}
+	private void handleSolveData(SolveData data, ConnectionToClient client) {
+		boolean isCorrect = data.isCorrect();
+
+
+		if (isCorrect) {
+
+			System.out.println("Correct solve received from client: " + client.getId());
+
+		} else {
+
+			System.out.println("Incorrect solve received from client: " + client.getId());
+
+		}
+	}
+
+
 
 
 
