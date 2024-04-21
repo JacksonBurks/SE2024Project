@@ -201,9 +201,6 @@ public class GameServer extends AbstractServer {
 
 					try {
 						client.sendToClient("TakeTurn");
-						pullCatandWord();
-						WordData message = new WordData(category, word);
-						sendToAllClients(message);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -215,8 +212,6 @@ public class GameServer extends AbstractServer {
 						if (player.getId() == client.getId() && player.getPointsSpun() <= playerWithMaxSpin.getPointsSpun()) {
 							try {
 								client.sendToClient("Wait");
-								WordData message = new WordData(category, word);
-								sendToAllClients(message);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -264,7 +259,10 @@ public class GameServer extends AbstractServer {
 				}
 
 			}
-		}			
+		}
+		pullCatandWord();
+		WordData message = new WordData(category, word);
+		sendToAllClients(message);
 	}
 
 	private void handleGameData(GameData data, ConnectionToClient client) {
