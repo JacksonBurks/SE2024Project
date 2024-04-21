@@ -6,21 +6,36 @@ import java.awt.*;
 public class GuessPanel extends JPanel {
 
     private JLabel[] letterLabels;
+    private GameClient client;
     private GuessControl guessControl;
     private JTextField textField;
     private JButton guessButton;
     private JButton buyVowelButton;
-
+    private JButton update;
+    private JButton solveButton; // New button for guessing the entire word
+    private String word;
+    private String category;
+   
+  
     public GuessPanel(GuessControl guessControl) {
-        this.guessControl = guessControl;
-
+        
+        this.setCategory(category);
+    	
         setLayout(new BorderLayout());
-
-        // Create a panel for the top blank section
+        
+        
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(400, 200)); // Adjust dimensions as needed
-        topPanel.setBackground(Color.WHITE); // Set background color for the blank section
-
+        topPanel.setPreferredSize(new Dimension(400, 200));
+        topPanel.setBackground(Color.WHITE);
+        
+        // Create a label to display the category
+        JLabel categoryLabel = new JLabel("Category: " + category);
+        topPanel.add(categoryLabel); // Add category label to the top panel
+        
+        // Create a label to display the category text (update dynamically)
+        JLabel categoryText = new JLabel();
+        topPanel.add(categoryText); // Add category text label to the top panel
+        
         // Initialize letterLabels array to hold labels for each letter in the word
         letterLabels = new JLabel[0]; // Start with an empty array
 
@@ -38,6 +53,18 @@ public class GuessPanel extends JPanel {
         // Create the "Guess" button
         guessButton = new JButton("Guess");
         bottomPanel.add(guessButton); // Add Guess button to the bottom panel
+        
+        // Create the "Guess Word" button
+        solveButton = new JButton("Solve");
+        bottomPanel.add(solveButton); // Add Guess Word button to the bottom panel
+        update = new JButton("Update");
+        bottomPanel.add(update);
+        
+
+        // Add action listeners to the buttons
+        guessButton.addActionListener(guessControl);
+        solveButton.addActionListener(guessControl);
+        update.addActionListener(guessControl);
 
         // Add the bottom panel to the main panel (south)
         add(bottomPanel, BorderLayout.SOUTH);
@@ -59,10 +86,14 @@ public class GuessPanel extends JPanel {
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
+        guessControl.setGuessPanel(this);
+       
+        this.setWord(word);
+        
     }
 
-    // Method to set the word and update the displayed letters
-    public void setWord(String word) {
+ 
+    public void initWord() {
         letterLabels = new JLabel[word.length()];
 
         // Populate topPanel with labels representing each letter in the word
@@ -94,5 +125,21 @@ public class GuessPanel extends JPanel {
 
     public JButton getBuyVowelButton() {
         return buyVowelButton;
+    }
+
+    public JButton getSolveButton() {
+        return solveButton;
+    }
+    public void setCategory(String category) {
+    	this.category = category;
+    }
+    public void setWord(String word) {
+    	this.word = word;
+    }
+    public String getWord() {
+    	return word;
+    }
+    public String getCategory() {
+    	return category;
     }
 }

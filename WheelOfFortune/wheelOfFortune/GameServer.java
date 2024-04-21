@@ -38,6 +38,8 @@ public class GameServer extends AbstractServer
 		this.setTimeout(500);
 		db = new Database();
 		pullCatandWord();
+		
+		
 	}
 
 	// Getter that returns whether the server is currently running.
@@ -105,9 +107,9 @@ public class GameServer extends AbstractServer
 		
 			category = db.getRandomCategory();
 			word = db.getRandomWord(category);
-			
-		
-    }
+			System.out.print(word);	
+		}
+	
 
 	// When a message is received from a client, handle it.
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1)
@@ -180,12 +182,15 @@ public class GameServer extends AbstractServer
 		{
 			// Try to create the new Game.
 			NewGameData data = (NewGameData)arg0;
-
+			
 			if (data.isReady())
 			{
 				if (playersConnected >= MIN_PLAYERS && playersConnected <= MAX_PLAYERS) {
 					readyResult = "PlayerReady";
 					log.append("Player " + arg1.getId() + " is ready\n");
+					WordData message = new WordData(category, word);
+					sendToAllClients(message);
+					
 				}
 				else
 				{

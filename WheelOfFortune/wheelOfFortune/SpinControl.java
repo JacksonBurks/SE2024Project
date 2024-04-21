@@ -37,6 +37,7 @@ public class SpinControl implements ActionListener
 		else if (command.equals("Guess")) {
 		    CardLayout cardLayout = (CardLayout) container.getLayout();
 		    cardLayout.show(container, "6"); // Show the GuessPanel
+		    
 		}
 
 		// The logout button takes the user to the login panel.
