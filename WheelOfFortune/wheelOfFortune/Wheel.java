@@ -1,21 +1,31 @@
 package wheelOfFortune;
 
+<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+=======
+
+import javax.swing.*;
+import java.awt.*;
+>>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Random;
 
+<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class SpinPanel extends JPanel implements ActionListener {
+=======
+public class Wheel extends JPanel implements ActionListener {
+>>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 	private static final int NUM_SLICES = 17;
 	private static final int MIN_POINTS = 300;
 	private static final int MAX_POINTS = 1000;
@@ -28,18 +38,53 @@ public class SpinPanel extends JPanel implements ActionListener {
 
 	private boolean spinning;
 	private int selectedPoints;
-	private String specialSlice;
-	private boolean specialSelected = false;
+	private String specialSliceText;
+	private boolean specialSelected;
+	
+	public boolean isSpinning() {
+		return spinning;
+	}
 
+<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
 	private JButton spinButton;
 	private JButton logoutButton;
 	private JButton guessButton;
+=======
+	public void setSpinning(boolean spinning) {
+		this.spinning = spinning;
+	}
+>>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 
-	public SpinPanel(SpinControl sc) {
+	public boolean isSpecialSelected() {
+		return specialSelected;
+	}
+
+	public void setSpecialSelected(boolean specialSelected) {
+		this.specialSelected = specialSelected;
+	}
+
+	public int getSelectedPoints() {
+		return selectedPoints;
+	}
+
+	public void setSelectedPoints(int selectedPoints) {
+		this.selectedPoints = selectedPoints;
+	}
+
+	public String getSpecialSliceText() {
+		return specialSliceText;
+	}
+
+	public void setSpecialSliceText(String specialSliceText) {
+		this.specialSliceText = specialSliceText;
+	}
+
+	public Wheel() {
 		slices = new ArrayList<>();
 		initializeSlices();
 		timer = new Timer(100, this);
 		timer.setRepeats(true);
+<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
 		
 		spinButton = new JButton("Spin");
 		spinButton.addActionListener(sc);
@@ -51,8 +96,9 @@ public class SpinPanel extends JPanel implements ActionListener {
         add(spinButton);
         add(logoutButton);
         add(guessButton);
+=======
+>>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 
-        sc.setSpinPanel(this);
 	}
 
 	private void initializeSlices() {
@@ -76,49 +122,36 @@ public class SpinPanel extends JPanel implements ActionListener {
 	}
 
 	public void spin() {
-		if (!spinning) {
+		if (!this.isSpinning()) {
 			timer.start();
-			spinning = true;
+			this.setSpinning(true);
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		angle += 35; // Adjust speed of spinning here
+		angle += 50; // Adjust speed of spinning here
 		if (angle >= 1080) {
 			angle = 0;
 			timer.stop();
-			spinning = false;
+			this.setSpinning(false);
 			// Determine which slice is selected
 			selectSlice();
-			if (specialSelected) {
-				System.out.println("Uh-oh!: " + specialSlice);
-			}
-			else {
-				System.out.println("Points won: " + selectedPoints);
-			}
 		}
-		specialSelected = false;
 		repaint();
 	}
 
-	private void selectSlice() {
+
+	public void selectSlice() {
 		Random random = new Random();
 		int randomIndex = random.nextInt(NUM_SLICES);
 		Slice selectedSlice = slices.get(randomIndex);
 		if (selectedSlice.isSpecial()) {
+			this.setSpecialSelected(true);
 			String specialText = selectedSlice.getSpecialText();
-			//System.out.println(specialText);
-			if (specialText.equals("Bankrupt")) {
-				specialSelected = true;
-				specialSlice = "Bankrupt";
-			} else if (specialText.equals("Lose Turn")) {
-				specialSelected = true;
-				specialSlice = "Lose Turn";
-			}
+			this.setSpecialSliceText(specialText);
 		} else {
-			selectedPoints = selectedSlice.getPoints();
+			this.setSelectedPoints(selectedSlice.getPoints());
 		}
 	}
 
@@ -138,14 +171,14 @@ public class SpinPanel extends JPanel implements ActionListener {
 			g2d.setColor(Color.BLACK);
 			g2d.drawArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angle + adjustedIndex * (360 / NUM_SLICES), 360 / NUM_SLICES);
 			// Draw point value on the slice
-			drawPointValue(g2d, slice, centerX, centerY, radius, adjustedIndex);
+			//drawPointValue(g2d, slice, centerX, centerY, radius, adjustedIndex);
 		}
 
 		g2d.dispose();
 
 	}
 
-	private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
+	/*private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
 		FontMetrics fm = g2d.getFontMetrics();
 		int sliceCenterAngle = angle + sliceIndex * (360 / NUM_SLICES) + (360 / NUM_SLICES) / 2;
 		double sliceCenterX = centerX + (radius / 2.0) * Math.cos(Math.toRadians(sliceCenterAngle));
@@ -177,7 +210,8 @@ public class SpinPanel extends JPanel implements ActionListener {
 			int stringWidth = fm.stringWidth(specialText);
 			g2d.drawString(specialText, (int) sliceCenterX - (stringWidth / 2), (int) sliceCenterY);
 		}
-	}
+	}*/
+
 
 	private class Slice {
 		private int points;
@@ -216,6 +250,6 @@ public class SpinPanel extends JPanel implements ActionListener {
 			return color; // Return pre-generated color
 		}
 	}
-
 }
+
 

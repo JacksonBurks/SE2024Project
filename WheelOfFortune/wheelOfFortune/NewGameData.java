@@ -6,6 +6,16 @@ public class NewGameData implements Serializable
 {
 	// Private data fields for the username and password.
 	private boolean ready;
+	private int id;
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public boolean isReady() {
 		return ready;

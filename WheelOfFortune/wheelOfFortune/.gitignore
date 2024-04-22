@@ -29,6 +29,7 @@
 /Wheel.class
 /Wheel$Slice.class
 /SpinPanel$Slice.class
+<<<<<<< HEAD
 /GuessPanel.class
 /GuessControl.class
 /GuessPanel$1.class
@@ -36,4 +37,19 @@
 /GuessPanel$CharFilter.class
 /WordData.class
 /GuessData.class
+=======
+/SpinData.class
+/ServerGUI$Wheel$Slice.class
+/ServerGUI$Wheel.class
+/ServerGUI$EventHandler$Wheel$Slice.class
+/ServerGUI$EventHandler$Wheel.class
+/FirstSpinPanel.class
+/FirstSpinData.class
+/FirstSpinControl.class
+/SpinResult.class
+/GamePanel.class
+/GameControl.class
+/WordData.class
+/GameData.class
+>>>>>>> ardley
 /SolveData.class
