@@ -11,6 +11,9 @@ public class GameClient extends AbstractClient
 	private GameControl gameControl;
 	private final int MAX_POINTS = 1000;
 	private final int MIN_POINTS = 300;
+	private int yourID;
+
+	
 	//private BoardControl boardControl;
 	//private int firstTurn = 1;
 
@@ -67,8 +70,8 @@ public class GameClient extends AbstractClient
 			{
 				newGameControl.readySuccess();
 			}
-			else if(message.equals("Wait")) {
-				gameControl.showWaitingLabel("Waiting");
+			else if (message.equals("Highest Spun: " + String.valueOf(yourID))){
+				gameControl.showGameButtons();
 			}
 
 		}
@@ -97,9 +100,15 @@ public class GameClient extends AbstractClient
 				newGameControl.displayError(error.getMessage());
 			}
 		}
+		else if(arg0 instanceof NewGameData) {
+			NewGameData id = (NewGameData)arg0;
+			yourID = id.getId();
+	
+		}  
 		else if (arg0 instanceof SpinResult) {
 			SpinResult res = (SpinResult)arg0;
 			gameControl.removeSpinButton();
+			gameControl.removeSpinLabel();
 			if (res.getType().equals("First")) {
 				// first spin specials equal 0 points
 				if(res.getResult().equals("Bankrupt") || res.getResult().equals("Lose Turn")) {
@@ -130,6 +139,7 @@ public class GameClient extends AbstractClient
 		        String word = message.getWord();
 		        
 		        gameControl.updateCategoryAndWord(category, word); 
+		        gameControl.setCategory(category);
 		        gameControl.setWord(word);
 		    }
 	}  

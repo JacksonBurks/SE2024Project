@@ -43,17 +43,31 @@ public class GameControl implements ActionListener{
 		
 		if (command.equals("Spin"))
 		{
+			spinNumber++;
 			wheel.spin();
 			spin.setSpun(true);
-			spin.setSpinType("First");
-			try
-			{
-				//spinPanel.spin();
-				client.sendToServer(spin);
-			}
-			catch (IOException e1)
-			{
-				displayError("Error connecting to the server.");
+			if(spinNumber == 1) {
+				spin.setSpinType("First");
+				try
+				{
+					//spinPanel.spin();
+					client.sendToServer(spin);
+				}
+				catch (IOException e1)
+				{
+					displayError("Error connecting to the server.");
+				}
+			}else {
+				spin.setSpinType("Round");
+				try
+				{
+					//spinPanel.spin();
+					client.sendToServer(spin);
+				}
+				catch (IOException e1)
+				{
+					displayError("Error connecting to the server.");
+				}
 			}
 		}
 
@@ -139,6 +153,8 @@ public class GameControl implements ActionListener{
 			gamePanel.initWord();
 			gamePanel.revalidate();
 			gamePanel.repaint();
+			category = getCategory();
+			gamePanel.setCategoryText(category);
 		}
 	}
 	private void handleVowelButton(String vowel) {
@@ -192,6 +208,7 @@ public class GameControl implements ActionListener{
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
 	public void setWord(String word) {
 		this.word = word;
 	}
@@ -244,6 +261,22 @@ public class GameControl implements ActionListener{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.removeSpinButton();
 
+	}
+	
+	public void removeSpinLabel() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeSpinLabel();
+	}
+	public void showGameButtons() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.showBuyVowelButton();
+		gamePanel.showGuessButton();
+		gamePanel.showSolveButton();
+		gamePanel.disableSpinButton();
+	}
+	
+	public String getCategory( ){
+		return category;
 	}
 	
 }

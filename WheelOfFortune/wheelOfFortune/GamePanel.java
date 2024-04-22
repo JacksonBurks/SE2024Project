@@ -24,6 +24,7 @@ public class GamePanel extends JPanel {
     private JButton spinButton;
     private Wheel wheel;
     private JPanel vowelPanel;
+    private JLabel categoryTextLabel;
 
     public void removeSpinLabel() {
     	spinLabel.setVisible(false);
@@ -51,6 +52,12 @@ public class GamePanel extends JPanel {
         errorLabel.setText(error);
     }
     
+    public void disableSpinButton() {
+    	spinButton.setEnabled(false);
+    }
+    public void enableSpinButton() {
+    	spinButton.setEnabled(true);
+    }
     public void removeSpinButton() {
     	spinButton.setVisible(false);
     }
@@ -59,18 +66,18 @@ public class GamePanel extends JPanel {
         return textField;
     }
 
-    public void setGuessButton() {
+    public void showGuessButton() {
         guessButton.setVisible(true);;
     }
     
-    public void setSolveButton() {
+    public void showSolveButton() {
         guessButton.setVisible(true);;
     }
 
-    public void setBuyVowelButton() {
+    public void showBuyVowelButton() {
         solveButton.setVisible(true);
     }
-
+    
     public JButton getSolveButton() {
         return solveButton;
     }
@@ -86,6 +93,10 @@ public class GamePanel extends JPanel {
     public String getCategory() {
     	return category;
     }
+    public void setCategoryText(String categoryText) {
+        this.category = category;
+        categoryTextLabel.setText("Category: " + category); 
+    }
     
 
    
@@ -95,6 +106,7 @@ public class GamePanel extends JPanel {
         this.setCategory(category);
     	
         setLayout(new BorderLayout());
+       
         
         spinLabel = new JLabel("Spin The Wheel!", JLabel.CENTER);
         spinLabel.setForeground(Color.BLUE);
@@ -182,13 +194,13 @@ public class GamePanel extends JPanel {
         JPanel categoryPanel = new JPanel(new BorderLayout());
         categoryPanel.setPreferredSize(new Dimension(200, 200));
         //categoryPanel.setBackground(Color.WHITE);
-        JLabel categoryTextLabel = new JLabel("Category:" + category);
+        this.categoryTextLabel = new JLabel("", JLabel.CENTER);
+        categoryTextLabel.setText("");
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
-       
 
-        JLabel categoryLabel = new JLabel(category);
-        categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        categoryPanel.add(categoryLabel, BorderLayout.CENTER);
+
+        //categoryLabel = new JLabel("");
+        //categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
         wheel = new Wheel();
         gameControl.setWheel(wheel);
         categoryPanel.add(wheel);
