@@ -8,7 +8,6 @@ public class GameClient extends AbstractClient
 	private LoginControl loginControl;
 	private CreateAccountControl createAccountControl;
 	private NewGameControl newGameControl;
-	private SpinControl spinControl;
 	private GameControl gameControl;
 	private final int MAX_POINTS = 1000;
 	private final int MIN_POINTS = 300;
@@ -33,10 +32,6 @@ public class GameClient extends AbstractClient
 		this.newGameControl = newGameControl;
 	}
 
-	public void setSpinControl(SpinControl spinControl)
-	{
-		this.spinControl = spinControl;
-	}
 	public void setGuessControl(GameControl gameControl) {
 		this.gameControl = gameControl;
 	}
@@ -72,11 +67,8 @@ public class GameClient extends AbstractClient
 			{
 				newGameControl.readySuccess();
 			}
-			else if(message.equals("TakeTurn")) {
-				spinControl.addTakeTurnButton();
-			}
 			else if(message.equals("Wait")) {
-				spinControl.showWaitingLabel("Waiting");
+				gameControl.showWaitingLabel("Waiting");
 			}
 
 		}
@@ -107,14 +99,14 @@ public class GameClient extends AbstractClient
 		}
 		else if (arg0 instanceof SpinResult) {
 			SpinResult res = (SpinResult)arg0;
-			spinControl.removeSpinButton();
+			gameControl.removeSpinButton();
 			if (res.getType().equals("First")) {
 				// first spin specials equal 0 points
 				if(res.getResult().equals("Bankrupt") || res.getResult().equals("Lose Turn")) {
-					spinControl.specialResults(res.getResult());
+					gameControl.specialResults(res.getResult());
 				}
 				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
-					spinControl.pointResults(Integer.parseInt(res.getResult()));
+					gameControl.pointResults(Integer.parseInt(res.getResult()));
 				}
 			}
 			else if (res.getType().equals("Round")) {

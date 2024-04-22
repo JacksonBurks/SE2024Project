@@ -99,7 +99,7 @@ public class GamePanel extends JPanel {
         spinLabel = new JLabel("Spin The Wheel!", JLabel.CENTER);
         spinLabel.setForeground(Color.BLUE);
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(600, 400));
+        topPanel.setPreferredSize(new Dimension(750, 400));
         topPanel.add(spinLabel);
         
         

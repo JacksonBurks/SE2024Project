@@ -218,31 +218,31 @@ public class GameControl implements ActionListener{
 	
 	public void displayError(String error)
 	{
-		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
-		spinPanel.setError(error);
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.setError(error);
 	}
 	public void specialResults(String result)
 	{
-		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
-		spinPanel.setSpecialSpun(result);
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.setSpecialSpun(result);
 	}
 	
 	public void pointResults(int result)
 	{
-		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
-		spinPanel.setPointsSpun(result);
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.setPointsSpun(result);
 	}
 	
 	public void showWaitingLabel(String msg)
 	{
-		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
-		spinPanel.setWaiting(msg);
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.setWaiting(msg);
 	}
 
 	public void removeSpinButton() {
 		// TODO Auto-generated method stub
-		SpinPanel spinPanel = (SpinPanel)container.getComponent(4);
-		spinPanel.removeSpinButton();
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeSpinButton();
 
 	}
 	
