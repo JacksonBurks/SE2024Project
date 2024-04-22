@@ -241,7 +241,7 @@ public class GameControl implements ActionListener{
 	public void specialResults(String result)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.setSpecialSpun(result);
+		gamePanel.setSpecialSpun(result + "0 points spun!");
 	}
 	
 	public void pointResults(int result)

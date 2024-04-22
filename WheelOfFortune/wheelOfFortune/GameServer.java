@@ -210,6 +210,7 @@ public class GameServer extends AbstractServer {
 
 				}
 			}
+			wheel.setSpecialSelected(false);
 
 		}
 		//*******************************************************************************************
