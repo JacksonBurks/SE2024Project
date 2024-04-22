@@ -83,7 +83,7 @@ public class ServerGUI extends JFrame
 
 		// Create the Wheel component.
 		wheel = new Wheel();
-		center.add(wheel, BorderLayout.CENTER); // Add the Wheel to the center panel.
+		//center.add(wheel, BorderLayout.CENTER); // Add the Wheel to the center panel.
 
 		// Create the buttons.
 		listen = new JButton("Listen");
@@ -106,7 +106,7 @@ public class ServerGUI extends JFrame
 
 
 		// Display the window.
-		this.setSize(650, 650);
+		this.setSize(500, 500);
 		this.setVisible(true);
 
 

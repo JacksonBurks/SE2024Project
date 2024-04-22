@@ -66,7 +66,7 @@ public class NewGameControl implements ActionListener
 		//ClientGUI clientGUI = (ClientGUI)SwingUtilities.getWindowAncestor(newGamePanel);
 		//clientGUI.setUser(new User(createAccountPanel.getUsername(), createAccountPanel.getPassword()));
 		CardLayout cardLayout = (CardLayout)container.getLayout();
-		cardLayout.show(container, "5");
+		cardLayout.show(container, "6");
 	}
 
 	// Method that displays a message in the error label.

@@ -14,6 +14,7 @@ public class ClientGUI extends JFrame
     GameClient client = new GameClient();
     client.setHost("localhost");
     client.setPort(8300);
+    
     try
     {
       client.openConnection();
@@ -63,7 +64,7 @@ public class ClientGUI extends JFrame
     container.add(view2, "2");
     container.add(view3, "3");
     container.add(view4, "4"); // ready button screen
-    container.add(view5, "5");
+    container.add(view5, "5"); // combined panesl
     container.add(view6, "6");
 
     
@@ -76,7 +77,7 @@ public class ClientGUI extends JFrame
     this.add(container);
 
     // Show the JFrame.
-    this.setSize(550, 350);
+    this.setSize(850, 400);
     this.setVisible(true);
   }
 
@@ -85,4 +86,5 @@ public class ClientGUI extends JFrame
   {
     new ClientGUI();
   }
+  
 }

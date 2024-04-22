@@ -135,14 +135,14 @@ public class Wheel extends JPanel implements ActionListener {
 			g2d.setColor(Color.BLACK);
 			g2d.drawArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angle + adjustedIndex * (360 / NUM_SLICES), 360 / NUM_SLICES);
 			// Draw point value on the slice
-			drawPointValue(g2d, slice, centerX, centerY, radius, adjustedIndex);
+			//drawPointValue(g2d, slice, centerX, centerY, radius, adjustedIndex);
 		}
 
 		g2d.dispose();
 
 	}
 
-	private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
+	/*private void drawPointValue(Graphics2D g2d, Slice slice, int centerX, int centerY, int radius, int sliceIndex) {
 		FontMetrics fm = g2d.getFontMetrics();
 		int sliceCenterAngle = angle + sliceIndex * (360 / NUM_SLICES) + (360 / NUM_SLICES) / 2;
 		double sliceCenterX = centerX + (radius / 2.0) * Math.cos(Math.toRadians(sliceCenterAngle));
@@ -174,7 +174,7 @@ public class Wheel extends JPanel implements ActionListener {
 			int stringWidth = fm.stringWidth(specialText);
 			g2d.drawString(specialText, (int) sliceCenterX - (stringWidth / 2), (int) sliceCenterY);
 		}
-	}
+	}*/
 
 
 	private class Slice {

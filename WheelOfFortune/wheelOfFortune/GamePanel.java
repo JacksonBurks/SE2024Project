@@ -10,11 +10,84 @@ public class GamePanel extends JPanel {
     private GameControl gameControl;
     private JTextField textField;
     private JButton guessButton;
-    private JButton buyVowelButton;
+    private JButton vowelButton;
     private JButton update;
     private JButton solveButton; // New button for guessing the entire word
     private String word;
     private String category;
+    private JLabel errorLabel;
+    private JLabel spinLabel;
+    private JLabel currentScore;
+    private JLabel pointsSpun;
+    private JLabel specialSpun;
+    private JLabel waiting;
+    private JButton spinButton;
+    private Wheel wheel;
+    private JPanel vowelPanel;
+
+    public void removeSpinLabel() {
+    	spinLabel.setVisible(false);
+    }
+    public void addSpinLabel() {
+    	spinLabel.setVisible(true);
+    }
+    
+	public void setWaiting(String msg) {
+		waiting.setText(msg);
+	}
+    
+	public void setSpecialSpun(String special) {
+		specialSpun.setText(special);
+	}
+
+    public void setPointsSpun(int points) {
+    	pointsSpun.setText("Points Spun: " + points);
+    }
+    public void setCurrentScore(int points) {
+        currentScore.setText("Current Points: " + points);
+    }
+
+    public void setError(String error) {
+        errorLabel.setText(error);
+    }
+    
+    public void removeSpinButton() {
+    	spinButton.setVisible(false);
+    }
+    
+    public JTextField getTextField() {
+        return textField;
+    }
+
+    public void setGuessButton() {
+        guessButton.setVisible(true);;
+    }
+    
+    public void setSolveButton() {
+        guessButton.setVisible(true);;
+    }
+
+    public void setBuyVowelButton() {
+        solveButton.setVisible(true);
+    }
+
+    public JButton getSolveButton() {
+        return solveButton;
+    }
+    public void setCategory(String category) {
+    	this.category = category;
+    }
+    public void setWord(String word) {
+    	this.word = word;
+    }
+    public String getWord() {
+    	return word;
+    }
+    public String getCategory() {
+    	return category;
+    }
+    
+
    
   
     public GamePanel(GameControl gameControl) {
@@ -23,10 +96,34 @@ public class GamePanel extends JPanel {
     	
         setLayout(new BorderLayout());
         
-        
+        spinLabel = new JLabel("Spin The Wheel!", JLabel.CENTER);
+        spinLabel.setForeground(Color.BLUE);
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(400, 200));
-        topPanel.setBackground(Color.WHITE);
+        topPanel.setPreferredSize(new Dimension(600, 400));
+        topPanel.add(spinLabel);
+        
+        
+        ImageIcon imageIcon = new ImageIcon("wheelOfFortune/Wheel_of_Fortune_logo.png");
+        JLabel imageLabel = new JLabel(imageIcon);
+        topPanel.add(imageLabel);
+        
+        
+        currentScore = new JLabel("", JLabel.CENTER);
+        setCurrentScore(0);
+        topPanel.add(currentScore);
+        
+        pointsSpun = new JLabel("", JLabel.CENTER);
+        topPanel.add(pointsSpun);
+        
+        
+        specialSpun = new JLabel("", JLabel.CENTER);
+        topPanel.add(specialSpun);
+        
+        waiting = new JLabel("", JLabel.CENTER);
+        waiting.setForeground(Color.BLUE);
+        topPanel.add(waiting);
+        
+        //topPanel.setBackground(Color.WHITE);
         
         
         // Initialize letterLabels array to hold labels for each letter in the word
@@ -38,17 +135,28 @@ public class GamePanel extends JPanel {
         // Create a panel for the bottom section with text field and buttons
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
-
+        
+        spinButton = new JButton("Spin");
+        spinButton.addActionListener(gameControl);
+        
+        JButton logoutButton = new JButton("Log Out");
+        logoutButton.addActionListener(gameControl);
+        
+        bottomPanel.add(spinButton);
+        bottomPanel.add(logoutButton);
+ 
         // Create a text field above the buttons
         textField = new JTextField(20);
         bottomPanel.add(textField); 
 
         // Create the "Guess" button
         guessButton = new JButton("Guess");
+        guessButton.setVisible(false);
         bottomPanel.add(guessButton); 
         
         // Create the "Guess Word" button
         solveButton = new JButton("Solve");
+        solveButton.setVisible(false);
         bottomPanel.add(solveButton); 
         update = new JButton("Update");
         bottomPanel.add(update);
@@ -63,30 +171,27 @@ public class GamePanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
      
-        JPanel vowelPanel = new JPanel();
+        vowelPanel = new JPanel();
         vowelPanel.setLayout(new GridLayout(6, 1)); // Layout for vowel buttons (6 rows, 1 column)
 
         // Add a label "Buy Vowel" above the vowel buttons
         JLabel buyVowelLabel = new JLabel("Buy Vowel");
         vowelPanel.add(buyVowelLabel); // Add Buy Vowel label to the vowel panel
 
-        // Create buttons for vowels and add them to the vowel panel
-        String[] vowels = {"A", "E", "I", "O", "U"};
-        for (String vowel : vowels) {
-            JButton vowelButton = new JButton(vowel);
-            vowelPanel.add(vowelButton);
-            vowelButton.addActionListener(gameControl);
-        }
         
         JPanel categoryPanel = new JPanel(new BorderLayout());
         categoryPanel.setPreferredSize(new Dimension(200, 200));
-        categoryPanel.setBackground(Color.WHITE);
+        //categoryPanel.setBackground(Color.WHITE);
         JLabel categoryTextLabel = new JLabel("Category:" + category);
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
+       
 
         JLabel categoryLabel = new JLabel(category);
         categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
         categoryPanel.add(categoryLabel, BorderLayout.CENTER);
+        wheel = new Wheel();
+        gameControl.setWheel(wheel);
+        categoryPanel.add(wheel);
 
         // Add the category panel to the main panel on the east (right side)
         add(categoryPanel, BorderLayout.EAST);
@@ -151,34 +256,14 @@ public class GamePanel extends JPanel {
         topPanel.revalidate();
         topPanel.repaint();
     }
-
-
     
-    public JTextField getTextField() {
-        return textField;
-    }
-
-    public JButton getGuessButton() {
-        return guessButton;
-    }
-
-    public JButton getBuyVowelButton() {
-        return buyVowelButton;
-    }
-
-    public JButton getSolveButton() {
-        return solveButton;
-    }
-    public void setCategory(String category) {
-    	this.category = category;
-    }
-    public void setWord(String word) {
-    	this.word = word;
-    }
-    public String getWord() {
-    	return word;
-    }
-    public String getCategory() {
-    	return category;
+    public void addVowelButtons() {
+        // Create buttons for vowels and add them to the vowel panel
+        String[] vowels = {"A", "E", "I", "O", "U"};
+        for (String vowel : vowels) {
+            vowelButton = new JButton(vowel);
+            vowelPanel.add(vowelButton);
+            vowelButton.addActionListener(gameControl);
+        }
     }
 }

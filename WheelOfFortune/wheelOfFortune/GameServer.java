@@ -221,7 +221,7 @@ public class GameServer extends AbstractServer {
 					}
 				}
 			}
-
+            //*******************************************************************************************
 			else if (data.getSpinType().equals("Round")) {
 				// if the wheel spun a special slice
 				if (wheel.isSpecialSelected()) {
