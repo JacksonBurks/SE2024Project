@@ -32,7 +32,6 @@ public class GameServer extends AbstractServer {
 		super(12345);
 		this.setTimeout(500);
 		db = new Database();
-		pullCatandWord();
 	}
 
 	// Getter that returns whether the server is currently running.
@@ -119,6 +118,7 @@ public class GameServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				pullCatandWord();
 			} else {
 				try {
 					client.sendToClient(new Error("Need more players to connect.", "NotReady"));
@@ -209,51 +209,70 @@ public class GameServer extends AbstractServer {
 
 					}
 
+				}		else if (data.getSpinType().equals("Round")) {
+					// if the wheel spun a special slice
+					if (wheel.isSpecialSelected()) {
+						try { 
+							//extract the special that  was selected, either lose turn or bankrupt
+							String special = wheel.getSpecialSliceText();
+							// update the player's points
+							updatePlayerPointsSpun((int)client.getId(), 0);
+							client.sendToClient(new SpinResult(special, "Round"));
+							for (Player player : players) {
+								if (player.getId() == client.getId()) {
+									log.append(player.getUsername()+ " landed on " + wheel.getSpecialSliceText() + "!\n");;
+									if (special.equals("Bankrupt")){
+										updatePlayerScore(player.getId(), -player.getScore());
+										pd = new PointsData(player.getScore());
+										client.sendToClient(pd);
+										client.sendToClient("Not your turn");
+										for (Player p : players) {
+									        if (p.getId() != client.getId()) {
+									        	idTurn = p.getId();
+									        	break;
+									        }
+										}
+										sendToAllClients("Turn switch " + idTurn);
+									}
+									else {
+										client.sendToClient("Not your turn");
+										for (Player p : players) {
+									        if (p.getId() != client.getId()) {
+									        	idTurn = p.getId();
+									        	break;
+									        }
+										}
+										sendToAllClients("Turn switch " + idTurn);
+									}
+									break;
+								}
+							}
+							wheel.setSpecialSliceText(""); // Reset the special slice text to empty string
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} 
+					else { // for points
+						try {
+							updatePlayerPointsSpun((int)client.getId(), wheel.getSelectedPoints());
+							client.sendToClient(new SpinResult(String.valueOf(wheel.getSelectedPoints()), "Round"));
+							for (Player player : players) {
+								if (player.getId() == client.getId()) {
+									log.append(player.getUsername()+ " landed on " + wheel.getSelectedPoints() + " points!\n");
+									break;
+								}
+							}
+							//log.append("Player " + client.getId() + " landed on " + wheel.getSelectedPoints() + " points!\n");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		}
 		//*******************************************************************************************
-		else if (data.getSpinType().equals("Round")) {
-			// if the wheel spun a special slice
-			if (wheel.isSpecialSelected()) {
-				try { 
-					//extract the special that  was selected, either lose turn or bankrupt
-					String special = wheel.getSpecialSliceText();
-					// update the player's points
-					updatePlayerPointsSpun((int)client.getId(), 0);
-					client.sendToClient(new SpinResult(special, "Round"));
-					for (Player player : players) {
-						if (player.getId() == client.getId()) {
-							log.append(player.getUsername()+ " landed on " + wheel.getSpecialSliceText() + "!\n");;
-							break;
-						}
-					}
-					wheel.setSpecialSliceText(""); // Reset the special slice text to empty string
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} 
-			else { // for points
-				try {
-					updatePlayerPointsSpun((int)client.getId(), wheel.getSelectedPoints());
-					client.sendToClient(new SpinResult(String.valueOf(wheel.getSelectedPoints()), "Round"));
-					for (Player player : players) {
-						if (player.getId() == client.getId()) {
-							log.append(player.getUsername()+ " landed on " + wheel.getSelectedPoints() + " points!\n");
-							break;
-						}
-					}
-					//log.append("Player " + client.getId() + " landed on " + wheel.getSelectedPoints() + " points!\n");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 		wheel.setSpecialSelected(false);
 		wheel.setSelectedPoints(0);
-		pullCatandWord();
-		WordData message = new WordData(category, word);
-		sendToAllClients(message);
 	}
 
 
@@ -299,10 +318,10 @@ public class GameServer extends AbstractServer {
 			}
 
 			for (Player player : players) {
-		        if (player.getId() != client.getId()) {
-		        	idTurn = player.getId();
-		        	break;
-		        }
+				if (player.getId() != client.getId()) {
+					idTurn = player.getId();
+					break;
+				}
 			}
 			sendToAllClients("Turn switch " + idTurn);
 		}
@@ -387,6 +406,8 @@ public class GameServer extends AbstractServer {
 		// Get a random category and word
 		category = db.getRandomCategory();
 		word = db.getRandomWord(category);
+		WordData wd = new WordData(category, word);
+		sendToAllClients(wd);
 	}
 
 

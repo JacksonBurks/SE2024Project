@@ -256,6 +256,7 @@ public class GamePanel extends JPanel {
         JPanel topPanel = (JPanel) this.getComponent(0); 
         topPanel.removeAll(); 
         topPanel.add(currentScore);
+        
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);

@@ -85,7 +85,7 @@ public class GameControl implements ActionListener{
 			}
 		}else {
 			SpinData data = new SpinData();
-			data.setSpinType("First");
+			data.setSpinType("Round");
 			data.setSpun(true);
 			try
 			{
