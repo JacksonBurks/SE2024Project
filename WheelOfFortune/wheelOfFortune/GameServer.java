@@ -1,23 +1,9 @@
 package wheelOfFortune;
 
-<<<<<<< HEAD
-import java.awt.*;
-import javax.swing.*;
-
-import com.mysql.jdbc.PreparedStatement;
-
-=======
 import java.awt.Color;
->>>>>>> ardley
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
-import java.util.Random;
-
-=======
 import java.util.ArrayList;
->>>>>>> ardley
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import javax.swing.JLabel;
@@ -29,12 +15,6 @@ public class GameServer extends AbstractServer {
 	private boolean running = false;
 	private Database db;
 	private int playersConnected = 0;
-<<<<<<< HEAD
-	private String category = "";
-	private String word = "";
-	
-	
-=======
 	private Wheel wheel;
 	private ArrayList<Player> players = new ArrayList<>();
 	private static final int MIN_PLAYERS = 2;
@@ -45,31 +25,16 @@ public class GameServer extends AbstractServer {
 	private String category = "";
 	private String word = "";
 	private int firstSpins = 0;
-<<<<<<< HEAD
-	private int playersReady = 0;
-	private int turnNumber = 0;
->>>>>>> ardley
-=======
 	private PointsData pd;
 	private int idTurn;
 	private int round =1;
 	private int oppScore;
 
->>>>>>> ardley
 
 	public GameServer() {
 		super(12345);
 		this.setTimeout(500);
 		db = new Database();
-<<<<<<< HEAD
-		pullCatandWord();
-<<<<<<< HEAD
-		
-		
-=======
->>>>>>> ardley
-=======
->>>>>>> ardley
 	}
 
 	// Getter that returns whether the server is currently running.
@@ -95,19 +60,6 @@ public class GameServer extends AbstractServer {
 		this.wheel = wheel;
 	}
 
-<<<<<<< HEAD
-	public String getCategory() {
-		return category;
-	}
-	public String getWord() {
-		return word;
-	}
-	
-	 
-	// When the server starts, update the GUI.
-	public void serverStarted()
-	{
-=======
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		if (msg instanceof LoginData) {
@@ -459,7 +411,6 @@ public class GameServer extends AbstractServer {
 	}
 
 	public void serverStarted() {
->>>>>>> ardley
 		running = true;
 		status.setText("Listening");
 		status.setForeground(Color.GREEN);
@@ -479,157 +430,7 @@ public class GameServer extends AbstractServer {
 		log.append("Server and all current clients are closed - press Listen to restart\n");
 	}
 
-<<<<<<< HEAD
-	// When a client connects or disconnects, display a message in the log.
-	public void clientConnected(ConnectionToClient client)
-	{
-		log.append("Player " + client.getId() + " connected\n");
-		playersConnected++;
-	}
-	public void pullCatandWord() {
-        // Get a random category and word
-		
-			category = db.getRandomCategory();
-			word = db.getRandomWord(category);
-			System.out.print(word);	
-		}
-	
-
-	// When a message is received from a client, handle it.
-	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1)
-	{
-		// If we received LoginData, verify the account information.
-		if (arg0 instanceof LoginData)
-		{
-			// Check the username and password with the database.
-			LoginData data = (LoginData)arg0;
-			//Object result;
-			try {
-				if (db.verifyAccount(data.getUsername(), data.getPassword()))
-				{
-					newResult = "LoginSuccessful";
-					log.append("Player " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
-				}
-				else
-				{
-					newResult = new Error("The username and password are incorrect.", "Login");
-					log.append("Player " + arg1.getId() + " failed to log in\n");
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			// Send the result to the client.
-			try
-			{
-				arg1.sendToClient(newResult);
-			}
-			catch (IOException e)
-			{
-				return;
-			}
-		}
-
-		// If we received CreateAccountData, create a new account.
-		else if (arg0 instanceof CreateAccountData)
-		{
-			// Try to create the account.
-			CreateAccountData data = (CreateAccountData)arg0;
-			try {
-				if (!db.accountExists(data.getUsername(), data.getPassword()))
-				{
-					createResult = "CreateAccountSuccessful";
-					log.append("Player " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
-				}
-				else
-				{
-					createResult = new Error("The username is already in use.", "CreateAccount");
-					log.append("Player " + arg1.getId() + " failed to create a new account\n");
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			// Send the result to the client.
-			try
-			{
-				arg1.sendToClient(createResult);
-			}
-			catch (IOException e)
-			{
-				return;
-			}
-		}
-		else if (arg0 instanceof NewGameData)
-		{
-			// Try to create the new Game.
-			NewGameData data = (NewGameData)arg0;
-			
-			if (data.isReady())
-			{
-				if (playersConnected >= MIN_PLAYERS && playersConnected <= MAX_PLAYERS) {
-					readyResult = "PlayerReady";
-					log.append("Player " + arg1.getId() + " is ready\n");
-					WordData message = new WordData(category, word);
-					sendToAllClients(message);
-					
-				}
-				else
-				{
-					readyResult = new Error("Need more players to connect.", "NotReady");
-					log.append("Need more players to start the game\n");
-				}
-			}
-
-		
-			try
-			{
-				arg1.sendToClient(readyResult);
-			}
-			catch (IOException e)
-			{
-				return;
-			}
-		}
-		else if (arg0 instanceof GuessData) {
-	        GuessData result = (GuessData) arg0;
-	        boolean isCorrect = result.isCorrect();
-
-	
-	        if (isCorrect) {
-	          
-	            System.out.println("Correct guess received from client: " + arg1.getId());
-	           
-	        } else {
-	          
-	            System.out.println("Incorrect guess received from client: " + arg1.getId());
-	          
-	        }
-	    }else if (arg0 instanceof SolveData) {
-	        SolveData result = (SolveData) arg0;
-	        boolean isCorrect = result.isCorrect();
-
-	        
-	        if (isCorrect) {
-	            
-	            System.out.println("Correct solve received from client: " + arg1.getId());
-	        
-	        } else {
-	           
-	            System.out.println("Incorrect solve received from client: " + arg1.getId());
-	           
-	        }
-	    }
-	}
-
-	// Method that handles listening exceptions by displaying exception information.
-	public void listeningException(Throwable exception) 
-	{
-=======
 	public void listeningException(Throwable exception) {
->>>>>>> ardley
 		running = false;
 		status.setText("Exception occurred while listening");
 		status.setForeground(Color.RED);

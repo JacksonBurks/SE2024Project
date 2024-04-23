@@ -1,31 +1,15 @@
 package wheelOfFortune;
 
-<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-=======
 
 import javax.swing.*;
 import java.awt.*;
->>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Random;
 
-<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-
-public class SpinPanel extends JPanel implements ActionListener {
-=======
 public class Wheel extends JPanel implements ActionListener {
->>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 	private static final int NUM_SLICES = 17;
 	private static final int MIN_POINTS = 300;
 	private static final int MAX_POINTS = 1000;
@@ -45,15 +29,9 @@ public class Wheel extends JPanel implements ActionListener {
 		return spinning;
 	}
 
-<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
-	private JButton spinButton;
-	private JButton logoutButton;
-	private JButton guessButton;
-=======
 	public void setSpinning(boolean spinning) {
 		this.spinning = spinning;
 	}
->>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 
 	public boolean isSpecialSelected() {
 		return specialSelected;
@@ -84,20 +62,6 @@ public class Wheel extends JPanel implements ActionListener {
 		initializeSlices();
 		timer = new Timer(100, this);
 		timer.setRepeats(true);
-<<<<<<< HEAD:WheelOfFortune/wheelOfFortune/SpinPanel.java
-		
-		spinButton = new JButton("Spin");
-		spinButton.addActionListener(sc);
-        logoutButton = new JButton("Log Out");
-        logoutButton.addActionListener(sc);
-        guessButton = new JButton("Guess");
-        guessButton.addActionListener(sc);
-        
-        add(spinButton);
-        add(logoutButton);
-        add(guessButton);
-=======
->>>>>>> ardley:WheelOfFortune/wheelOfFortune/Wheel.java
 
 	}
 
@@ -251,5 +215,4 @@ public class Wheel extends JPanel implements ActionListener {
 		}
 	}
 }
-
 
