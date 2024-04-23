@@ -45,7 +45,7 @@ public class GamePanel extends JPanel {
     	pointsSpun.setText("Points Spun: " + points);
     }
     public void setCurrentScore(int points) {
-        currentScore.setText("Current Points: " + points);
+        currentScore.setText("Current Score: " + points);
     }
 
     public void setError(String error) {
@@ -68,9 +68,15 @@ public class GamePanel extends JPanel {
     public void showGuessButton() {
         guessButton.setVisible(true);;
     }
+    public void hideGuessButton() {
+        guessButton.setVisible(false);;
+    }
     
     public void showSolveButton() {
         guessButton.setVisible(true);;
+    }
+    public void hideSolveButton() {
+        guessButton.setVisible(false);;
     }
 
     public void showBuyVowelButton() {
@@ -98,7 +104,6 @@ public class GamePanel extends JPanel {
     }
     
 
-   
   
     public GamePanel(GameControl gameControl) {
         
@@ -224,7 +229,7 @@ public class GamePanel extends JPanel {
         letterLabels = new JLabel[word.length()];
         JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
         topPanel.removeAll(); // Clear existing labels
-
+        topPanel.add(currentScore);
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
             String labelText = (letter == ' ') ? " " : "_"; // Display spaces as empty initially
@@ -239,6 +244,7 @@ public class GamePanel extends JPanel {
         topPanel.repaint();
     }
     public void updateWordDisplay(char guessedChar) {
+    	
         if (letterLabels == null || letterLabels.length == 0) {
             return; 
         }
@@ -255,6 +261,7 @@ public class GamePanel extends JPanel {
     public void revealWord() {
         JPanel topPanel = (JPanel) this.getComponent(0); 
         topPanel.removeAll(); 
+        topPanel.add(currentScore);
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -286,5 +293,9 @@ public class GamePanel extends JPanel {
             }
         }
     }
+	public void removeGuessButton() {
+		
+		
+	}
 
 }

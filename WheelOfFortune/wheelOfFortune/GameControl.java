@@ -308,6 +308,9 @@ public class GameControl implements ActionListener{
 	public void removeGameButtons() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.removeVowelButtons();
+		gamePanel.hideGuessButton();
+		gamePanel.hideSolveButton();
+		gamePanel.disableSpinButton();
 	}
 
 	public void showSpinButton() {

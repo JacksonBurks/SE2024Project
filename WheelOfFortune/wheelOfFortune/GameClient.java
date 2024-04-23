@@ -82,7 +82,6 @@ public class GameClient extends AbstractClient
 				gameControl.removeGameButtons();
 				gameControl.removeSpinButton();
 				gameControl.removeSpinLabel();
-
 	
 			}
 
@@ -138,6 +137,7 @@ public class GameClient extends AbstractClient
 					gameControl.specialResults(res.getResult());
 				}
 				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
+					gameControl.showGameButtons();
 					gameControl.pointResults(Integer.parseInt(res.getResult()));
 				}
 			}

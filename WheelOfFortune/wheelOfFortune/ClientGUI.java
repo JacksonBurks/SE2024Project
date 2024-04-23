@@ -61,7 +61,7 @@ public class ClientGUI extends JFrame
     container.add(view2, "2");
     container.add(view3, "3");
     container.add(view4, "4"); // ready button screen
-    container.add(view5, "5"); // game panel
+    container.add(view5, "5"); // g panel
 
     
     // Show the initial view in the card layout.

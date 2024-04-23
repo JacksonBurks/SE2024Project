@@ -213,7 +213,6 @@ public class GameServer extends AbstractServer {
 		}
 		//*******************************************************************************************
 		else if (data.getSpinType().equals("Round")) {
-			System.out.println("HERe");
 			// if the wheel spun a special slice
 			if (wheel.isSpecialSelected()) {
 				try { 
@@ -259,17 +258,17 @@ public class GameServer extends AbstractServer {
 
 	private void handleGameData(GameData data, ConnectionToClient client) {
 		boolean isCorrect = data.isCorrect();
-
-		
 		if (isCorrect) {
+			Player thisPlayer = null;
 			for (Player player : players) {
-				if (player.getId() == client.getId()) {
-					log.append(player.getUsername()+ " guessed correctly, wins " + player.getPointsSpun() + " points!\n");
-					updatePlayerScore(player.getId(), player.getPointsSpun());
-					break;
+				if (player.getId() == client.getId()) { 
+					thisPlayer = player; 
+					break; 
 				}
-				pd = new PointsData(player.getScore());
 			}
+			log.append(thisPlayer.getUsername()+ " guessed correctly, wins " + thisPlayer.getPointsSpun() + " points!\n");
+			updatePlayerScore(thisPlayer.getId(), thisPlayer.getPointsSpun());
+			pd = new PointsData(thisPlayer.getScore());
 			try {
 				client.sendToClient(pd);
 				client.sendToClient("Go again");
@@ -279,15 +278,17 @@ public class GameServer extends AbstractServer {
 			}
 
 		} else {
+			Player thisPlayer = null;
 			for (Player player : players) {
-				if (player.getId() == client.getId()) {
-					log.append(player.getUsername()+ " guessed incorrectly, wins nothing...\n");
-					updatePlayerScore(player.getId(), 0);
-					break;
+				if (player.getId() == client.getId()) { 
+					thisPlayer = player; 
+					break; 
 				}
-				pd = new PointsData(player.getScore());
-				break;
 			}
+			log.append(thisPlayer.getUsername()+ " guessed incorrectly, wins nothing...\n");
+			updatePlayerScore(thisPlayer.getId(), 0);
+			pd = new PointsData(thisPlayer.getScore());
+
 			try {
 				client.sendToClient(pd);
 				client.sendToClient("Not your turn");
@@ -295,9 +296,10 @@ public class GameServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
+
 	}
+
 	private void handleSolveData(SolveData data, ConnectionToClient client) {
 		boolean isCorrect = data.isCorrect();
 
