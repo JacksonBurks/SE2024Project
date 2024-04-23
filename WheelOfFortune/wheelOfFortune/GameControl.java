@@ -191,6 +191,7 @@ public class GameControl implements ActionListener{
 			gamePanel.repaint();
 			category = getCategory();
 			gamePanel.setCategoryText(category);
+			gamePanel.removeUpdateButton();
 		}
 	}
 	private void handleVowelButton(String vowel) {
@@ -326,7 +327,16 @@ public class GameControl implements ActionListener{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.addSpinLabel();
 	}
-
+	public void disableGuessButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeGuessButton();
+	}
+	
+	public void removeUpdateButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeUpdateButton();
+	}
+	
 	public String getCategory( ){
 		return category;
 	}

@@ -77,6 +77,7 @@ public class GameClient extends AbstractClient
 			else if (message.equals("Go again")) {
 				gameControl.showSpinButton();
 				gameControl.showSpinLabel();
+				//gameControl.removeUpdateButton();
 			}
 			else if (message.equals("Not your turn")) {
 				gameControl.removeGameButtons();

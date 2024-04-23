@@ -73,19 +73,12 @@ public class GamePanel extends JPanel {
     }
     
     public void showSolveButton() {
-        guessButton.setVisible(true);;
+        solveButton.setVisible(true);;
     }
     public void hideSolveButton() {
-        guessButton.setVisible(false);;
-    }
-
-    public void showBuyVowelButton() {
-        solveButton.setVisible(true);
+        solveButton.setVisible(false);;
     }
     
-    public JButton getSolveButton() {
-        return solveButton;
-    }
     public void setCategory(String category) {
     	this.category = category;
     }
@@ -304,8 +297,10 @@ public class GamePanel extends JPanel {
         }
     }
 	public void removeGuessButton() {
-		
-		
+		guessButton.setVisible(false);
+	}
+	public void removeUpdateButton() {
+		update.setVisible(false);
 	}
 
 }
