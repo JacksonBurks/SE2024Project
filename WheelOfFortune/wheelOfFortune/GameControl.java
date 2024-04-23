@@ -263,6 +263,10 @@ public class GameControl implements ActionListener{
 			}
 		}
 	}
+	  public void gameOver(int finalScore) {
+	        // Display a popup with the final score
+	        JOptionPane.showMessageDialog(container, "Game Over!\nYour Final Score: " + finalScore, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	private void sendSolveResultToServer(boolean isCorrect) {
 		// Send the solve result to the server
 		if (client != null) {

@@ -1,5 +1,8 @@
 package wheelOfFortune;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import ocsf.client.AbstractClient;
 
 public class GameClient extends AbstractClient
@@ -46,6 +49,15 @@ public class GameClient extends AbstractClient
 	{
 		super("localhost", 8300);
 	}
+	private void sendPointsToServer() {
+        try {
+            // Send the client's accumulated points to the server
+            FinalData points = new FinalData(yourScore);
+            sendToServer(points);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	// Method that handles messages from the server.
 	public void handleMessageFromServer(Object arg0)
@@ -94,7 +106,7 @@ public class GameClient extends AbstractClient
 					gameControl.setRound();
 			}
 			else if(message.equals("Game Over")) {
-				
+				gameControl.gameOver(yourScore);
 			}
 
 		}
@@ -170,5 +182,6 @@ public class GameClient extends AbstractClient
 			yourScore = pd.getPoints();
 			gameControl.updateScore(yourScore);
 		}
+		
 	}  
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import javax.swing.JLabel;
@@ -17,6 +19,7 @@ public class GameServer extends AbstractServer {
 	private int playersConnected = 0;
 	private Wheel wheel;
 	private ArrayList<Player> players = new ArrayList<>();
+	private ArrayList<Integer> collectedPoints = new ArrayList<>();
 	private static final int MIN_PLAYERS = 2;
 	private static final int MAX_PLAYERS = 4;
 	private int maxSpinValue = 0;
@@ -75,7 +78,14 @@ public class GameServer extends AbstractServer {
 		}
 		else if (msg instanceof SolveData) {
 			handleSolveData((SolveData)msg, client);
-		}
+		}else  if (msg instanceof FinalData) {
+            // Received points data from a client
+            PointsData pointsData = (PointsData) msg;
+            int points = pointsData.getPoints();
+            collectPointsFromClient(client.getId(), points);
+            
+       
+        }
 	}
 
 	private void handleLogin(LoginData data, ConnectionToClient client) {
@@ -130,6 +140,30 @@ public class GameServer extends AbstractServer {
 			}
 		}
 	}
+	private synchronized void collectPointsFromClient(long clientId, int points) {
+        collectedPoints.add(points);
+
+        // Check if all clients have sent their points
+        if (collectedPoints.size() == playersConnected) {
+            // All points collected, now sort them in ascending order
+            Collections.sort(collectedPoints);
+
+            // Display points in ascending order (update GUI or log)
+            displayPointsInAscendingOrder();
+        }
+    }
+	private void displayPointsInAscendingOrder() {
+        StringBuilder sb = new StringBuilder("Points in Ascending Order:\n");
+        for (int i = 0; i < collectedPoints.size(); i++) {
+            sb.append("Player ").append(i + 1).append(": ").append(collectedPoints.get(i)).append(" points\n");
+        }
+
+        // Assuming you have a GUI log or similar to display the sorted points
+        if (log != null) {
+            log.append(sb.toString());
+        }
+    }
+
 
 	private synchronized void handleSpinData(SpinData data, ConnectionToClient client) {
 		if (data.clickedSpin()) {
@@ -396,6 +430,7 @@ public class GameServer extends AbstractServer {
 		word = db.getRandomWord(category);
 		WordData wd = new WordData(category,word);
 		sendToAllClients(wd);
+		System.out.print(word);
 	}
 
 

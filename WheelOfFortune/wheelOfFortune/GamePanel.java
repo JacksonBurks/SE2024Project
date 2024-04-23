@@ -196,7 +196,12 @@ public class GamePanel extends JPanel {
 
         // Add a label "Buy Vowel" above the vowel buttons
         JLabel buyVowelLabel = new JLabel("Buy Vowel");
-        vowelPanel.add(buyVowelLabel); // Add Buy Vowel label to the vowel panel
+        String[] vowels = {"A", "E", "I", "O", "U"};
+        for (String vowel : vowels) {
+            vowelButton = new JButton(vowel);
+            vowelPanel.add(vowelButton);
+            vowelButton.addActionListener(gameControl);
+        }
 
         
         JPanel categoryPanel = new JPanel(new BorderLayout());
@@ -221,7 +226,7 @@ public class GamePanel extends JPanel {
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
-        addVowelButtons();
+       
         gameControl.setGamePanel(this);
        
         this.setWord(word);
@@ -283,15 +288,7 @@ public class GamePanel extends JPanel {
         topPanel.repaint();
     }
     
-    public void addVowelButtons() {
-        // Create buttons for vowels and add them to the vowel panel
-        String[] vowels = {"A", "E", "I", "O", "U"};
-        for (String vowel : vowels) {
-            vowelButton = new JButton(vowel);
-            vowelPanel.add(vowelButton);
-            vowelButton.addActionListener(gameControl);
-        }
-    }
+  
     public void showVowelButtons() {
         Component[] components = vowelPanel.getComponents();
         for (Component component : components) {
