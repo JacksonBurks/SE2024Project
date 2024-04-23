@@ -74,10 +74,10 @@ public class GamePanel extends JPanel {
     }
     
     public void showSolveButton() {
-        guessButton.setVisible(true);;
+        solveButton.setVisible(true);;
     }
     public void hideSolveButton() {
-        guessButton.setVisible(false);;
+        solveButton.setVisible(false);;
     }
 
     public void showBuyVowelButton() {
@@ -206,10 +206,10 @@ public class GamePanel extends JPanel {
         categoryTextLabel.setText("");
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
         roundLabel = new JLabel("", JLabel.CENTER);
-        setRoundText(1); // Set default round text
-        categoryPanel.add(roundLabel, BorderLayout.CENTER); 
-
-
+        setRoundText(1);
+        categoryPanel.add(roundLabel, BorderLayout.SOUTH); 
+        
+        
         //categoryLabel = new JLabel("");
         //categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
         wheel = new Wheel();

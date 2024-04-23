@@ -252,7 +252,6 @@ public class GameServer extends AbstractServer {
 		}
 		wheel.setSpecialSelected(false);
 		wheel.setSelectedPoints(0);
-		pullCatandWord();
 		WordData message = new WordData(category, word);
 		sendToAllClients(message);
 	}
@@ -316,7 +315,7 @@ public class GameServer extends AbstractServer {
 
 		if (isCorrect) {
 			round +=1;
-			if(round >=3) {
+			if(round <=3) {
 				sendToAllClients("Next Round");
 				pullCatandWord();
 				

@@ -93,6 +93,9 @@ public class GameClient extends AbstractClient
 			else if(message.equals("Next Round")){
 					gameControl.setRound();
 			}
+			else if(message.equals("Game Over")) {
+				
+			}
 
 		}
 
