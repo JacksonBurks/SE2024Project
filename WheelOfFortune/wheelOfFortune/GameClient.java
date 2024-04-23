@@ -116,11 +116,12 @@ public class GameClient extends AbstractClient
 	private final int MAX_POINTS = 1000;
 	private final int MIN_POINTS = 300;
 	private int yourID;
+	private int yourScore;
+	private int oppScore;
 
-	
+
 	//private BoardControl boardControl;
 	//private int firstTurn = 1;
-
 	public void setGameControl(GameControl gameControl) {
 		this.gameControl = gameControl;
 	}
@@ -177,6 +178,29 @@ public class GameClient extends AbstractClient
 			else if (message.equals("Highest Spun: " + String.valueOf(yourID))){
 				gameControl.showGameButtons();
 			}
+			else if (message.equals("Go again")) {
+				gameControl.showSpinButton();
+				gameControl.showSpinLabel();
+				//gameControl.removeUpdateButton();
+			}
+			else if (message.equals("Not your turn")) {
+				gameControl.removeGameButtons();
+				gameControl.removeSpinButton();
+				gameControl.removeSpinLabel();
+
+			}
+			else if (message.equals("Turn switch " + String.valueOf(yourID))) {
+				gameControl.showGameButtons();
+				gameControl.showSpinButton();
+				gameControl.showSpinLabel();
+			}
+			else if(message.equals("Next Round")){
+				gameControl.setRound();
+				gameControl.showSpinButton();
+			}
+			else if(message.equals("Game Over")) {
+				gameControl.gameOver(yourScore);
+			}
 
 		}
 
@@ -207,7 +231,7 @@ public class GameClient extends AbstractClient
 		else if(arg0 instanceof NewGameData) {
 			NewGameData id = (NewGameData)arg0;
 			yourID = id.getId();
-	
+
 		}  
 		else if (arg0 instanceof SpinResult) {
 			SpinResult res = (SpinResult)arg0;
@@ -224,28 +248,33 @@ public class GameClient extends AbstractClient
 			}
 			else if (res.getType().equals("Round")) {
 				if(res.getResult().equals("Bankrupt")) {
-
+					gameControl.specialResults(res.getResult());
 				}
 				else if(res.getResult().equals("Lose Turn")) {
-
+					gameControl.specialResults(res.getResult());
 				}
 				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
-
+					gameControl.showGameButtons();
+					gameControl.pointResults(Integer.parseInt(res.getResult()));
 				}
 			}
 		}
-		 else if (arg0 instanceof WordData) {
-		        // Received category and word message from server
-		        WordData message = (WordData) arg0;
-		        
-		        // Extract category and word from the message
-		        String category = message.getCategory();
-		        String word = message.getWord();
-		        
-		        gameControl.updateCategoryAndWord(category, word); 
-		        gameControl.setCategory(category);
-		        gameControl.setWord(word);
-		    }
+		else if (arg0 instanceof WordData) {
+			// Received category and word message from server
+			WordData message = (WordData) arg0;
+
+			// Extract category and word from the message
+			String category = message.getCategory();
+			String word = message.getWord();
+			gameControl.updateCategoryAndWord(category, word); 
+			gameControl.setCategory(category);
+			gameControl.setWord(word);
+		}
+		else if (arg0 instanceof PointsData) {
+			PointsData pd = (PointsData)arg0;
+			yourScore = pd.getPoints();
+			gameControl.updateScore(yourScore);
+		}
 	}  
 >>>>>>> ardley
 }

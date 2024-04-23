@@ -4,8 +4,16 @@ import java.io.Serializable;
 
 public class SpinData implements Serializable {
 	
-	private boolean spun;
 	private String spinType;
+	private boolean spun;
+
+	public boolean clickedSpin() {
+		return spun;
+	}
+
+	public void setSpun(boolean spun) {
+		this.spun = spun;
+	}
 
 	public String getSpinType() {
 		return spinType;
@@ -15,12 +23,4 @@ public class SpinData implements Serializable {
 		this.spinType = spinType;
 	}
 
-	public boolean clickedSpin() {
-		return spun;
-	}
-
-	public void setSpun(boolean spun) {
-		this.spun = spun;
-	}
-	
 }

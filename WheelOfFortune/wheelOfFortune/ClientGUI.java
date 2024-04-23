@@ -75,6 +75,7 @@ public class ClientGUI extends JFrame
     JPanel view5 = new GamePanel(gc);
 >>>>>>> ardley
 
+
     // Add the views to the card layout container.
     container.add(view1, "1");
     container.add(view2, "2");
@@ -85,7 +86,11 @@ public class ClientGUI extends JFrame
     container.add(view6, "6");
 =======
     container.add(view4, "4"); // ready button screen
+<<<<<<< HEAD
     container.add(view5, "5"); // game panel
+>>>>>>> ardley
+=======
+    container.add(view5, "5"); // combined panel
 >>>>>>> ardley
 
     

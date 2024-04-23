@@ -18,6 +18,8 @@ public class GameControl implements ActionListener{
 	private Boolean testGuess = false;
 	private boolean lastGuessCorrect = false;
 	private Wheel wheel;
+	private int round = 1;
+
 	//Spin
 	private SpinData spin;
 	private int spinNumber = 0;
@@ -40,35 +42,10 @@ public class GameControl implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		
+
 		if (command.equals("Spin"))
 		{
-			spinNumber++;
-			wheel.spin();
-			spin.setSpun(true);
-			if(spinNumber == 1) {
-				spin.setSpinType("First");
-				try
-				{
-					//spinPanel.spin();
-					client.sendToServer(spin);
-				}
-				catch (IOException e1)
-				{
-					displayError("Error connecting to the server.");
-				}
-			}else {
-				spin.setSpinType("Round");
-				try
-				{
-					//spinPanel.spin();
-					client.sendToServer(spin);
-				}
-				catch (IOException e1)
-				{
-					displayError("Error connecting to the server.");
-				}
-			}
+			handleSpin();
 		}
 
 		else if (command.equals("Guess")) {
@@ -91,9 +68,49 @@ public class GameControl implements ActionListener{
 			cardLayout.show(container, "2");
 		}
 	}
+	private void handleSpin() {
+		spinNumber++;
+		wheel.spin();
+		//spin.setSpun(true);
+		if(spinNumber == 1) {
+			SpinData data = new SpinData();
+			data.setSpinType("First");
+			data.setSpun(true);
+			try
+			{
+				//spinPanel.spin();
+				client.sendToServer(data);
+			}
+			catch (IOException e1)
+			{
+				displayError("Error connecting to the server.");
+			}
+		}else {
+			SpinData data = new SpinData();
+			data.setSpinType("Round");
+			data.setSpun(true);
+			try
+			{
+				//spinPanel.spin();
+				client.sendToServer(data);
+				//System.out.println("Round sent to server");
+			}
+			catch (IOException e1)
+			{
+				displayError("Error connecting to the server.");
+			}
+			
+		}
+		removeSpinButton();
+	}
 	private void handleGuess() {
 		if (gamePanel != null) {
 			String guessText = gamePanel.getTextField().getText().trim().toUpperCase();
+
+			if (!isValidConsonant(guessText)) {
+				JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
 			// Validate that the input is a consonant (A-Z) and not already guessed
 			if (isValidConsonant(guessText)) {
@@ -106,15 +123,36 @@ public class GameControl implements ActionListener{
 					gamePanel.revalidate();
 					gamePanel.repaint();
 					lastGuessCorrect = true; 
+					GameData gd = new GameData(true);
+					try {
+						client.sendToServer(gd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				} else {
 					lastGuessCorrect = false; 
+					GameData gd = new GameData(false);
+					try {
+						client.sendToServer(gd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					// Inform the user that the guess is incorrect
-					JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+					//JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				lastGuessCorrect = false; // Mark the guess as incorrect (invalid input)
+				GameData gd = new GameData(false);
+				try {
+					client.sendToServer(gd);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// Inform the user that only consonants are allowed for guessing
-				JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+				//JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
 			}
 
 			gamePanel.getTextField().setText(""); // Clear text field
@@ -155,6 +193,8 @@ public class GameControl implements ActionListener{
 			gamePanel.repaint();
 			category = getCategory();
 			gamePanel.setCategoryText(category);
+			gamePanel.showVowelButtons();
+			//gamePanel.removeUpdateButton();
 		}
 	}
 	private void handleVowelButton(String vowel) {
@@ -168,6 +208,13 @@ public class GameControl implements ActionListener{
 					// Update the display to reveal the vowel in the word
 					gamePanel.updateWordDisplay(word.charAt(i));
 					found = true;
+					VowelData vd = new VowelData(found);
+					try {
+						client.sendToServer(vd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 
@@ -177,7 +224,7 @@ public class GameControl implements ActionListener{
 			// Display a message if the guessed vowel is not in the word
 			if (!found) {
 				// Inform the user that the guess is incorrect
-				JOptionPane.showMessageDialog(container, "Sorry, wrong guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(container, "Sorry, choose another vowel!", "Vowel Not Found", JOptionPane.ERROR_MESSAGE);
 			}
 
 			// Always refresh the panel display
@@ -185,7 +232,7 @@ public class GameControl implements ActionListener{
 			gamePanel.repaint();
 
 
-			sendGuessResultToServer(isCorrect);
+			//sendGuessResultToServer(isCorrect);
 		}
 	}
 
@@ -208,10 +255,17 @@ public class GameControl implements ActionListener{
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	public void setWord(String word) {
 		this.word = word;
 	}
+	
+	public void setRound() {
+		round +=1;
+		gamePanel.setRoundText(round);
+	}
+	
+	
 	private void sendGuessResultToServer(boolean isCorrect) {
 		// Send the guess result to the server
 		if (client != null) {
@@ -232,7 +286,7 @@ public class GameControl implements ActionListener{
 			}
 		}
 	}
-	
+
 	public void displayError(String error)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
@@ -241,44 +295,78 @@ public class GameControl implements ActionListener{
 	public void specialResults(String result)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.setSpecialSpun(result);
+		gamePanel.setSpecialSpun(result + " 0 points spun!");
 	}
-	
+
 	public void pointResults(int result)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.setPointsSpun(result);
 	}
-	
+
 	public void showWaitingLabel(String msg)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.setWaiting(msg);
 	}
 
-	public void removeSpinButton() {
-		// TODO Auto-generated method stub
-		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.removeSpinButton();
 
-	}
-	
 	public void removeSpinLabel() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.removeSpinLabel();
 	}
 	public void showGameButtons() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.showBuyVowelButton();
+		gamePanel.showVowelButtons();
 		gamePanel.showGuessButton();
 		gamePanel.showSolveButton();
 		gamePanel.disableSpinButton();
+	}
+
+	public void removeGameButtons() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeVowelButtons();
+		gamePanel.hideGuessButton();
+		gamePanel.hideSolveButton();
+		gamePanel.disableSpinButton();
+	}
+
+	public void showSpinButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.enableSpinButton();
+	}
+	public void removeSpinButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.disableSpinButton();
+	}
+
+	public void showSpinLabel() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.addSpinLabel();
+	}
+	public void disableGuessButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeGuessButton();
+	}
+	
+	public void removeUpdateButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeUpdateButton();
 	}
 	
 	public String getCategory( ){
 		return category;
 	}
-	
+
+	public void updateScore(int score) {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.setCurrentScore(score);
+	}
+    public void gameOver(int finalScore) {
+        // Display a popup with the final score
+        JOptionPane.showMessageDialog(container, "Game Over!\nYour Final Score: " + finalScore, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }
 
 

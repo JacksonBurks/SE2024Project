@@ -25,6 +25,8 @@ public class GamePanel extends JPanel {
     private Wheel wheel;
     private JPanel vowelPanel;
     private JLabel categoryTextLabel;
+    private JLabel roundLabel;
+
 
     public void removeSpinLabel() {
     	spinLabel.setVisible(false);
@@ -45,7 +47,7 @@ public class GamePanel extends JPanel {
     	pointsSpun.setText("Points Spun: " + points);
     }
     public void setCurrentScore(int points) {
-        currentScore.setText("Current Points: " + points);
+        currentScore.setText("Current Score: " + points);
     }
 
     public void setError(String error) {
@@ -54,12 +56,11 @@ public class GamePanel extends JPanel {
     
     public void disableSpinButton() {
     	spinButton.setEnabled(false);
+    	spinButton.setVisible(false);
     }
     public void enableSpinButton() {
     	spinButton.setEnabled(true);
-    }
-    public void removeSpinButton() {
-    	spinButton.setVisible(false);
+    	spinButton.setVisible(true);
     }
     
     public JTextField getTextField() {
@@ -69,18 +70,17 @@ public class GamePanel extends JPanel {
     public void showGuessButton() {
         guessButton.setVisible(true);;
     }
+    public void hideGuessButton() {
+        guessButton.setVisible(false);;
+    }
     
     public void showSolveButton() {
-        guessButton.setVisible(true);;
+        solveButton.setVisible(true);;
     }
-
-    public void showBuyVowelButton() {
-        solveButton.setVisible(true);
+    public void hideSolveButton() {
+        solveButton.setVisible(false);;
     }
     
-    public JButton getSolveButton() {
-        return solveButton;
-    }
     public void setCategory(String category) {
     	this.category = category;
     }
@@ -97,9 +97,11 @@ public class GamePanel extends JPanel {
         this.category = category;
         categoryTextLabel.setText("Category: " + category); 
     }
+    public void setRoundText(int text) {
+        roundLabel.setText("Round: " + text);
+    }
     
 
-   
   
     public GamePanel(GameControl gameControl) {
         
@@ -197,7 +199,9 @@ public class GamePanel extends JPanel {
         this.categoryTextLabel = new JLabel("", JLabel.CENTER);
         categoryTextLabel.setText("");
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
-
+        roundLabel = new JLabel("", JLabel.CENTER);
+        setRoundText(1);
+        categoryPanel.add(roundLabel, BorderLayout.SOUTH); 
 
         //categoryLabel = new JLabel("");
         //categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -210,7 +214,17 @@ public class GamePanel extends JPanel {
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
+        //addVowelButtons();
         gameControl.setGamePanel(this);
+        
+        String[] vowels = {"A", "E", "I", "O", "U"};
+        for (String vowel : vowels) {
+            vowelButton = new JButton(vowel);
+            vowelPanel.add(vowelButton);
+            vowelButton.addActionListener(gameControl);
+        }
+        
+        removeVowelButtons();
        
         this.setWord(word);
         
@@ -225,6 +239,8 @@ public class GamePanel extends JPanel {
         letterLabels = new JLabel[word.length()];
         JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
         topPanel.removeAll(); // Clear existing labels
+        topPanel.add(currentScore);
+        topPanel.add(specialSpun);
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -240,6 +256,7 @@ public class GamePanel extends JPanel {
         topPanel.repaint();
     }
     public void updateWordDisplay(char guessedChar) {
+    	
         if (letterLabels == null || letterLabels.length == 0) {
             return; 
         }
@@ -256,6 +273,9 @@ public class GamePanel extends JPanel {
     public void revealWord() {
         JPanel topPanel = (JPanel) this.getComponent(0); 
         topPanel.removeAll(); 
+        topPanel.add(currentScore);
+        topPanel.add(specialSpun);
+        
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -278,4 +298,29 @@ public class GamePanel extends JPanel {
             vowelButton.addActionListener(gameControl);
         }
     }
+    public void showVowelButtons() {
+        Component[] components = vowelPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                button.setVisible(true);
+            }
+        }
+    }
+    public void removeVowelButtons() {
+        Component[] components = vowelPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                button.setVisible(false);
+            }
+        }
+    }
+	public void removeGuessButton() {
+		guessButton.setVisible(false);
+	}
+	public void removeUpdateButton() {
+		update.setVisible(false);
+	}
+
 }
