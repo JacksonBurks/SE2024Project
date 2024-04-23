@@ -13,6 +13,7 @@ public class GameClient extends AbstractClient
 	private final int MIN_POINTS = 300;
 	private int yourID;
 	private int yourScore;
+	
 
 
 	//private BoardControl boardControl;
@@ -88,6 +89,9 @@ public class GameClient extends AbstractClient
 				gameControl.showGameButtons();
 				gameControl.showSpinButton();
 				gameControl.showSpinLabel();
+			}
+			else if(message.equals("Next Round")){
+					gameControl.setRound();
 			}
 
 		}

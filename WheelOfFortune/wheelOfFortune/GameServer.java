@@ -26,6 +26,7 @@ public class GameServer extends AbstractServer {
 	private int firstSpins = 0;
 	private PointsData pd;
 	private int idTurn;
+	private int round =1;
 
 
 	public GameServer() {
@@ -314,8 +315,15 @@ public class GameServer extends AbstractServer {
 
 
 		if (isCorrect) {
-
-			System.out.println("Correct solve received from client: " + client.getId());
+			round +=1;
+			if(round >=3) {
+				sendToAllClients("Next Round");
+				pullCatandWord();
+				
+			}else {
+				sendToAllClients("Game Over");
+			}
+			
 
 		} else {
 
@@ -387,6 +395,8 @@ public class GameServer extends AbstractServer {
 		// Get a random category and word
 		category = db.getRandomCategory();
 		word = db.getRandomWord(category);
+		WordData wd = new WordData(category,word);
+		sendToAllClients(wd);
 	}
 
 

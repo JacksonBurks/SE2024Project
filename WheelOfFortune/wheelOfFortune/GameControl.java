@@ -17,6 +17,7 @@ public class GameControl implements ActionListener{
 	private String category;
 	private Boolean testGuess = false;
 	private boolean lastGuessCorrect = false;
+	private int round = 1;
 	private Wheel wheel;
 	//Spin
 	private SpinData spin;
@@ -247,6 +248,10 @@ public class GameControl implements ActionListener{
 
 	public void setWord(String word) {
 		this.word = word;
+	}
+	public void setRound() {
+		round +=1;
+		gamePanel.setRoundText(round);
 	}
 	private void sendGuessResultToServer(boolean isCorrect) {
 		// Send the guess result to the server

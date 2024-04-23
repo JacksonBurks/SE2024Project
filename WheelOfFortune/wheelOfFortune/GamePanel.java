@@ -25,6 +25,7 @@ public class GamePanel extends JPanel {
     private Wheel wheel;
     private JPanel vowelPanel;
     private JLabel categoryTextLabel;
+    private JLabel roundLabel;
 
     public void removeSpinLabel() {
     	spinLabel.setVisible(false);
@@ -101,6 +102,9 @@ public class GamePanel extends JPanel {
     public void setCategoryText(String categoryText) {
         this.category = category;
         categoryTextLabel.setText("Category: " + category); 
+    }
+    public void setRoundText(int text) {
+        roundLabel.setText("Round: " + text);
     }
     
 
@@ -201,6 +205,9 @@ public class GamePanel extends JPanel {
         this.categoryTextLabel = new JLabel("", JLabel.CENTER);
         categoryTextLabel.setText("");
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
+        roundLabel = new JLabel("", JLabel.CENTER);
+        setRoundText(1); // Set default round text
+        categoryPanel.add(roundLabel, BorderLayout.CENTER); 
 
 
         //categoryLabel = new JLabel("");
