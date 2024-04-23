@@ -12,6 +12,7 @@ public class GameClient extends AbstractClient
 	private final int MAX_POINTS = 1000;
 	private final int MIN_POINTS = 300;
 	private int yourID;
+	private int gameRound = 1;
 
 	
 	//private BoardControl boardControl;
@@ -69,6 +70,13 @@ public class GameClient extends AbstractClient
 			else if (message.equals("PlayerReady"))
 			{
 				newGameControl.readySuccess();
+			}
+			else if(message.equals("Next Round")){
+				gameRound += 1;
+				
+					gameControl.updateRound(gameRound);
+				
+				
 			}
 			else if (message.equals("Highest Spun: " + String.valueOf(yourID))){
 				gameControl.showGameButtons();

@@ -15,6 +15,7 @@ public class GamePanel extends JPanel {
     private JButton solveButton; // New button for guessing the entire word
     private String word;
     private String category;
+    private int round;
     private JLabel errorLabel;
     private JLabel spinLabel;
     private JLabel currentScore;
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel {
     private Wheel wheel;
     private JPanel vowelPanel;
     private JLabel categoryTextLabel;
+    private JLabel roundNum;
 
     public void removeSpinLabel() {
     	spinLabel.setVisible(false);
@@ -97,6 +99,11 @@ public class GamePanel extends JPanel {
         this.category = category;
         categoryTextLabel.setText("Category: " + category); 
     }
+    public void setGameRound(int round) {
+        this.round = round;
+        categoryTextLabel.setText("Round: " + round); 
+    }
+    
     
 
    
@@ -197,7 +204,10 @@ public class GamePanel extends JPanel {
         this.categoryTextLabel = new JLabel("", JLabel.CENTER);
         categoryTextLabel.setText("");
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
-
+        
+        this.roundNum = new JLabel("", JLabel.CENTER);
+        categoryTextLabel.setText("");
+        categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
 
         //categoryLabel = new JLabel("");
         //categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));

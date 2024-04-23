@@ -26,6 +26,7 @@ public class GameServer extends AbstractServer {
 	private int firstSpins = 0;
 	private int playersReady = 0;
 	private int turnNumber = 0;
+	private int gameRound = 1;
 
 	public GameServer() {
 		super(12345);
@@ -274,7 +275,11 @@ public class GameServer extends AbstractServer {
 
 		if (isCorrect) {
 
-			System.out.println("Correct solve received from client: " + client.getId());
+			
+			gameRound +=1;
+			if(gameRound >=3) {
+			sendToAllClients("Next Round");
+			}
 
 		} else {
 

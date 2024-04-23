@@ -205,6 +205,9 @@ public class GameControl implements ActionListener{
 		gamePanel.setWord(word);
 
 	}
+	public void updateRound(int gameRound) {
+		
+	}
 	public void setCategory(String category) {
 		this.category = category;
 	}
