@@ -194,7 +194,7 @@ public class GameControl implements ActionListener{
 			category = getCategory();
 			gamePanel.setCategoryText(category);
 			gamePanel.showVowelButtons();
-			gamePanel.removeUpdateButton();
+			//gamePanel.removeUpdateButton();
 		}
 	}
 	private void handleVowelButton(String vowel) {
@@ -362,6 +362,10 @@ public class GameControl implements ActionListener{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.setCurrentScore(score);
 	}
+    public void gameOver(int finalScore) {
+        // Display a popup with the final score
+        JOptionPane.showMessageDialog(container, "Game Over!\nYour Final Score: " + finalScore, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 }
 

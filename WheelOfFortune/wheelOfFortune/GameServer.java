@@ -28,6 +28,7 @@ public class GameServer extends AbstractServer {
 	private PointsData pd;
 	private int idTurn;
 	private int round =1;
+	private int oppScore;
 
 
 	public GameServer() {
@@ -123,7 +124,8 @@ public class GameServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				pullCatandWord();
+				//pullCatandWord();
+				System.out.println(word);
 			} else {
 				try {
 					client.sendToClient(new Error("Need more players to connect.", "NotReady"));
@@ -355,13 +357,14 @@ public class GameServer extends AbstractServer {
 
 	private void handleSolveData(SolveData data, ConnectionToClient client) {
 		boolean isCorrect = data.isCorrect();
-
+		
 
 		if (isCorrect) {
 			round +=1;
 			if(round <=3) {
 				sendToAllClients("Next Round");
 				pullCatandWord();
+				//System.out.println(word);
 				
 			}else {
 				sendToAllClients("Game Over");
@@ -369,9 +372,28 @@ public class GameServer extends AbstractServer {
 			
 
 		} else {
+			Player thisPlayer = null;
+			for (Player player : players) {
+				if (player.getId() == client.getId()) { 
+					thisPlayer = player; 
+					break; 
+				}
+			}
+			log.append(thisPlayer.getUsername()+ " failed to solve...\n");
+			try {
+				client.sendToClient("Not your turn");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-			System.out.println("Incorrect solve received from client: " + client.getId());
-
+			for (Player player : players) {
+				if (player.getId() != client.getId()) {
+					idTurn = player.getId();
+					break;
+				}
+			}
+			sendToAllClients("Turn switch " + idTurn);
 		}
 	}
 

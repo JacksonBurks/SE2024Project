@@ -13,11 +13,11 @@ public class GameClient extends AbstractClient
 	private final int MIN_POINTS = 300;
 	private int yourID;
 	private int yourScore;
+	private int oppScore;
 
 
 	//private BoardControl boardControl;
 	//private int firstTurn = 1;
-
 	public void setGameControl(GameControl gameControl) {
 		this.gameControl = gameControl;
 	}
@@ -83,7 +83,7 @@ public class GameClient extends AbstractClient
 				gameControl.removeGameButtons();
 				gameControl.removeSpinButton();
 				gameControl.removeSpinLabel();
-	
+
 			}
 			else if (message.equals("Turn switch " + String.valueOf(yourID))) {
 				gameControl.showGameButtons();
@@ -92,10 +92,11 @@ public class GameClient extends AbstractClient
 			}
 			else if(message.equals("Next Round")){
 				gameControl.setRound();
-		}
-		else if(message.equals("Game Over")) {
-			
-		}
+				gameControl.showSpinButton();
+			}
+			else if(message.equals("Game Over")) {
+				gameControl.gameOver(yourScore);
+			}
 
 		}
 

@@ -240,6 +240,8 @@ public class GamePanel extends JPanel {
         JPanel topPanel = (JPanel) this.getComponent(0); // Get the topPanel
         topPanel.removeAll(); // Clear existing labels
         topPanel.add(currentScore);
+        topPanel.add(specialSpun);
+
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
             String labelText = (letter == ' ') ? " " : "_"; // Display spaces as empty initially
@@ -272,6 +274,7 @@ public class GamePanel extends JPanel {
         JPanel topPanel = (JPanel) this.getComponent(0); 
         topPanel.removeAll(); 
         topPanel.add(currentScore);
+        topPanel.add(specialSpun);
         
 
         for (int i = 0; i < word.length(); i++) {
