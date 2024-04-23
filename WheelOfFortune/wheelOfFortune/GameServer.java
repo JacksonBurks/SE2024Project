@@ -19,6 +19,7 @@ public class GameServer extends AbstractServer {
 	private ArrayList<Player> players = new ArrayList<>();
 	private static final int MIN_PLAYERS = 2;
 	private static final int MAX_PLAYERS = 4;
+	private final int VOWEL_COST = 100;
 	private int maxSpinValue = 0;
 	private Player playerWithMaxSpin;
 	private String category = "";
@@ -26,6 +27,7 @@ public class GameServer extends AbstractServer {
 	private int firstSpins = 0;
 	private PointsData pd;
 	private int idTurn;
+	private int round =1;
 
 
 	public GameServer() {
@@ -73,6 +75,9 @@ public class GameServer extends AbstractServer {
 		}
 		else if (msg instanceof SolveData) {
 			handleSolveData((SolveData)msg, client);
+		}
+		else if (msg instanceof VowelData) {
+			handleVowelData((VowelData)msg, client);
 		}
 	}
 
@@ -327,14 +332,41 @@ public class GameServer extends AbstractServer {
 		}
 
 	}
+	
+	private void handleVowelData(VowelData msg, ConnectionToClient client) {
+		if (msg.bought()) {
+			for (Player player : players) {
+				if (player.getId() == client.getId()) {
+					log.append(player.getUsername()+ " bought a vowel for " + VOWEL_COST + " points!\n");
+					updatePlayerScore(player.getId(), -VOWEL_COST);
+					pd = new PointsData(player.getScore());
+					try {
+						client.sendToClient(pd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				}
+			}
+			
+		}
+	}
 
 	private void handleSolveData(SolveData data, ConnectionToClient client) {
 		boolean isCorrect = data.isCorrect();
 
 
 		if (isCorrect) {
-
-			System.out.println("Correct solve received from client: " + client.getId());
+			round +=1;
+			if(round <=3) {
+				sendToAllClients("Next Round");
+				pullCatandWord();
+				
+			}else {
+				sendToAllClients("Game Over");
+			}
+			
 
 		} else {
 

@@ -25,6 +25,8 @@ public class GamePanel extends JPanel {
     private Wheel wheel;
     private JPanel vowelPanel;
     private JLabel categoryTextLabel;
+    private JLabel roundLabel;
+
 
     public void removeSpinLabel() {
     	spinLabel.setVisible(false);
@@ -94,6 +96,9 @@ public class GamePanel extends JPanel {
     public void setCategoryText(String categoryText) {
         this.category = category;
         categoryTextLabel.setText("Category: " + category); 
+    }
+    public void setRoundText(int text) {
+        roundLabel.setText("Round: " + text);
     }
     
 
@@ -194,7 +199,9 @@ public class GamePanel extends JPanel {
         this.categoryTextLabel = new JLabel("", JLabel.CENTER);
         categoryTextLabel.setText("");
         categoryPanel.add(categoryTextLabel, BorderLayout.NORTH);
-
+        roundLabel = new JLabel("", JLabel.CENTER);
+        setRoundText(1);
+        categoryPanel.add(roundLabel, BorderLayout.SOUTH); 
 
         //categoryLabel = new JLabel("");
         //categoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -207,8 +214,17 @@ public class GamePanel extends JPanel {
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
-        addVowelButtons();
+        //addVowelButtons();
         gameControl.setGamePanel(this);
+        
+        String[] vowels = {"A", "E", "I", "O", "U"};
+        for (String vowel : vowels) {
+            vowelButton = new JButton(vowel);
+            vowelPanel.add(vowelButton);
+            vowelButton.addActionListener(gameControl);
+        }
+        
+        removeVowelButtons();
        
         this.setWord(word);
         

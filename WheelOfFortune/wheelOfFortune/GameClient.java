@@ -90,6 +90,12 @@ public class GameClient extends AbstractClient
 				gameControl.showSpinButton();
 				gameControl.showSpinLabel();
 			}
+			else if(message.equals("Next Round")){
+				gameControl.setRound();
+		}
+		else if(message.equals("Game Over")) {
+			
+		}
 
 		}
 

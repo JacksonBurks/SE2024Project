@@ -18,6 +18,8 @@ public class GameControl implements ActionListener{
 	private Boolean testGuess = false;
 	private boolean lastGuessCorrect = false;
 	private Wheel wheel;
+	private int round = 1;
+
 	//Spin
 	private SpinData spin;
 	private int spinNumber = 0;
@@ -191,6 +193,7 @@ public class GameControl implements ActionListener{
 			gamePanel.repaint();
 			category = getCategory();
 			gamePanel.setCategoryText(category);
+			gamePanel.showVowelButtons();
 			gamePanel.removeUpdateButton();
 		}
 	}
@@ -205,6 +208,13 @@ public class GameControl implements ActionListener{
 					// Update the display to reveal the vowel in the word
 					gamePanel.updateWordDisplay(word.charAt(i));
 					found = true;
+					VowelData vd = new VowelData(found);
+					try {
+						client.sendToServer(vd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 
@@ -214,7 +224,7 @@ public class GameControl implements ActionListener{
 			// Display a message if the guessed vowel is not in the word
 			if (!found) {
 				// Inform the user that the guess is incorrect
-				JOptionPane.showMessageDialog(container, "Sorry, wrong guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(container, "Sorry, choose another vowel!", "Vowel Not Found", JOptionPane.ERROR_MESSAGE);
 			}
 
 			// Always refresh the panel display
@@ -222,7 +232,7 @@ public class GameControl implements ActionListener{
 			gamePanel.repaint();
 
 
-			sendGuessResultToServer(isCorrect);
+			//sendGuessResultToServer(isCorrect);
 		}
 	}
 
@@ -249,6 +259,13 @@ public class GameControl implements ActionListener{
 	public void setWord(String word) {
 		this.word = word;
 	}
+	
+	public void setRound() {
+		round +=1;
+		gamePanel.setRoundText(round);
+	}
+	
+	
 	private void sendGuessResultToServer(boolean isCorrect) {
 		// Send the guess result to the server
 		if (client != null) {
