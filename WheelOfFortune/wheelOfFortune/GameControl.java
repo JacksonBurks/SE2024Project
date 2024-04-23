@@ -299,7 +299,7 @@ public class GameControl implements ActionListener{
 	}
 	public void showGameButtons() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.addVowelButtons();
+		gamePanel.showVowelButtons();
 		gamePanel.showGuessButton();
 		gamePanel.showSolveButton();
 		gamePanel.disableSpinButton();

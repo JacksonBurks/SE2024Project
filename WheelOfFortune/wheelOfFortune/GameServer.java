@@ -25,6 +25,7 @@ public class GameServer extends AbstractServer {
 	private String word = "";
 	private int firstSpins = 0;
 	private PointsData pd;
+	private int idTurn;
 
 
 	public GameServer() {
@@ -296,6 +297,14 @@ public class GameServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			for (Player player : players) {
+		        if (player.getId() != client.getId()) {
+		        	idTurn = player.getId();
+		        	break;
+		        }
+			}
+			sendToAllClients("Turn switch " + idTurn);
 		}
 
 	}

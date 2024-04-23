@@ -214,6 +214,7 @@ public class GamePanel extends JPanel {
 
         // Add the vowel panel to the main panel (west)
         add(vowelPanel, BorderLayout.WEST);
+        addVowelButtons();
         gameControl.setGamePanel(this);
        
         this.setWord(word);
@@ -282,6 +283,15 @@ public class GamePanel extends JPanel {
             vowelButton = new JButton(vowel);
             vowelPanel.add(vowelButton);
             vowelButton.addActionListener(gameControl);
+        }
+    }
+    public void showVowelButtons() {
+        Component[] components = vowelPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                button.setVisible(true);
+            }
         }
     }
     public void removeVowelButtons() {

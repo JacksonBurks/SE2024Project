@@ -84,6 +84,11 @@ public class GameClient extends AbstractClient
 				gameControl.removeSpinLabel();
 	
 			}
+			else if (message.equals("Turn switch " + String.valueOf(yourID))) {
+				gameControl.showGameButtons();
+				gameControl.showSpinButton();
+				gameControl.showSpinLabel();
+			}
 
 		}
 
