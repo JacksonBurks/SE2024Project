@@ -69,34 +69,46 @@ public class GameControl implements ActionListener{
 	private void handleSpin() {
 		spinNumber++;
 		wheel.spin();
-		spin.setSpun(true);
+		//spin.setSpun(true);
 		if(spinNumber == 1) {
-			spin.setSpinType("First");
+			SpinData data = new SpinData();
+			data.setSpinType("First");
+			data.setSpun(true);
 			try
 			{
 				//spinPanel.spin();
-				client.sendToServer(spin);
+				client.sendToServer(data);
 			}
 			catch (IOException e1)
 			{
 				displayError("Error connecting to the server.");
 			}
 		}else {
-			spin.setSpinType("Round");
+			SpinData data = new SpinData();
+			data.setSpinType("First");
+			data.setSpun(true);
 			try
 			{
 				//spinPanel.spin();
-				client.sendToServer(spin);
+				client.sendToServer(data);
+				//System.out.println("Round sent to server");
 			}
 			catch (IOException e1)
 			{
 				displayError("Error connecting to the server.");
 			}
+			
 		}
+		removeSpinButton();
 	}
 	private void handleGuess() {
 		if (gamePanel != null) {
 			String guessText = gamePanel.getTextField().getText().trim().toUpperCase();
+
+			if (!isValidConsonant(guessText)) {
+				JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
 			// Validate that the input is a consonant (A-Z) and not already guessed
 			if (isValidConsonant(guessText)) {
@@ -126,7 +138,7 @@ public class GameControl implements ActionListener{
 						e.printStackTrace();
 					}
 					// Inform the user that the guess is incorrect
-					JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
+					//JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				lastGuessCorrect = false; // Mark the guess as incorrect (invalid input)
@@ -138,7 +150,7 @@ public class GameControl implements ActionListener{
 					e.printStackTrace();
 				}
 				// Inform the user that only consonants are allowed for guessing
-				JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+				//JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
 			}
 
 			gamePanel.getTextField().setText(""); // Clear text field
@@ -292,12 +304,12 @@ public class GameControl implements ActionListener{
 		gamePanel.showSolveButton();
 		gamePanel.disableSpinButton();
 	}
-	
+
 	public void removeGameButtons() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.removeVowelButtons();
 	}
-	
+
 	public void showSpinButton() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.enableSpinButton();
@@ -306,7 +318,7 @@ public class GameControl implements ActionListener{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.disableSpinButton();
 	}
-	
+
 	public void showSpinLabel() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.addSpinLabel();
@@ -315,7 +327,7 @@ public class GameControl implements ActionListener{
 	public String getCategory( ){
 		return category;
 	}
-	
+
 	public void updateScore(int score) {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.setCurrentScore(score);

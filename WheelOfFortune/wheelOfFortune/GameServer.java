@@ -129,7 +129,7 @@ public class GameServer extends AbstractServer {
 		}
 	}
 
-	private void handleSpinData(SpinData data, ConnectionToClient client) {
+	private synchronized void handleSpinData(SpinData data, ConnectionToClient client) {
 		if (data.clickedSpin()) {
 			wheel.setSelectedPoints(0);
 			wheel.spin();
@@ -199,7 +199,7 @@ public class GameServer extends AbstractServer {
 								playerWithMaxSpin = player;
 							}
 						}
-						if (playerWithMaxSpin != null && client.getId() == playerWithMaxSpin.getId()) {
+						if (playerWithMaxSpin != null) {
 							log.append("Player " + playerWithMaxSpin.getUsername() + " spun the highest value: " + maxSpinValue + " points!\n");
 							int max = playerWithMaxSpin.getId();
 							String maxMsgId = "Highest Spun: " + String.valueOf(max);
@@ -210,11 +210,10 @@ public class GameServer extends AbstractServer {
 
 				}
 			}
-			wheel.setSpecialSelected(false);
-
 		}
 		//*******************************************************************************************
 		else if (data.getSpinType().equals("Round")) {
+			System.out.println("HERe");
 			// if the wheel spun a special slice
 			if (wheel.isSpecialSelected()) {
 				try { 
@@ -249,8 +248,9 @@ public class GameServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
-
 		}
+		wheel.setSpecialSelected(false);
+		wheel.setSelectedPoints(0);
 		pullCatandWord();
 		WordData message = new WordData(category, word);
 		sendToAllClients(message);
@@ -259,14 +259,16 @@ public class GameServer extends AbstractServer {
 
 	private void handleGameData(GameData data, ConnectionToClient client) {
 		boolean isCorrect = data.isCorrect();
+
+		
 		if (isCorrect) {
 			for (Player player : players) {
 				if (player.getId() == client.getId()) {
 					log.append(player.getUsername()+ " guessed correctly, wins " + player.getPointsSpun() + " points!\n");
 					updatePlayerScore(player.getId(), player.getPointsSpun());
-					pd = new PointsData(player.getScore());
 					break;
 				}
+				pd = new PointsData(player.getScore());
 			}
 			try {
 				client.sendToClient(pd);
@@ -281,9 +283,10 @@ public class GameServer extends AbstractServer {
 				if (player.getId() == client.getId()) {
 					log.append(player.getUsername()+ " guessed incorrectly, wins nothing...\n");
 					updatePlayerScore(player.getId(), 0);
-					pd = new PointsData(player.getScore());
 					break;
 				}
+				pd = new PointsData(player.getScore());
+				break;
 			}
 			try {
 				client.sendToClient(pd);

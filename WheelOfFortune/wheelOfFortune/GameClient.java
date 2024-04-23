@@ -132,13 +132,13 @@ public class GameClient extends AbstractClient
 			}
 			else if (res.getType().equals("Round")) {
 				if(res.getResult().equals("Bankrupt")) {
-
+					gameControl.specialResults(res.getResult());
 				}
 				else if(res.getResult().equals("Lose Turn")) {
-
+					gameControl.specialResults(res.getResult());
 				}
 				else if (Integer.parseInt(res.getResult()) >= MIN_POINTS && Integer.parseInt(res.getResult()) <= MAX_POINTS) {
-
+					gameControl.pointResults(Integer.parseInt(res.getResult()));
 				}
 			}
 		}
