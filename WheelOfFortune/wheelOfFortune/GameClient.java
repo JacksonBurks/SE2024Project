@@ -12,8 +12,9 @@ public class GameClient extends AbstractClient
 	private final int MAX_POINTS = 1000;
 	private final int MIN_POINTS = 300;
 	private int yourID;
+	private int yourScore;
 
-	
+
 	//private BoardControl boardControl;
 	//private int firstTurn = 1;
 
@@ -73,6 +74,17 @@ public class GameClient extends AbstractClient
 			else if (message.equals("Highest Spun: " + String.valueOf(yourID))){
 				gameControl.showGameButtons();
 			}
+			else if (message.equals("Go again")) {
+				gameControl.showSpinButton();
+				gameControl.showSpinLabel();
+			}
+			else if (message.equals("Not your turn")) {
+				gameControl.removeGameButtons();
+				gameControl.removeSpinButton();
+				gameControl.removeSpinLabel();
+
+	
+			}
 
 		}
 
@@ -103,7 +115,7 @@ public class GameClient extends AbstractClient
 		else if(arg0 instanceof NewGameData) {
 			NewGameData id = (NewGameData)arg0;
 			yourID = id.getId();
-	
+
 		}  
 		else if (arg0 instanceof SpinResult) {
 			SpinResult res = (SpinResult)arg0;
@@ -130,17 +142,21 @@ public class GameClient extends AbstractClient
 				}
 			}
 		}
-		 else if (arg0 instanceof WordData) {
-		        // Received category and word message from server
-		        WordData message = (WordData) arg0;
-		        
-		        // Extract category and word from the message
-		        String category = message.getCategory();
-		        String word = message.getWord();
-		        
-		        gameControl.updateCategoryAndWord(category, word); 
-		        gameControl.setCategory(category);
-		        gameControl.setWord(word);
-		    }
+		else if (arg0 instanceof WordData) {
+			// Received category and word message from server
+			WordData message = (WordData) arg0;
+
+			// Extract category and word from the message
+			String category = message.getCategory();
+			String word = message.getWord();
+			gameControl.updateCategoryAndWord(category, word); 
+			gameControl.setCategory(category);
+			gameControl.setWord(word);
+		}
+		else if (arg0 instanceof PointsData) {
+			PointsData pd = (PointsData)arg0;
+			yourScore = pd.getPoints();
+			gameControl.updateScore(yourScore);
+		}
 	}  
 }

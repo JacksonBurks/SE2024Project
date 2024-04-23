@@ -40,35 +40,10 @@ public class GameControl implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		
+
 		if (command.equals("Spin"))
 		{
-			spinNumber++;
-			wheel.spin();
-			spin.setSpun(true);
-			if(spinNumber == 1) {
-				spin.setSpinType("First");
-				try
-				{
-					//spinPanel.spin();
-					client.sendToServer(spin);
-				}
-				catch (IOException e1)
-				{
-					displayError("Error connecting to the server.");
-				}
-			}else {
-				spin.setSpinType("Round");
-				try
-				{
-					//spinPanel.spin();
-					client.sendToServer(spin);
-				}
-				catch (IOException e1)
-				{
-					displayError("Error connecting to the server.");
-				}
-			}
+			handleSpin();
 		}
 
 		else if (command.equals("Guess")) {
@@ -91,6 +66,34 @@ public class GameControl implements ActionListener{
 			cardLayout.show(container, "2");
 		}
 	}
+	private void handleSpin() {
+		spinNumber++;
+		wheel.spin();
+		spin.setSpun(true);
+		if(spinNumber == 1) {
+			spin.setSpinType("First");
+			try
+			{
+				//spinPanel.spin();
+				client.sendToServer(spin);
+			}
+			catch (IOException e1)
+			{
+				displayError("Error connecting to the server.");
+			}
+		}else {
+			spin.setSpinType("Round");
+			try
+			{
+				//spinPanel.spin();
+				client.sendToServer(spin);
+			}
+			catch (IOException e1)
+			{
+				displayError("Error connecting to the server.");
+			}
+		}
+	}
 	private void handleGuess() {
 		if (gamePanel != null) {
 			String guessText = gamePanel.getTextField().getText().trim().toUpperCase();
@@ -106,13 +109,34 @@ public class GameControl implements ActionListener{
 					gamePanel.revalidate();
 					gamePanel.repaint();
 					lastGuessCorrect = true; 
+					GameData gd = new GameData(true);
+					try {
+						client.sendToServer(gd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				} else {
 					lastGuessCorrect = false; 
+					GameData gd = new GameData(false);
+					try {
+						client.sendToServer(gd);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					// Inform the user that the guess is incorrect
 					JOptionPane.showMessageDialog(container, "Sorry, incorrect guess!", "Incorrect Guess", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				lastGuessCorrect = false; // Mark the guess as incorrect (invalid input)
+				GameData gd = new GameData(false);
+				try {
+					client.sendToServer(gd);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// Inform the user that only consonants are allowed for guessing
 				JOptionPane.showMessageDialog(container, "Please enter a consonant (A-Z)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
 			}
@@ -208,7 +232,7 @@ public class GameControl implements ActionListener{
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	public void setWord(String word) {
 		this.word = word;
 	}
@@ -232,7 +256,7 @@ public class GameControl implements ActionListener{
 			}
 		}
 	}
-	
+
 	public void displayError(String error)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
@@ -241,28 +265,22 @@ public class GameControl implements ActionListener{
 	public void specialResults(String result)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.setSpecialSpun(result + "0 points spun!");
+		gamePanel.setSpecialSpun(result + " 0 points spun!");
 	}
-	
+
 	public void pointResults(int result)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.setPointsSpun(result);
 	}
-	
+
 	public void showWaitingLabel(String msg)
 	{
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.setWaiting(msg);
 	}
 
-	public void removeSpinButton() {
-		// TODO Auto-generated method stub
-		GamePanel gamePanel = (GamePanel)container.getComponent(4);
-		gamePanel.removeSpinButton();
 
-	}
-	
 	public void removeSpinLabel() {
 		GamePanel gamePanel = (GamePanel)container.getComponent(4);
 		gamePanel.removeSpinLabel();
@@ -275,10 +293,34 @@ public class GameControl implements ActionListener{
 		gamePanel.disableSpinButton();
 	}
 	
+	public void removeGameButtons() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.removeVowelButtons();
+	}
+	
+	public void showSpinButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.enableSpinButton();
+	}
+	public void removeSpinButton() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.disableSpinButton();
+	}
+	
+	public void showSpinLabel() {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.addSpinLabel();
+	}
+
 	public String getCategory( ){
 		return category;
 	}
 	
+	public void updateScore(int score) {
+		GamePanel gamePanel = (GamePanel)container.getComponent(4);
+		gamePanel.setCurrentScore(score);
+	}
+
 }
 
 

@@ -54,12 +54,11 @@ public class GamePanel extends JPanel {
     
     public void disableSpinButton() {
     	spinButton.setEnabled(false);
+    	spinButton.setVisible(false);
     }
     public void enableSpinButton() {
     	spinButton.setEnabled(true);
-    }
-    public void removeSpinButton() {
-    	spinButton.setVisible(false);
+    	spinButton.setVisible(true);
     }
     
     public JTextField getTextField() {
@@ -278,4 +277,14 @@ public class GamePanel extends JPanel {
             vowelButton.addActionListener(gameControl);
         }
     }
+    public void removeVowelButtons() {
+        Component[] components = vowelPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                button.setVisible(false);
+            }
+        }
+    }
+
 }

@@ -24,8 +24,8 @@ public class GameServer extends AbstractServer {
 	private String category = "";
 	private String word = "";
 	private int firstSpins = 0;
-	private int playersReady = 0;
-	private int turnNumber = 0;
+	private PointsData pd;
+
 
 	public GameServer() {
 		super(12345);
@@ -221,7 +221,7 @@ public class GameServer extends AbstractServer {
 					//extract the special that  was selected, either lose turn or bankrupt
 					String special = wheel.getSpecialSliceText();
 					// update the player's points
-					updatePlayerPoints((int)client.getId(), 0, special);
+					updatePlayerPointsSpun((int)client.getId(), 0);
 					client.sendToClient(new SpinResult(special, "Round"));
 					for (Player player : players) {
 						if (player.getId() == client.getId()) {
@@ -236,7 +236,7 @@ public class GameServer extends AbstractServer {
 			} 
 			else { // for points
 				try {
-					updatePlayerPoints((int)client.getId(), wheel.getSelectedPoints(), "None");
+					updatePlayerPointsSpun((int)client.getId(), wheel.getSelectedPoints());
 					client.sendToClient(new SpinResult(String.valueOf(wheel.getSelectedPoints()), "Round"));
 					for (Player player : players) {
 						if (player.getId() == client.getId()) {
@@ -260,12 +260,38 @@ public class GameServer extends AbstractServer {
 	private void handleGameData(GameData data, ConnectionToClient client) {
 		boolean isCorrect = data.isCorrect();
 		if (isCorrect) {
-
-			System.out.println("Correct guess received from client: " + client.getId());
+			for (Player player : players) {
+				if (player.getId() == client.getId()) {
+					log.append(player.getUsername()+ " guessed correctly, wins " + player.getPointsSpun() + " points!\n");
+					updatePlayerScore(player.getId(), player.getPointsSpun());
+					pd = new PointsData(player.getScore());
+					break;
+				}
+			}
+			try {
+				client.sendToClient(pd);
+				client.sendToClient("Go again");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else {
-
-			System.out.println("Incorrect guess received from client: " + client.getId());
+			for (Player player : players) {
+				if (player.getId() == client.getId()) {
+					log.append(player.getUsername()+ " guessed incorrectly, wins nothing...\n");
+					updatePlayerScore(player.getId(), 0);
+					pd = new PointsData(player.getScore());
+					break;
+				}
+			}
+			try {
+				client.sendToClient(pd);
+				client.sendToClient("Not your turn");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 	}
@@ -325,18 +351,10 @@ public class GameServer extends AbstractServer {
 		log.append("Press Listen to restart server\n");
 	}
 
-	public void updatePlayerPoints(int playerId, int pointsToAdd, String special) {
+	public void updatePlayerScore(int playerId, int points) {
 		for (Player player : players) {
 			if (player.getId() == playerId) {
-				if (special.equals("Bankrupt")) {
-					player.setScore(0);
-				}
-				else if(special.equals("Lose Turn")) {
-					player.setScore(player.getScore());
-				}
-				else if(special.equals("None")){
-					player.setScore(player.getScore() + pointsToAdd);
-				}
+				player.setScore(player.getScore() + points);
 				break;
 			}
 		}
